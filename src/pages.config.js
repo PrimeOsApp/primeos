@@ -52,6 +52,8 @@ import CRM from './pages/CRM';
 import Activities from './pages/Activities';
 import CostStructure from './pages/CostStructure';
 import Revenue from './pages/Revenue';
+import CustomerPipeline from './pages/CustomerPipeline';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
@@ -60,9 +62,11 @@ export const PAGES = {
     "Activities": Activities,
     "CostStructure": CostStructure,
     "Revenue": Revenue,
+    "CustomerPipeline": CustomerPipeline,
 }
 
 export const pagesConfig = {
     mainPage: "Dashboard",
     Pages: PAGES,
+    Layout: __Layout,
 };
