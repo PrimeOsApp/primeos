@@ -12,12 +12,14 @@ import {
   Menu,
   X,
   ChevronRight,
-  MessageCircle
+  MessageCircle,
+  Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
+  { name: "Patient Pipeline", href: "PatientPipeline", icon: Heart },
   { name: "Sales Pipeline", href: "CustomerPipeline", icon: MessageCircle },
   { name: "Customer Relations", href: "CRM", icon: Users },
   { name: "Key Activities", href: "Activities", icon: Activity },

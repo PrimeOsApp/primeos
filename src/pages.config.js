@@ -53,6 +53,7 @@ import Activities from './pages/Activities';
 import CostStructure from './pages/CostStructure';
 import Revenue from './pages/Revenue';
 import CustomerPipeline from './pages/CustomerPipeline';
+import PatientPipeline from './pages/PatientPipeline';
 import __Layout from './Layout.jsx';
 
 
@@ -63,6 +64,7 @@ export const PAGES = {
     "CostStructure": CostStructure,
     "Revenue": Revenue,
     "CustomerPipeline": CustomerPipeline,
+    "PatientPipeline": PatientPipeline,
 }
 
 export const pagesConfig = {
