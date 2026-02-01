@@ -13,18 +13,25 @@ import {
   X,
   ChevronRight,
   MessageCircle,
-  Heart
+  Heart,
+  ClipboardList,
+  Calendar,
+  TrendingUp,
+  Inbox
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
-  { name: "Patient Pipeline", href: "PatientPipeline", icon: Heart },
-  { name: "Sales Pipeline", href: "CustomerPipeline", icon: MessageCircle },
-  { name: "Customer Relations", href: "CRM", icon: Users },
-  { name: "Key Activities", href: "Activities", icon: Activity },
-  { name: "Cost Structure", href: "CostStructure", icon: DollarSign },
-  { name: "Revenue Stream", href: "Revenue", icon: ShoppingCart },
+  { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
+  { name: "Agenda", href: "Agenda", icon: Calendar },
+  { name: "Prontuários", href: "Prontuarios", icon: ClipboardList },
+  { name: "Canais", href: "Canais", icon: Inbox },
+  { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
+  { name: "CRM", href: "CRM", icon: Users },
+  { name: "Atividades", href: "Activities", icon: Activity },
+  { name: "Custos", href: "CostStructure", icon: DollarSign },
+  { name: "Receitas", href: "Revenue", icon: ShoppingCart },
 ];
 
 export default function Layout({ children, currentPageName }) {
@@ -59,7 +66,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
               <LayoutDashboard className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-slate-900">Business Canvas</span>
+            <span className="font-bold text-slate-900">Prime Odontologia</span>
           </div>
           <Button
             variant="ghost"
@@ -97,8 +104,8 @@ export default function Layout({ children, currentPageName }) {
               <LayoutDashboard className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-slate-900">Business Canvas</h1>
-              <p className="text-xs text-slate-500">Management System</p>
+              <h1 className="font-bold text-slate-900">Prime Odontologia</h1>
+              <p className="text-xs text-slate-500">Sistema de Gestão</p>
             </div>
           </div>
 
@@ -111,8 +118,8 @@ export default function Layout({ children, currentPageName }) {
 
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
-            <p className="text-sm font-medium text-indigo-900">Business Model Canvas</p>
-            <p className="text-xs text-indigo-600 mt-1">Complete management solution</p>
+            <p className="text-sm font-medium text-indigo-900">primeodontologia.com.br</p>
+            <p className="text-xs text-indigo-600 mt-1">Sistema completo de gestão</p>
           </div>
         </div>
       </aside>
