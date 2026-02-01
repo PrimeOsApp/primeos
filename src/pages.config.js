@@ -48,31 +48,43 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Activities from './pages/Activities';
+import Agenda from './pages/Agenda';
 import CRM from './pages/CRM';
+import Canais from './pages/Canais';
 import CostStructure from './pages/CostStructure';
 import CustomerPipeline from './pages/CustomerPipeline';
 import Dashboard from './pages/Dashboard';
-import PatientPipeline from './pages/PatientPipeline';
-import Revenue from './pages/Revenue';
-import Prontuarios from './pages/Prontuarios';
-import Canais from './pages/Canais';
 import JornadaCliente from './pages/JornadaCliente';
-import Agenda from './pages/Agenda';
+import PatientPipeline from './pages/PatientPipeline';
+import Prontuarios from './pages/Prontuarios';
+import Revenue from './pages/Revenue';
+import MarketingOS from './pages/MarketingOS';
+import Estrategias from './pages/Estrategias';
+import Conteudos from './pages/Conteudos';
+import Campanhas from './pages/Campanhas';
+import LeadsPipeline from './pages/LeadsPipeline';
+import Metricas from './pages/Metricas';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Activities": Activities,
+    "Agenda": Agenda,
     "CRM": CRM,
+    "Canais": Canais,
     "CostStructure": CostStructure,
     "CustomerPipeline": CustomerPipeline,
     "Dashboard": Dashboard,
-    "PatientPipeline": PatientPipeline,
-    "Revenue": Revenue,
-    "Prontuarios": Prontuarios,
-    "Canais": Canais,
     "JornadaCliente": JornadaCliente,
-    "Agenda": Agenda,
+    "PatientPipeline": PatientPipeline,
+    "Prontuarios": Prontuarios,
+    "Revenue": Revenue,
+    "MarketingOS": MarketingOS,
+    "Estrategias": Estrategias,
+    "Conteudos": Conteudos,
+    "Campanhas": Campanhas,
+    "LeadsPipeline": LeadsPipeline,
+    "Metricas": Metricas,
 }
 
 export const pagesConfig = {
