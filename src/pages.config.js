@@ -47,24 +47,32 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Dashboard from './pages/Dashboard';
-import CRM from './pages/CRM';
 import Activities from './pages/Activities';
+import CRM from './pages/CRM';
 import CostStructure from './pages/CostStructure';
-import Revenue from './pages/Revenue';
 import CustomerPipeline from './pages/CustomerPipeline';
+import Dashboard from './pages/Dashboard';
 import PatientPipeline from './pages/PatientPipeline';
+import Revenue from './pages/Revenue';
+import Prontuarios from './pages/Prontuarios';
+import Canais from './pages/Canais';
+import JornadaCliente from './pages/JornadaCliente';
+import Agenda from './pages/Agenda';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Dashboard": Dashboard,
-    "CRM": CRM,
     "Activities": Activities,
+    "CRM": CRM,
     "CostStructure": CostStructure,
-    "Revenue": Revenue,
     "CustomerPipeline": CustomerPipeline,
+    "Dashboard": Dashboard,
     "PatientPipeline": PatientPipeline,
+    "Revenue": Revenue,
+    "Prontuarios": Prontuarios,
+    "Canais": Canais,
+    "JornadaCliente": JornadaCliente,
+    "Agenda": Agenda,
 }
 
 export const pagesConfig = {
