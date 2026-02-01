@@ -17,21 +17,29 @@ import {
   ClipboardList,
   Calendar,
   TrendingUp,
-  Inbox
+  Inbox,
+  Zap,
+  Brain,
+  FileText,
+  Megaphone,
+  BarChart3
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
+  { name: "Marketing OS", href: "MarketingOS", icon: Zap, isNew: true },
   { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
   { name: "Agenda", href: "Agenda", icon: Calendar },
   { name: "Prontuários", href: "Prontuarios", icon: ClipboardList },
-  { name: "Canais", href: "Canais", icon: Inbox },
+  { name: "Canais Atendimento", href: "Canais", icon: Inbox },
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
   { name: "CRM", href: "CRM", icon: Users },
-  { name: "Atividades", href: "Activities", icon: Activity },
-  { name: "Custos", href: "CostStructure", icon: DollarSign },
-  { name: "Receitas", href: "Revenue", icon: ShoppingCart },
+  { name: "Estratégias", href: "Estrategias", icon: Brain },
+  { name: "Conteúdos", href: "Conteudos", icon: FileText },
+  { name: "Campanhas", href: "Campanhas", icon: Megaphone },
+  { name: "Leads", href: "LeadsPipeline", icon: Users },
+  { name: "Métricas", href: "Metricas", icon: BarChart3 },
 ];
 
 export default function Layout({ children, currentPageName }) {
