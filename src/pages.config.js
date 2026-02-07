@@ -81,6 +81,7 @@ import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
+import TaskCalendar from './pages/TaskCalendar';
 import __Layout from './Layout.jsx';
 
 
@@ -119,6 +120,7 @@ export const PAGES = {
     "Strategy": Strategy,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
+    "TaskCalendar": TaskCalendar,
 }
 
 export const pagesConfig = {
