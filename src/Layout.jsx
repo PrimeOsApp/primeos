@@ -43,6 +43,7 @@ const navigation = [
   { name: "Leads", href: "LeadsPipeline", icon: Users },
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
+  { name: "SOPs", href: "SOPs", icon: FileText },
 ];
 
 export default function Layout({ children, currentPageName }) {

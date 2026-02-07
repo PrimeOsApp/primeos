@@ -66,6 +66,7 @@ import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
 import ScriptsVendas from './pages/ScriptsVendas';
 import CRMAvancado from './pages/CRMAvancado';
+import SOPs from './pages/SOPs';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +90,7 @@ export const PAGES = {
     "Revenue": Revenue,
     "ScriptsVendas": ScriptsVendas,
     "CRMAvancado": CRMAvancado,
+    "SOPs": SOPs,
 }
 
 export const pagesConfig = {
