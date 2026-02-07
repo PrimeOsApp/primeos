@@ -25,7 +25,9 @@ import {
   BarChart3,
   BookOpen,
   Target,
-  Puzzle
+  Puzzle,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -53,6 +55,23 @@ const navigation = [
 
 export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScrollBottom, setShowScrollBottom] = useState(true);
+  const navRef = useState(null)[0];
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    setShowScrollTop(scrollTop > 20);
+    setShowScrollBottom(scrollTop + clientHeight < scrollHeight - 20);
+  };
+
+  const scrollNav = (direction) => {
+    const container = document.getElementById('nav-container');
+    if (container) {
+      const scrollAmount = direction === 'up' ? -200 : 200;
+      container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const NavItem = ({ item }) => {
     const isActive = currentPageName === item.href;
@@ -126,11 +145,43 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
 
-          <nav className="space-y-2 overflow-y-auto flex-1 pr-2">
-            {navigation.map((item) => (
-              <NavItem key={item.name} item={item} />
-            ))}
-          </nav>
+          <div className="relative flex-1 overflow-hidden">
+            {showScrollTop && (
+              <div className="absolute top-0 left-0 right-0 z-10 flex justify-center py-2 bg-gradient-to-b from-white to-transparent">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => scrollNav('up')}
+                  className="h-6 w-full mx-4 bg-white/80 hover:bg-white border border-slate-200"
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+            
+            <nav 
+              id="nav-container"
+              className="space-y-2 overflow-y-auto h-full pr-2 py-2"
+              onScroll={handleScroll}
+            >
+              {navigation.map((item) => (
+                <NavItem key={item.name} item={item} />
+              ))}
+            </nav>
+
+            {showScrollBottom && (
+              <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center py-2 bg-gradient-to-t from-white to-transparent">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => scrollNav('down')}
+                  className="h-6 w-full mx-4 bg-white/80 hover:bg-white border border-slate-200"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="p-6 flex-shrink-0 border-t border-slate-200">
