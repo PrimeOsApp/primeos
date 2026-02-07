@@ -189,12 +189,9 @@ export default function Layout({ children, currentPageName }) {
           </div>
 
         <div className="p-6 flex-shrink-0 border-t border-slate-200">
-          <div className="rounded-xl overflow-hidden border border-slate-200">
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697e811fd4fc2230311435d7/25b95d0ef_google.png" 
-              alt="Prime Odontologia - Sorrisos" 
-              className="w-full h-auto object-cover"
-            />
+          <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
+            <p className="text-sm font-medium text-indigo-900">primeodontologia.com.br</p>
+            <p className="text-xs text-indigo-600 mt-1">Sistema completo de gestão</p>
           </div>
         </div>
       </aside>
