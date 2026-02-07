@@ -175,16 +175,19 @@ export default function TasksPage() {
             <h1 className="text-3xl font-bold text-slate-900">Gestão de Tarefas</h1>
             <p className="text-slate-600 mt-1">Acompanhe e gerencie tarefas baseadas nos POPs</p>
           </div>
-          <Button
-            onClick={() => {
-              setEditingTask(null);
-              setDialogOpen(true);
-            }}
-            className="bg-indigo-600 hover:bg-indigo-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Nova Tarefa
-          </Button>
+          <div className="flex gap-2">
+            <ExportButton data={filteredTasks} filename="tarefas" />
+            <Button
+              onClick={() => {
+                setEditingTask(null);
+                setDialogOpen(true);
+              }}
+              className="bg-indigo-600 hover:bg-indigo-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nova Tarefa
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}
