@@ -69,6 +69,7 @@ import SOPs from './pages/SOPs';
 import ScriptsVendas from './pages/ScriptsVendas';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import Strategy from './pages/Strategy';
+import Sales from './pages/Sales';
 import __Layout from './Layout.jsx';
 
 
@@ -95,6 +96,7 @@ export const PAGES = {
     "ScriptsVendas": ScriptsVendas,
     "BusinessModelCanvas": BusinessModelCanvas,
     "Strategy": Strategy,
+    "Sales": Sales,
 }
 
 export const pagesConfig = {

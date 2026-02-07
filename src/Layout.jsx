@@ -42,6 +42,7 @@ const navigation = [
   { name: "Campanhas", href: "Campanhas", icon: Megaphone },
   { name: "Leads", href: "LeadsPipeline", icon: Users },
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
+  { name: "Sales", href: "Sales", icon: DollarSign },
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
   { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
