@@ -50,6 +50,7 @@
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
 import CRM from './pages/CRM';
+import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
 import Conteudos from './pages/Conteudos';
@@ -64,9 +65,9 @@ import Metricas from './pages/Metricas';
 import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
-import ScriptsVendas from './pages/ScriptsVendas';
-import CRMAvancado from './pages/CRMAvancado';
 import SOPs from './pages/SOPs';
+import ScriptsVendas from './pages/ScriptsVendas';
+import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import __Layout from './Layout.jsx';
 
 
@@ -74,6 +75,7 @@ export const PAGES = {
     "Activities": Activities,
     "Agenda": Agenda,
     "CRM": CRM,
+    "CRMAvancado": CRMAvancado,
     "Campanhas": Campanhas,
     "Canais": Canais,
     "Conteudos": Conteudos,
@@ -88,9 +90,9 @@ export const PAGES = {
     "PatientPipeline": PatientPipeline,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
-    "ScriptsVendas": ScriptsVendas,
-    "CRMAvancado": CRMAvancado,
     "SOPs": SOPs,
+    "ScriptsVendas": ScriptsVendas,
+    "BusinessModelCanvas": BusinessModelCanvas,
 }
 
 export const pagesConfig = {

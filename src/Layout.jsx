@@ -44,6 +44,7 @@ const navigation = [
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
   { name: "SOPs", href: "SOPs", icon: FileText },
+  { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
 ];
 
 export default function Layout({ children, currentPageName }) {
