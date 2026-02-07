@@ -51,6 +51,7 @@ const navigation = [
   { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
   { name: "Estratégia", href: "Strategy", icon: Target },
+  { name: "AI Insights", href: "AIInsights", icon: Brain, isNew: true },
 ];
 
 export default function Layout({ children, currentPageName }) {
