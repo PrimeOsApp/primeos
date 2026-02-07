@@ -151,11 +151,9 @@ export default function TaskForm({ task, open, onClose, onSubmit }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Responsável *</Label>
-              <Input
-                value={formData.responsavel}
-                onChange={(e) => setFormData({...formData, responsavel: e.target.value})}
-                required
+              <MultiUserAssignment
+                responsaveis={formData.responsaveis}
+                onChange={(responsaveis) => setFormData({...formData, responsaveis})}
               />
             </div>
             <div>
