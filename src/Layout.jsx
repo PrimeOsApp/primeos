@@ -24,7 +24,8 @@ import {
   Megaphone,
   BarChart3,
   BookOpen,
-  Target
+  Target,
+  Puzzle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
