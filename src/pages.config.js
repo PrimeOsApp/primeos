@@ -78,6 +78,7 @@ import KeyResources from './pages/KeyResources';
 import KeyActivities from './pages/KeyActivities';
 import KeyPartnerships from './pages/KeyPartnerships';
 import RevenueStreams from './pages/RevenueStreams';
+import AIInsights from './pages/AIInsights';
 import __Layout from './Layout.jsx';
 
 
@@ -113,6 +114,7 @@ export const PAGES = {
     "KeyActivities": KeyActivities,
     "KeyPartnerships": KeyPartnerships,
     "RevenueStreams": RevenueStreams,
+    "AIInsights": AIInsights,
 }
 
 export const pagesConfig = {
