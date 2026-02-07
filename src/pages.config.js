@@ -50,20 +50,21 @@
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
 import CRM from './pages/CRM';
+import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
+import Conteudos from './pages/Conteudos';
 import CostStructure from './pages/CostStructure';
 import CustomerPipeline from './pages/CustomerPipeline';
 import Dashboard from './pages/Dashboard';
+import Estrategias from './pages/Estrategias';
 import JornadaCliente from './pages/JornadaCliente';
+import LeadsPipeline from './pages/LeadsPipeline';
+import MarketingOS from './pages/MarketingOS';
+import Metricas from './pages/Metricas';
 import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
-import MarketingOS from './pages/MarketingOS';
-import Estrategias from './pages/Estrategias';
-import Conteudos from './pages/Conteudos';
-import Campanhas from './pages/Campanhas';
-import LeadsPipeline from './pages/LeadsPipeline';
-import Metricas from './pages/Metricas';
+import ScriptsVendas from './pages/ScriptsVendas';
 import __Layout from './Layout.jsx';
 
 
@@ -71,20 +72,21 @@ export const PAGES = {
     "Activities": Activities,
     "Agenda": Agenda,
     "CRM": CRM,
+    "Campanhas": Campanhas,
     "Canais": Canais,
+    "Conteudos": Conteudos,
     "CostStructure": CostStructure,
     "CustomerPipeline": CustomerPipeline,
     "Dashboard": Dashboard,
+    "Estrategias": Estrategias,
     "JornadaCliente": JornadaCliente,
+    "LeadsPipeline": LeadsPipeline,
+    "MarketingOS": MarketingOS,
+    "Metricas": Metricas,
     "PatientPipeline": PatientPipeline,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
-    "MarketingOS": MarketingOS,
-    "Estrategias": Estrategias,
-    "Conteudos": Conteudos,
-    "Campanhas": Campanhas,
-    "LeadsPipeline": LeadsPipeline,
-    "Metricas": Metricas,
+    "ScriptsVendas": ScriptsVendas,
 }
 
 export const pagesConfig = {

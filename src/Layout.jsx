@@ -22,7 +22,8 @@ import {
   Brain,
   FileText,
   Megaphone,
-  BarChart3
+  BarChart3,
+  BookOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -40,6 +41,7 @@ const navigation = [
   { name: "Campanhas", href: "Campanhas", icon: Megaphone },
   { name: "Leads", href: "LeadsPipeline", icon: Users },
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
+  { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
 ];
 
 export default function Layout({ children, currentPageName }) {
