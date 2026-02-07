@@ -49,6 +49,7 @@
  */
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
+import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import CRM from './pages/CRM';
 import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
@@ -66,16 +67,24 @@ import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
 import SOPs from './pages/SOPs';
-import ScriptsVendas from './pages/ScriptsVendas';
-import BusinessModelCanvas from './pages/BusinessModelCanvas';
-import Strategy from './pages/Strategy';
 import Sales from './pages/Sales';
+import ScriptsVendas from './pages/ScriptsVendas';
+import Strategy from './pages/Strategy';
+import CustomerSegments from './pages/CustomerSegments';
+import CustomerRelationships from './pages/CustomerRelationships';
+import Channels from './pages/Channels';
+import ValueProposition from './pages/ValueProposition';
+import KeyResources from './pages/KeyResources';
+import KeyActivities from './pages/KeyActivities';
+import KeyPartnerships from './pages/KeyPartnerships';
+import RevenueStreams from './pages/RevenueStreams';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Activities": Activities,
     "Agenda": Agenda,
+    "BusinessModelCanvas": BusinessModelCanvas,
     "CRM": CRM,
     "CRMAvancado": CRMAvancado,
     "Campanhas": Campanhas,
@@ -93,10 +102,17 @@ export const PAGES = {
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
     "SOPs": SOPs,
-    "ScriptsVendas": ScriptsVendas,
-    "BusinessModelCanvas": BusinessModelCanvas,
-    "Strategy": Strategy,
     "Sales": Sales,
+    "ScriptsVendas": ScriptsVendas,
+    "Strategy": Strategy,
+    "CustomerSegments": CustomerSegments,
+    "CustomerRelationships": CustomerRelationships,
+    "Channels": Channels,
+    "ValueProposition": ValueProposition,
+    "KeyResources": KeyResources,
+    "KeyActivities": KeyActivities,
+    "KeyPartnerships": KeyPartnerships,
+    "RevenueStreams": RevenueStreams,
 }
 
 export const pagesConfig = {
