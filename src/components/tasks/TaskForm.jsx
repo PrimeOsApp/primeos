@@ -48,12 +48,13 @@ export default function TaskForm({ task, open, onClose, onSubmit }) {
         descricao: "",
         pop_id: "",
         pop_codigo: "",
-        responsavel: "",
+        responsaveis: [],
         categoria: "operacional",
         prioridade: "media",
         data_vencimento: "",
         recorrente: false,
         frequencia_recorrencia: "",
+        subtarefas: [],
         checklist: []
       });
     }
