@@ -45,6 +45,7 @@ const navigation = [
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
   { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
+  { name: "Estratégia", href: "Strategy", icon: Target },
 ];
 
 export default function Layout({ children, currentPageName }) {
