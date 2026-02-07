@@ -188,12 +188,7 @@ export default function Layout({ children, currentPageName }) {
             )}
           </div>
 
-        <div className="p-6 flex-shrink-0 border-t border-slate-200">
-          <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
-            <p className="text-sm font-medium text-indigo-900">primeodontologia.com.br</p>
-            <p className="text-xs text-indigo-600 mt-1">Sistema completo de gestão</p>
-          </div>
-        </div>
+
       </aside>
 
       {/* Main Content */}
