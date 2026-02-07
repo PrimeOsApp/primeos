@@ -111,11 +111,11 @@ export default function Layout({ children, currentPageName }) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 lg:translate-x-0",
+          "fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 lg:translate-x-0 flex flex-col",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="p-6">
+        <div className="p-6 flex-shrink-0">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200">
               <LayoutDashboard className="w-5 h-5 text-white" />
@@ -126,14 +126,14 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-2 overflow-y-auto flex-1 pr-2">
             {navigation.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
           </nav>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6">
+        <div className="p-6 flex-shrink-0 border-t border-slate-200">
           <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
             <p className="text-sm font-medium text-indigo-900">primeodontologia.com.br</p>
             <p className="text-xs text-indigo-600 mt-1">Sistema completo de gestão</p>
