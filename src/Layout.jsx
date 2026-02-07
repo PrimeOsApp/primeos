@@ -27,12 +27,14 @@ import {
   Target,
   Puzzle,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  ListChecks
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
+  { name: "Tarefas", href: "Tasks", icon: ListChecks, isNew: true },
   { name: "Marketing OS", href: "MarketingOS", icon: Zap, isNew: true },
   { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
   { name: "Agenda", href: "Agenda", icon: Calendar },
