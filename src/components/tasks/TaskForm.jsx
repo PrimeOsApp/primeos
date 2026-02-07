@@ -9,6 +9,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Plus, X } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import SubtaskManager from "./SubtaskManager";
+import RecurringTaskTemplate from "./RecurringTaskTemplate";
+import MultiUserAssignment from "./MultiUserAssignment";
 
 export default function TaskForm({ task, open, onClose, onSubmit }) {
   const [formData, setFormData] = useState({
