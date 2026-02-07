@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
@@ -54,35 +55,35 @@ import CRM from './pages/CRM';
 import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
+import Channels from './pages/Channels';
 import Conteudos from './pages/Conteudos';
 import CostStructure from './pages/CostStructure';
 import CustomerPipeline from './pages/CustomerPipeline';
+import CustomerRelationships from './pages/CustomerRelationships';
+import CustomerSegments from './pages/CustomerSegments';
 import Dashboard from './pages/Dashboard';
 import Estrategias from './pages/Estrategias';
 import JornadaCliente from './pages/JornadaCliente';
+import KeyActivities from './pages/KeyActivities';
+import KeyPartnerships from './pages/KeyPartnerships';
+import KeyResources from './pages/KeyResources';
 import LeadsPipeline from './pages/LeadsPipeline';
 import MarketingOS from './pages/MarketingOS';
 import Metricas from './pages/Metricas';
 import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
+import RevenueStreams from './pages/RevenueStreams';
 import SOPs from './pages/SOPs';
 import Sales from './pages/Sales';
 import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
-import CustomerSegments from './pages/CustomerSegments';
-import CustomerRelationships from './pages/CustomerRelationships';
-import Channels from './pages/Channels';
 import ValueProposition from './pages/ValueProposition';
-import KeyResources from './pages/KeyResources';
-import KeyActivities from './pages/KeyActivities';
-import KeyPartnerships from './pages/KeyPartnerships';
-import RevenueStreams from './pages/RevenueStreams';
-import AIInsights from './pages/AIInsights';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AIInsights": AIInsights,
     "Activities": Activities,
     "Agenda": Agenda,
     "BusinessModelCanvas": BusinessModelCanvas,
@@ -90,31 +91,30 @@ export const PAGES = {
     "CRMAvancado": CRMAvancado,
     "Campanhas": Campanhas,
     "Canais": Canais,
+    "Channels": Channels,
     "Conteudos": Conteudos,
     "CostStructure": CostStructure,
     "CustomerPipeline": CustomerPipeline,
+    "CustomerRelationships": CustomerRelationships,
+    "CustomerSegments": CustomerSegments,
     "Dashboard": Dashboard,
     "Estrategias": Estrategias,
     "JornadaCliente": JornadaCliente,
+    "KeyActivities": KeyActivities,
+    "KeyPartnerships": KeyPartnerships,
+    "KeyResources": KeyResources,
     "LeadsPipeline": LeadsPipeline,
     "MarketingOS": MarketingOS,
     "Metricas": Metricas,
     "PatientPipeline": PatientPipeline,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
+    "RevenueStreams": RevenueStreams,
     "SOPs": SOPs,
     "Sales": Sales,
     "ScriptsVendas": ScriptsVendas,
     "Strategy": Strategy,
-    "CustomerSegments": CustomerSegments,
-    "CustomerRelationships": CustomerRelationships,
-    "Channels": Channels,
     "ValueProposition": ValueProposition,
-    "KeyResources": KeyResources,
-    "KeyActivities": KeyActivities,
-    "KeyPartnerships": KeyPartnerships,
-    "RevenueStreams": RevenueStreams,
-    "AIInsights": AIInsights,
 }
 
 export const pagesConfig = {

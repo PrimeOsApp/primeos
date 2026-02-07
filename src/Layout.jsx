@@ -99,9 +99,11 @@ export default function Layout({ children, currentPageName }) {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-              <LayoutDashboard className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg" 
+              alt="Prime Odontologia" 
+              className="w-9 h-9 rounded-xl object-cover"
+            />
             <span className="font-bold text-slate-900">Prime Odontologia</span>
           </div>
           <Button
@@ -136,9 +138,11 @@ export default function Layout({ children, currentPageName }) {
       >
         <div className="p-6 flex-shrink-0 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200">
-              <LayoutDashboard className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg" 
+              alt="Prime Odontologia" 
+              className="w-10 h-10 rounded-xl object-cover shadow-lg"
+            />
             <div>
               <h1 className="font-bold text-slate-900">Prime Odontologia</h1>
               <p className="text-xs text-slate-500">Sistema de Gestão</p>
@@ -185,9 +189,12 @@ export default function Layout({ children, currentPageName }) {
           </div>
 
         <div className="p-6 flex-shrink-0 border-t border-slate-200">
-          <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
-            <p className="text-sm font-medium text-indigo-900">primeodontologia.com.br</p>
-            <p className="text-xs text-indigo-600 mt-1">Sistema completo de gestão</p>
+          <div className="rounded-xl overflow-hidden border border-slate-200">
+            <img 
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697e811fd4fc2230311435d7/25b95d0ef_google.png" 
+              alt="Prime Odontologia - Sorrisos" 
+              className="w-full h-auto object-cover"
+            />
           </div>
         </div>
       </aside>
