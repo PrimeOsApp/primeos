@@ -79,6 +79,7 @@ import Sales from './pages/Sales';
 import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
 import ValueProposition from './pages/ValueProposition';
+import Tasks from './pages/Tasks';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +116,7 @@ export const PAGES = {
     "ScriptsVendas": ScriptsVendas,
     "Strategy": Strategy,
     "ValueProposition": ValueProposition,
+    "Tasks": Tasks,
 }
 
 export const pagesConfig = {
