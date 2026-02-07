@@ -50,7 +50,7 @@ const navigation = [
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
   { name: "Sales", href: "Sales", icon: DollarSign },
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
-  { name: "SOPs", href: "SOPs", icon: FileText },
+  { name: "POPs", href: "POPs", icon: FileText, isNew: true },
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
   { name: "Estratégia", href: "Strategy", icon: Target },
   { name: "AI Insights", href: "AIInsights", icon: Brain, isNew: true },

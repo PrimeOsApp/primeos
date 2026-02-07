@@ -80,6 +80,7 @@ import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
 import ValueProposition from './pages/ValueProposition';
 import Tasks from './pages/Tasks';
+import POPs from './pages/POPs';
 import __Layout from './Layout.jsx';
 
 
@@ -117,6 +118,7 @@ export const PAGES = {
     "Strategy": Strategy,
     "ValueProposition": ValueProposition,
     "Tasks": Tasks,
+    "POPs": POPs,
 }
 
 export const pagesConfig = {
