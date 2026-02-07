@@ -23,7 +23,8 @@ import {
   FileText,
   Megaphone,
   BarChart3,
-  BookOpen
+  BookOpen,
+  Target
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
