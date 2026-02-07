@@ -57,18 +57,17 @@ export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showScrollBottom, setShowScrollBottom] = useState(true);
-  const navRef = useState(null)[0];
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    setShowScrollTop(scrollTop > 20);
-    setShowScrollBottom(scrollTop + clientHeight < scrollHeight - 20);
+    setShowScrollTop(scrollTop > 10);
+    setShowScrollBottom(scrollTop + clientHeight < scrollHeight - 10);
   };
 
   const scrollNav = (direction) => {
     const container = document.getElementById('nav-container');
     if (container) {
-      const scrollAmount = direction === 'up' ? -200 : 200;
+      const scrollAmount = direction === 'up' ? -250 : 250;
       container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -130,12 +129,12 @@ export default function Layout({ children, currentPageName }) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 lg:translate-x-0 flex flex-col",
+          "fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 lg:translate-x-0 flex flex-col overflow-hidden",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="p-6 flex-shrink-0">
-          <div className="flex items-center gap-3 mb-8">
+        <div className="p-6 flex-shrink-0 border-b border-slate-100">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-200">
               <LayoutDashboard className="w-5 h-5 text-white" />
             </div>
@@ -144,15 +143,16 @@ export default function Layout({ children, currentPageName }) {
               <p className="text-xs text-slate-500">Sistema de Gestão</p>
             </div>
           </div>
+        </div>
 
-          <div className="relative flex-1 overflow-hidden">
+        <div className="relative flex-1 overflow-hidden min-h-0">
             {showScrollTop && (
-              <div className="absolute top-0 left-0 right-0 z-10 flex justify-center py-2 bg-gradient-to-b from-white to-transparent">
+              <div className="sticky top-0 z-10 flex justify-center py-1.5 bg-gradient-to-b from-white via-white to-transparent pointer-events-none">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollNav('up')}
-                  className="h-6 w-full mx-4 bg-white/80 hover:bg-white border border-slate-200"
+                  className="h-7 w-full mx-6 bg-white hover:bg-slate-50 border border-slate-200 shadow-sm pointer-events-auto"
                 >
                   <ChevronUp className="h-4 w-4" />
                 </Button>
@@ -161,7 +161,7 @@ export default function Layout({ children, currentPageName }) {
             
             <nav 
               id="nav-container"
-              className="space-y-2 overflow-y-auto h-full pr-2 py-2"
+              className="space-y-2 overflow-y-auto h-full px-6 py-3"
               onScroll={handleScroll}
             >
               {navigation.map((item) => (
@@ -170,19 +170,18 @@ export default function Layout({ children, currentPageName }) {
             </nav>
 
             {showScrollBottom && (
-              <div className="absolute bottom-0 left-0 right-0 z-10 flex justify-center py-2 bg-gradient-to-t from-white to-transparent">
+              <div className="sticky bottom-0 z-10 flex justify-center py-1.5 bg-gradient-to-t from-white via-white to-transparent pointer-events-none">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollNav('down')}
-                  className="h-6 w-full mx-4 bg-white/80 hover:bg-white border border-slate-200"
+                  className="h-7 w-full mx-6 bg-white hover:bg-slate-50 border border-slate-200 shadow-sm pointer-events-auto"
                 >
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </div>
             )}
           </div>
-        </div>
 
         <div className="p-6 flex-shrink-0 border-t border-slate-200">
           <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
