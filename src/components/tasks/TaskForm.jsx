@@ -205,6 +205,11 @@ export default function TaskForm({ task, open, onClose, onSubmit }) {
             onChange={setFormData}
           />
 
+          <SubtaskManager
+            subtarefas={formData.subtarefas}
+            onChange={(subtarefas) => setFormData({...formData, subtarefas})}
+          />
+
           <div className="border rounded-lg p-4 space-y-3">
             <Label>Checklist</Label>
             <div className="flex gap-2">
