@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
   { name: "Tarefas", href: "Tasks", icon: ListChecks, isNew: true },
+  { name: "Calendário de Tarefas", href: "TaskCalendar", icon: Calendar, isNew: true },
   { name: "Marketing OS", href: "MarketingOS", icon: Zap, isNew: true },
   { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
   { name: "Agenda", href: "Agenda", icon: Calendar },
