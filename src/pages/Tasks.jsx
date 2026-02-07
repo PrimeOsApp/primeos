@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import TaskCard from "../components/tasks/TaskCard";
 import TaskForm from "../components/tasks/TaskForm";
+import ExportButton from "../components/shared/ExportButton";
 import { toast } from "sonner";
 
 export default function TasksPage() {
