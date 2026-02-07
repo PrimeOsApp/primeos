@@ -65,6 +65,7 @@ import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
 import ScriptsVendas from './pages/ScriptsVendas';
+import CRMAvancado from './pages/CRMAvancado';
 import __Layout from './Layout.jsx';
 
 
@@ -87,6 +88,7 @@ export const PAGES = {
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
     "ScriptsVendas": ScriptsVendas,
+    "CRMAvancado": CRMAvancado,
 }
 
 export const pagesConfig = {

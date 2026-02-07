@@ -36,6 +36,7 @@ const navigation = [
   { name: "Canais Atendimento", href: "Canais", icon: Inbox },
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
   { name: "CRM", href: "CRM", icon: Users },
+  { name: "CRM Avançado", href: "CRMAvancado", icon: Target },
   { name: "Estratégias", href: "Estrategias", icon: Brain },
   { name: "Conteúdos", href: "Conteudos", icon: FileText },
   { name: "Campanhas", href: "Campanhas", icon: Megaphone },
