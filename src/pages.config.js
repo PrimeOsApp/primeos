@@ -70,6 +70,7 @@ import KeyResources from './pages/KeyResources';
 import LeadsPipeline from './pages/LeadsPipeline';
 import MarketingOS from './pages/MarketingOS';
 import Metricas from './pages/Metricas';
+import POPs from './pages/POPs';
 import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
@@ -78,9 +79,8 @@ import SOPs from './pages/SOPs';
 import Sales from './pages/Sales';
 import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
-import ValueProposition from './pages/ValueProposition';
 import Tasks from './pages/Tasks';
-import POPs from './pages/POPs';
+import ValueProposition from './pages/ValueProposition';
 import __Layout from './Layout.jsx';
 
 
@@ -108,6 +108,7 @@ export const PAGES = {
     "LeadsPipeline": LeadsPipeline,
     "MarketingOS": MarketingOS,
     "Metricas": Metricas,
+    "POPs": POPs,
     "PatientPipeline": PatientPipeline,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
@@ -116,9 +117,8 @@ export const PAGES = {
     "Sales": Sales,
     "ScriptsVendas": ScriptsVendas,
     "Strategy": Strategy,
-    "ValueProposition": ValueProposition,
     "Tasks": Tasks,
-    "POPs": POPs,
+    "ValueProposition": ValueProposition,
 }
 
 export const pagesConfig = {
