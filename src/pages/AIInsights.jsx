@@ -471,13 +471,11 @@ Seja específico, use dados concretos e forneça recomendações acionáveis ali
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {sales.reduce((acc, sale) => {
+                    {Object.entries(sales.reduce((acc, sale) => {
                       const channel = sale.channel || 'direct';
                       acc[channel] = (acc[channel] || 0) + 1;
                       return acc;
-                    }, {})
-                    |> Object.entries(#)
-                    |> #.map(([channel, count]) => (
+                    }, {})).map(([channel, count]) => (
                       <div key={channel} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                         <span className="font-medium text-slate-900">{channel}</span>
                         <Badge variant="outline">{count} vendas</Badge>
@@ -552,14 +550,12 @@ Seja específico, use dados concretos e forneça recomendações acionáveis ali
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {expenses.reduce((acc, exp) => {
+                    {Object.entries(expenses.reduce((acc, exp) => {
                       const cat = exp.category || 'other';
                       if (!acc[cat]) acc[cat] = 0;
                       acc[cat] += exp.amount || 0;
                       return acc;
-                    }, {})
-                    |> Object.entries(#)
-                    |> #.map(([category, amount]) => (
+                    }, {})).map(([category, amount]) => (
                       <div key={category} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                         <span className="text-sm font-medium text-slate-900">{category.replace(/_/g, ' ')}</span>
                         <span className="text-sm font-bold text-red-600">R$ {amount.toLocaleString('pt-BR')}</span>
@@ -625,12 +621,10 @@ Seja específico, use dados concretos e forneça recomendações acionáveis ali
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-slate-700">Interesse Principal</span>
                   <span className="text-lg font-bold text-green-600">
-                    {leads.reduce((acc, l) => {
+                    {Object.entries(leads.reduce((acc, l) => {
                       acc[l.interesse] = (acc[l.interesse] || 0) + 1;
                       return acc;
-                    }, {})
-                    |> Object.entries(#)
-                    |> #.sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
+                    }, {})).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'}
                   </span>
                 </div>
                 <p className="text-xs text-slate-600">Procedimento mais procurado</p>
