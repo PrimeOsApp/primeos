@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { format, isSameDay } from "date-fns";
+import { format, isSameDay, startOfMonth, endOfMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Clock, MapPin, User, Pencil, Trash2 } from "lucide-react";
+import { Clock, MapPin, User, Pencil, Trash2, ExternalLink } from "lucide-react";
 
 export default function CRMAppointmentCalendar({
   appointments,
@@ -14,6 +15,7 @@ export default function CRMAppointmentCalendar({
   onEdit,
   onDelete,
 }) {
+  const [googleEvents, setGoogleEvents] = useState([]);
   const getAppointmentsForDate = (date) => {
     const dateStr = format(date, "yyyy-MM-dd");
     return appointments.filter((apt) => apt.date === dateStr);
@@ -96,52 +98,78 @@ export default function CRMAppointmentCalendar({
             {selectedDateAppointments
               .sort((a, b) => a.time.localeCompare(b.time))
               .map((appointment) => (
-                <Card key={appointment.id} className="p-4 hover:shadow-md transition-shadow">
+                <Card key={appointment.id} className={`p-4 hover:shadow-md transition-shadow ${appointment.isGoogleEvent ? 'border-l-4 border-l-blue-500 bg-blue-50/30' : ''}`}>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <Clock className={`w-4 h-4 ${getPriorityColor(appointment.priority)}`} />
+                        <Clock className={`w-4 h-4 ${appointment.isGoogleEvent ? 'text-blue-600' : getPriorityColor(appointment.priority)}`} />
                         <span className="font-semibold text-slate-900">
                           {appointment.time}
                         </span>
-                        <Badge className={getStatusColor(appointment.status)}>
-                          {appointment.status}
-                        </Badge>
+                        {appointment.isGoogleEvent ? (
+                          <Badge className="bg-blue-100 text-blue-700 border-blue-200">
+                            Google Calendar
+                          </Badge>
+                        ) : (
+                          <Badge className={getStatusColor(appointment.status)}>
+                            {appointment.status}
+                          </Badge>
+                        )}
                       </div>
                       <h4 className="font-semibold text-slate-900 mb-1">
                         {appointment.title}
                       </h4>
                       <div className="space-y-1 text-sm text-slate-600">
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-slate-400" />
-                          <span>{appointment.customer_name}</span>
-                        </div>
+                        {!appointment.isGoogleEvent && (
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-slate-400" />
+                            <span>{appointment.customer_name}</span>
+                          </div>
+                        )}
                         {appointment.location && (
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-slate-400" />
                             <span>{appointment.location}</span>
                           </div>
                         )}
-                        <p className="text-slate-500">
-                          Duração: {appointment.duration_minutes} minutos
-                        </p>
+                        {!appointment.isGoogleEvent && (
+                          <p className="text-slate-500">
+                            Duração: {appointment.duration_minutes} minutos
+                          </p>
+                        )}
+                        {appointment.description && (
+                          <p className="text-slate-500 text-xs mt-1">{appointment.description}</p>
+                        )}
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => onEdit(appointment)}
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => onDelete(appointment.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      {appointment.isGoogleEvent ? (
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => window.open(appointment.htmlLink, '_blank')}
+                          title="Abrir no Google Calendar"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      ) : (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => onEdit(appointment)}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => onDelete(appointment.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </Card>

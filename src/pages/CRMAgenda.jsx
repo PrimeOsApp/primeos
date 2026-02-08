@@ -10,8 +10,11 @@ import CRMAppointmentForm from "@/components/crm/CRMAppointmentForm";
 import CRMAppointmentCalendar from "@/components/crm/CRMAppointmentCalendar";
 import CRMAppointmentList from "@/components/crm/CRMAppointmentList";
 import UpcomingAppointments from "@/components/crm/UpcomingAppointments";
+import CRMSyncSettings from "@/components/crm/CRMSyncSettings";
+import { toast } from "sonner";
 
 export default function CRMAgenda() {
+  const [showSettings, setShowSettings] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingAppointment, setEditingAppointment] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -57,11 +60,35 @@ export default function CRMAgenda() {
     },
   });
 
-  const handleSubmit = (data) => {
-    if (editingAppointment) {
-      updateMutation.mutate({ id: editingAppointment.id, data });
-    } else {
-      createMutation.mutate(data);
+  const handleSubmit = async (data) => {
+    try {
+      if (editingAppointment) {
+        await updateMutation.mutateAsync({ id: editingAppointment.id, data });
+        
+        // Sync to Google Calendar
+        const syncResult = await base44.functions.invoke('syncCRMToGoogleCalendar', {
+          appointment: { ...editingAppointment, ...data },
+          action: 'update'
+        });
+        
+        if (syncResult.data.success) {
+          toast.success("Agendamento atualizado e sincronizado com Google Calendar!");
+        }
+      } else {
+        const newAppointment = await createMutation.mutateAsync(data);
+        
+        // Sync to Google Calendar
+        const syncResult = await base44.functions.invoke('syncCRMToGoogleCalendar', {
+          appointment: { ...data, id: newAppointment.id },
+          action: 'create'
+        });
+        
+        if (syncResult.data.success) {
+          toast.success("Agendamento criado e sincronizado com Google Calendar!");
+        }
+      }
+    } catch (error) {
+      toast.error("Erro ao processar agendamento: " + error.message);
     }
   };
 
@@ -70,9 +97,24 @@ export default function CRMAgenda() {
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirm("Tem certeza que deseja excluir este agendamento?")) {
+      const appointment = appointments.find(a => a.id === id);
+      
+      // Delete from Google Calendar first if synced
+      if (appointment?.google_calendar_event_id) {
+        try {
+          await base44.functions.invoke('syncCRMToGoogleCalendar', {
+            appointment,
+            action: 'delete'
+          });
+        } catch (error) {
+          console.error("Error deleting from Google Calendar:", error);
+        }
+      }
+      
       deleteMutation.mutate(id);
+      toast.success("Agendamento excluído!");
     }
   };
 
@@ -112,16 +154,25 @@ export default function CRMAgenda() {
                 Gerencie seus agendamentos com leads e clientes
               </p>
             </div>
-            <Button
-              onClick={() => {
-                setShowForm(true);
-                setEditingAppointment(null);
-              }}
-              className="bg-purple-600 hover:bg-purple-700"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Novo Agendamento
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowSettings(!showSettings)}
+              >
+                <Calendar className="w-5 h-5 mr-2" />
+                Configurações
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowForm(true);
+                  setEditingAppointment(null);
+                }}
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Novo Agendamento
+              </Button>
+            </div>
           </div>
         </motion.div>
 
@@ -175,6 +226,13 @@ export default function CRMAgenda() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Sync Settings */}
+        {showSettings && (
+          <div className="mb-6">
+            <CRMSyncSettings />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Form and Upcoming */}
