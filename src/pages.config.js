@@ -94,6 +94,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import AdvancedReports from './pages/AdvancedReports';
+import Gamification from './pages/Gamification';
 import __Layout from './Layout.jsx';
 
 
@@ -145,6 +146,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "AdvancedReports": AdvancedReports,
+    "Gamification": Gamification,
 }
 
 export const pagesConfig = {

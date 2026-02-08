@@ -70,6 +70,7 @@ const navigation = [
   { name: "Estratégia", href: "Strategy", icon: Target },
   { name: "AI Insights", href: "AIInsights", icon: Brain, isNew: true },
   { name: "Assistente IA", href: "AIAssistant", icon: Brain, isNew: true },
+  { name: "Gamificação", href: "Gamification", icon: Zap, isNew: true },
 ];
 
 export default function Layout({ children, currentPageName }) {
