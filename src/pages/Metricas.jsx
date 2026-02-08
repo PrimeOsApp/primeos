@@ -148,7 +148,6 @@ export default function Metricas() {
               ))}
             </div>
 
-            {/* Charts */}
             <div className="grid lg:grid-cols-2 gap-6 mb-6">
               <Card className="border-0 shadow-sm">
                 <CardHeader>
