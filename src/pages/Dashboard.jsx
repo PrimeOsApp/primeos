@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import IntegrationWizard from "@/components/integration/IntegrationWizard";
+import AutomationStatus from "@/components/crm/AutomationStatus";
 
 const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#06b6d4"];
 
@@ -98,6 +99,11 @@ export default function Dashboard() {
             existingSecrets={['GOOGLE_CALENDAR', 'GOOGLE_ADS_CLIENT_ID', 'GOOGLE_ADS_DEVELOPER_TOKEN']}
             authorizedConnectors={['googlecalendar']}
           />
+        </div>
+
+        {/* CRM Automation Status */}
+        <div className="mb-8">
+          <AutomationStatus />
         </div>
 
         {/* Quick Access Cards */}
