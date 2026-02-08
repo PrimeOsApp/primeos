@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,9 +28,11 @@ import {
   Puzzle,
   ChevronDown,
   ChevronUp,
-  ListChecks
+  ListChecks,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
@@ -61,6 +63,15 @@ export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showScrollBottom, setShowScrollBottom] = useState(true);
+  const [showWhatsNew, setShowWhatsNew] = useState(false);
+
+  useEffect(() => {
+    const lastSeenVersion = localStorage.getItem("last_seen_version");
+    if (lastSeenVersion !== LATEST_VERSION) {
+      setShowWhatsNew(true);
+      localStorage.setItem("last_seen_version", LATEST_VERSION);
+    }
+  }, []);
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -109,13 +120,23 @@ export default function Layout({ children, currentPageName }) {
             />
             <span className="font-bold text-slate-900">Prime Odontologia</span>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowWhatsNew(true)}
+              className="relative"
+            >
+              <Sparkles className="w-5 h-5 text-indigo-600" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -191,13 +212,24 @@ export default function Layout({ children, currentPageName }) {
             )}
           </div>
 
-
+          <div className="p-4 border-t border-slate-100 flex-shrink-0">
+            <Button
+              variant="outline"
+              onClick={() => setShowWhatsNew(true)}
+              className="w-full justify-start gap-2 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
+            >
+              <Sparkles className="w-4 h-4" />
+              Novidades & Dicas
+            </Button>
+          </div>
       </aside>
 
       {/* Main Content */}
       <main className="lg:pl-72 pt-16 lg:pt-0 min-h-screen">
         {children}
       </main>
+
+      <WhatsNewModal open={showWhatsNew} onClose={() => setShowWhatsNew(false)} />
     </div>
   );
 }
