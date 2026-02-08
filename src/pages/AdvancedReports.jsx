@@ -6,6 +6,9 @@ import ReportFilters from "@/components/reports/ReportFilters";
 import KPICards from "@/components/reports/KPICards";
 import InteractiveCharts from "@/components/reports/InteractiveCharts";
 import ExportOptions from "@/components/reports/ExportOptions";
+import ScheduleReportForm from "@/components/reports/ScheduleReportForm";
+import CustomDashboardBuilder from "@/components/reports/CustomDashboardBuilder";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3 } from "lucide-react";
 
 export default function AdvancedReports() {
@@ -206,29 +209,47 @@ export default function AdvancedReports() {
           icon={BarChart3}
         />
 
-        {/* Filters */}
-        <ReportFilters 
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onReset={handleResetFilters}
-        />
+        <Tabs defaultValue="reports" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="reports">Relatórios</TabsTrigger>
+            <TabsTrigger value="schedule">Agendar</TabsTrigger>
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          </TabsList>
 
-        {/* KPI Cards */}
-        <KPICards data={processedData.kpis} />
+          <TabsContent value="reports" className="space-y-6">
+            {/* Filters */}
+            <ReportFilters 
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              onReset={handleResetFilters}
+            />
 
-        {/* Interactive Charts */}
-        <div>
-          <h2 className="text-xl font-bold mb-4 text-slate-900">Visualizações</h2>
-          <InteractiveCharts data={processedData.charts} />
-        </div>
+            {/* KPI Cards */}
+            <KPICards data={processedData.kpis} />
 
-        {/* Export Options */}
-        <ExportOptions 
-          reportData={processedData.tableData}
-          reportTitle={`Relatório_${new Date().toISOString().split('T')[0]}`}
-          filters={filters}
-          loading={loading}
-        />
+            {/* Interactive Charts */}
+            <div>
+              <h2 className="text-xl font-bold mb-4 text-slate-900">Visualizações</h2>
+              <InteractiveCharts data={processedData.charts} />
+            </div>
+
+            {/* Export Options */}
+            <ExportOptions 
+              reportData={processedData.tableData}
+              reportTitle={`Relatório_${new Date().toISOString().split('T')[0]}`}
+              filters={filters}
+              loading={loading}
+            />
+          </TabsContent>
+
+          <TabsContent value="schedule">
+            <ScheduleReportForm />
+          </TabsContent>
+
+          <TabsContent value="dashboard">
+            <CustomDashboardBuilder />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
