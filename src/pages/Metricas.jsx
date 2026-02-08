@@ -21,6 +21,8 @@ import { usePageTracking } from "../components/metrics/EngagementTracker";
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6366f1'];
 
 export default function Metricas() {
+  usePageTracking("Metricas");
+  
   const [showForm, setShowForm] = useState(false);
   const queryClient = useQueryClient();
 
@@ -42,6 +44,11 @@ export default function Metricas() {
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
     queryFn: () => base44.entities.Lead.list()
+  });
+
+  const { data: engagementData = [] } = useQuery({
+    queryKey: ["engagement"],
+    queryFn: () => base44.entities.UserEngagement.list("-created_date")
   });
 
   const createMutation = useMutation({
