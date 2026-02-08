@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -128,7 +127,6 @@ export default function Metricas() {
           </TabsList>
 
           <TabsContent value="marketing" className="space-y-6">
-            {/* KPIs */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
               {[
                 { label: "Receita Total", value: `R$ ${(totals.receita / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600" },
