@@ -53,6 +53,7 @@ const navigation = [
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
   { name: "CRM", href: "CRM", icon: Users },
   { name: "CRM Avançado", href: "CRMAvancado", icon: Target },
+  { name: "Segmentação", href: "CustomerSegments", icon: Target, isNew: true },
   { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp, isNew: true },
   { name: "Email Automation", href: "EmailAutomation", icon: Mail, isNew: true },
   { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3, isNew: true },
