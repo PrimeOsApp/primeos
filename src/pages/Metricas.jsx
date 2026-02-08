@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -105,104 +106,123 @@ export default function Metricas() {
           <div>
             <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
               <BarChart3 className="w-8 h-8 text-teal-600" />
-              Métricas & Receita
+              Métricas & Analytics
             </h1>
-            <p className="text-slate-500 mt-1">Marketing orientado a dinheiro</p>
+            <p className="text-slate-500 mt-1">Marketing, receita e engajamento de usuários</p>
           </div>
           <Button onClick={() => { setForm({ data: format(new Date(), "yyyy-MM-dd"), canal_id: "", campanha_id: "", periodo: "semanal", leads_gerados: 0, agendamentos: 0, conversoes: 0, receita_gerada: 0, investimento: 0, impressoes: 0, cliques: 0, engajamento: 0 }); setShowForm(true); }} className="bg-teal-600 hover:bg-teal-700">
             <Plus className="w-4 h-4 mr-2" />Registrar Métricas
           </Button>
         </motion.div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
-          {[
-            { label: "Receita Total", value: `R$ ${(totals.receita / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600" },
-            { label: "Investimento", value: `R$ ${(totals.investimento / 1000).toFixed(0)}k`, icon: Target, color: "text-blue-600" },
-            { label: "ROI", value: `${roi}%`, icon: TrendingUp, color: roi > 0 ? "text-emerald-600" : "text-red-600" },
-            { label: "CAC", value: `R$ ${cac}`, icon: Users, color: "text-purple-600" },
-            { label: "Leads", value: totals.leads, icon: Users, color: "text-indigo-600" },
-            { label: "CTR", value: `${ctr}%`, icon: MousePointer, color: "text-amber-600" }
-          ].map((kpi, idx) => (
-            <Card key={idx} className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <kpi.icon className={cn("w-4 h-4", kpi.color)} />
-                  <span className="text-xs text-slate-500">{kpi.label}</span>
-                </div>
-                <p className={cn("text-2xl font-bold", kpi.color)}>{kpi.value}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Tabs defaultValue="marketing" className="space-y-6">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="marketing" className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4" />
+              Marketing & Receita
+            </TabsTrigger>
+            <TabsTrigger value="engagement" className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Engajamento de Usuários
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Charts */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-6">
-          <Card className="border-0 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-base">Leads & Receita (7 dias)</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={last7Days}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                  <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
-                  <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12 }} />
-                  <Tooltip />
-                  <Line yAxisId="left" type="monotone" dataKey="leads" stroke="#8b5cf6" strokeWidth={2} name="Leads" />
-                  <Line yAxisId="right" type="monotone" dataKey="receita" stroke="#10b981" strokeWidth={2} name="Receita (k)" />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-base">Leads por Canal</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie data={leadsByChannel} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                    {leadsByChannel.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Funil */}
-        <Card className="border-0 shadow-sm mb-6">
-          <CardHeader>
-            <CardTitle className="text-base">Funil de Conversão</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
+          <TabsContent value="marketing" className="space-y-6">
+            {/* KPIs */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
               {[
-                { label: "Impressões", value: totals.impressoes, color: "bg-slate-500" },
-                { label: "Cliques", value: totals.cliques, color: "bg-blue-500" },
-                { label: "Leads", value: totals.leads, color: "bg-purple-500" },
-                { label: "Agendamentos", value: totals.agendamentos, color: "bg-amber-500" },
-                { label: "Conversões", value: totals.conversoes, color: "bg-emerald-500" }
-              ].map((step, idx, arr) => (
-                <div key={idx} className="flex-1 text-center">
-                  <div className={cn("mx-auto w-16 h-16 rounded-xl flex items-center justify-center text-white font-bold mb-2", step.color)}>
-                    {step.value > 1000 ? `${(step.value / 1000).toFixed(0)}k` : step.value}
-                  </div>
-                  <p className="text-sm text-slate-600">{step.label}</p>
-                  {idx < arr.length - 1 && arr[idx + 1].value > 0 && step.value > 0 && (
-                    <p className="text-xs text-slate-400 mt-1">
-                      {((arr[idx + 1].value / step.value) * 100).toFixed(1)}%
-                    </p>
-                  )}
-                </div>
+                { label: "Receita Total", value: `R$ ${(totals.receita / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600" },
+                { label: "Investimento", value: `R$ ${(totals.investimento / 1000).toFixed(0)}k`, icon: Target, color: "text-blue-600" },
+                { label: "ROI", value: `${roi}%`, icon: TrendingUp, color: roi > 0 ? "text-emerald-600" : "text-red-600" },
+                { label: "CAC", value: `R$ ${cac}`, icon: Users, color: "text-purple-600" },
+                { label: "Leads", value: totals.leads, icon: Users, color: "text-indigo-600" },
+                { label: "CTR", value: `${ctr}%`, icon: MousePointer, color: "text-amber-600" }
+              ].map((kpi, idx) => (
+                <Card key={idx} className="border-0 shadow-sm">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <kpi.icon className={cn("w-4 h-4", kpi.color)} />
+                      <span className="text-xs text-slate-500">{kpi.label}</span>
+                    </div>
+                    <p className={cn("text-2xl font-bold", kpi.color)}>{kpi.value}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Charts */}
+            <div className="grid lg:grid-cols-2 gap-6 mb-6">
+              <Card className="border-0 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Leads & Receita (7 dias)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <LineChart data={last7Days}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                      <YAxis yAxisId="left" tick={{ fontSize: 12 }} />
+                      <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 12 }} />
+                      <Tooltip />
+                      <Line yAxisId="left" type="monotone" dataKey="leads" stroke="#8b5cf6" strokeWidth={2} name="Leads" />
+                      <Line yAxisId="right" type="monotone" dataKey="receita" stroke="#10b981" strokeWidth={2} name="Receita (k)" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Leads por Canal</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                      <Pie data={leadsByChannel} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                        {leadsByChannel.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Funil */}
+            <Card className="border-0 shadow-sm mb-6">
+              <CardHeader>
+                <CardTitle className="text-base">Funil de Conversão</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  {[
+                    { label: "Impressões", value: totals.impressoes, color: "bg-slate-500" },
+                    { label: "Cliques", value: totals.cliques, color: "bg-blue-500" },
+                    { label: "Leads", value: totals.leads, color: "bg-purple-500" },
+                    { label: "Agendamentos", value: totals.agendamentos, color: "bg-amber-500" },
+                    { label: "Conversões", value: totals.conversoes, color: "bg-emerald-500" }
+                  ].map((step, idx, arr) => (
+                    <div key={idx} className="flex-1 text-center">
+                      <div className={cn("mx-auto w-16 h-16 rounded-xl flex items-center justify-center text-white font-bold mb-2", step.color)}>
+                        {step.value > 1000 ? `${(step.value / 1000).toFixed(0)}k` : step.value}
+                      </div>
+                      <p className="text-sm text-slate-600">{step.label}</p>
+                      {idx < arr.length - 1 && arr[idx + 1].value > 0 && step.value > 0 && (
+                        <p className="text-xs text-slate-400 mt-1">
+                          {((arr[idx + 1].value / step.value) * 100).toFixed(1)}%
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="engagement" className="space-y-6">
+            <EngagementMetrics />
+          </TabsContent>
+        </Tabs>
 
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="sm:max-w-xl">
