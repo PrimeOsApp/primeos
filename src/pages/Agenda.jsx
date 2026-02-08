@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, addDays, startOfWeek, addWeeks, isSameDay, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import GoogleCalendarSync from "../components/calendar/GoogleCalendarSync";
 
 const timeSlots = [
   "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -118,17 +119,16 @@ export default function Agenda() {
               </h1>
               <p className="text-slate-500 mt-1">Prime Odontologia - Agendamento de consultas</p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
-                <AlertCircle className="w-4 h-4 text-amber-600" />
-                <span className="text-xs text-amber-700">Google Calendar: Ative Backend Functions para sincronizar</span>
-              </div>
-              <Button onClick={() => setShowForm(true)} className="bg-blue-600 hover:bg-blue-700">
-                <Plus className="w-4 h-4 mr-2" />Nova Consulta
-              </Button>
-            </div>
+            <Button onClick={() => setShowForm(true)} className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="w-4 h-4 mr-2" />Nova Consulta
+            </Button>
           </div>
         </motion.div>
+
+        {/* Google Calendar Sync */}
+        <div className="mb-6">
+          <GoogleCalendarSync />
+        </div>
 
         {/* Week Navigation */}
         <Card className="border-0 shadow-sm mb-6">
