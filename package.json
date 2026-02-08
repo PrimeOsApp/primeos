@@ -99,7 +99,3 @@
     "vite": "^6.1.0"
   }
 }
-
-cd ~/prime-odontologia-os/app
-npm install
-npm run dev
