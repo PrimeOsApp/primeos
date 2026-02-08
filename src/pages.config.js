@@ -95,6 +95,7 @@ import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import AdvancedReports from './pages/AdvancedReports';
 import Gamification from './pages/Gamification';
+import JourneyMapping from './pages/JourneyMapping';
 import __Layout from './Layout.jsx';
 
 
@@ -147,6 +148,7 @@ export const PAGES = {
     "ValueProposition": ValueProposition,
     "AdvancedReports": AdvancedReports,
     "Gamification": Gamification,
+    "JourneyMapping": JourneyMapping,
 }
 
 export const pagesConfig = {

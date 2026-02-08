@@ -71,6 +71,7 @@ const navigation = [
   { name: "AI Insights", href: "AIInsights", icon: Brain, isNew: true },
   { name: "Assistente IA", href: "AIAssistant", icon: Brain, isNew: true },
   { name: "Gamificação", href: "Gamification", icon: Zap, isNew: true },
+  { name: "Jornada do Cliente", href: "JourneyMapping", icon: TrendingUp, isNew: true },
 ];
 
 export default function Layout({ children, currentPageName }) {
