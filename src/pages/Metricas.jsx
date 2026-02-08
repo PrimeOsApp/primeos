@@ -216,7 +216,7 @@ export default function Metricas() {
           </TabsContent>
 
           <TabsContent value="engagement" className="space-y-6">
-            <EngagementMetrics />
+            <EngagementMetrics engagementData={engagementData} />
           </TabsContent>
         </Tabs>
 
