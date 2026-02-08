@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, CheckCircle, X, Edit, Clock, User, Phone } from "lucide-react";
+import { MessageCircle, CheckCircle, X, Edit, Clock, User, Phone, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import PatientMedicalSummary from "./PatientMedicalSummary";
 
 const serviceTypes = {
   consultation: { label: "Consulta", color: "bg-blue-500" },
@@ -39,6 +42,7 @@ export default function AppointmentCard({
   onCancel,
   compact = false 
 }) {
+  const [showMedicalRecord, setShowMedicalRecord] = useState(false);
   const openWhatsApp = () => {
     const cleanPhone = appointment.patient_phone?.replace(/\D/g, "") || "";
     const msg = `Olá ${appointment.patient_name}! 👋\n\nLembrando da sua consulta:\n📅 ${appointment.date}\n⏰ ${appointment.time}\n📋 ${serviceTypes[appointment.service_type]?.label}\n\nConfirma presença? ✅`;
@@ -124,6 +128,18 @@ export default function AppointmentCard({
       )}
 
       <div className="flex items-center gap-2 pt-3 border-t">
+        {appointment.patient_id && (
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => setShowMedicalRecord(true)}
+            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+          >
+            <Database className="w-4 h-4 mr-1" />
+            EHR
+          </Button>
+        )}
+        
         <Button 
           size="sm" 
           variant="outline"
@@ -169,6 +185,18 @@ export default function AppointmentCard({
           </Button>
         )}
       </div>
+
+      <Dialog open={showMedicalRecord} onOpenChange={setShowMedicalRecord}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Prontuário Eletrônico - {appointment.patient_name}</DialogTitle>
+          </DialogHeader>
+          <PatientMedicalSummary 
+            patientId={appointment.patient_id} 
+            appointmentId={appointment.id}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
