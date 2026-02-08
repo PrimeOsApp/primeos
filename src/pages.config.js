@@ -88,6 +88,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import Patients from './pages/Patients';
+import CRMAgenda from './pages/CRMAgenda';
 import __Layout from './Layout.jsx';
 
 
@@ -133,6 +134,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "Patients": Patients,
+    "CRMAgenda": CRMAgenda,
 }
 
 export const pagesConfig = {
