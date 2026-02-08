@@ -19,12 +19,20 @@ import TaskCard from "../components/tasks/TaskCard";
 import TaskForm from "../components/tasks/TaskForm";
 import ExportButton from "../components/shared/ExportButton";
 import { toast } from "sonner";
+import InteractiveTour from "../components/onboarding/InteractiveTour";
+import { tasksTour } from "../components/onboarding/tours";
 
 export default function TasksPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showTour, setShowTour] = useState(false);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowTour(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ['tasks'],
@@ -183,6 +191,7 @@ export default function TasksPage() {
                 setDialogOpen(true);
               }}
               className="bg-indigo-600 hover:bg-indigo-700"
+              data-tour="create-task"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nova Tarefa
@@ -191,7 +200,7 @@ export default function TasksPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6" data-tour="task-stats">
           {stats.map((stat) => (
             <div key={stat.label} className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
               <div className="flex items-center gap-3">
@@ -208,7 +217,7 @@ export default function TasksPage() {
         </div>
 
         {/* Search */}
-        <div className="mb-6">
+        <div className="mb-6" data-tour="task-filters">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input
@@ -227,7 +236,7 @@ export default function TasksPage() {
             <TabsTrigger value="pendente">Pendentes ({tasksByStatus.pendente.length})</TabsTrigger>
             <TabsTrigger value="em_andamento">Em Andamento ({tasksByStatus.em_andamento.length})</TabsTrigger>
             <TabsTrigger value="atrasada">Atrasadas ({tasksByStatus.atrasada.length})</TabsTrigger>
-            <TabsTrigger value="recorrentes">Recorrentes ({tasksByStatus.recorrentes.length})</TabsTrigger>
+            <TabsTrigger value="recorrentes" data-tour="recurring-tasks">Recorrentes ({tasksByStatus.recorrentes.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="todas" className="space-y-4">
@@ -346,6 +355,15 @@ export default function TasksPage() {
         }}
         onSubmit={handleSubmit}
       />
+
+      {showTour && (
+        <InteractiveTour
+          tourId={tasksTour.id}
+          steps={tasksTour.steps}
+          onComplete={() => setShowTour(false)}
+          autoStart={true}
+        />
+      )}
     </div>
   );
 }
