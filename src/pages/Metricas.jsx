@@ -185,8 +185,7 @@ export default function Metricas() {
               </Card>
             </div>
 
-            {/* Funil */}
-            <Card className="border-0 shadow-sm mb-6">
+            <Card className="border-0 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-base">Funil de Conversão</CardTitle>
               </CardHeader>
