@@ -8,6 +8,9 @@ import EmptyState from "@/components/shared/EmptyState";
 import CustomerCard from "@/components/crm/CustomerCard";
 import CustomerForm from "@/components/crm/CustomerForm";
 import InteractionForm from "@/components/crm/InteractionForm";
+import QuickActions from "@/components/crm/QuickActions";
+import PipelinePreview from "@/components/crm/PipelinePreview";
+import ConversionMetrics from "@/components/crm/ConversionMetrics";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,6 +30,11 @@ export default function CRM() {
   const { data: customers = [], isLoading } = useQuery({
     queryKey: ["customers"],
     queryFn: () => base44.entities.Customer.list("-created_date")
+  });
+
+  const { data: leads = [] } = useQuery({
+    queryKey: ["leads"],
+    queryFn: () => base44.entities.Lead.list()
   });
 
   const createMutation = useMutation({
@@ -132,6 +140,13 @@ export default function CRM() {
             iconBg="bg-purple-50"
             iconColor="text-purple-600"
           />
+        </div>
+
+        {/* CRM Tools Dashboard */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <QuickActions />
+          <PipelinePreview leads={leads} />
+          <ConversionMetrics leads={leads} />
         </div>
 
         {/* Filters */}
