@@ -83,6 +83,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import Analytics from './pages/Analytics';
+import ContentCreator from './pages/ContentCreator';
 import __Layout from './Layout.jsx';
 
 
@@ -123,6 +124,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "Analytics": Analytics,
+    "ContentCreator": ContentCreator,
 }
 
 export const pagesConfig = {
