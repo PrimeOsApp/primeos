@@ -31,7 +31,8 @@ import {
   ListChecks,
   Sparkles,
   Search,
-  Mail
+  Mail,
+  HeadphonesIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
@@ -57,6 +58,7 @@ const navigation = [
   { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp, isNew: true },
   { name: "Email Automation", href: "EmailAutomation", icon: Mail, isNew: true },
   { name: "Marketing Automation", href: "MarketingAutomation", icon: Zap, isNew: true },
+  { name: "Suporte ao Cliente", href: "CustomerSupport", icon: HeadphonesIcon, isNew: true },
   { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3, isNew: true },
   { name: "Relatórios Avançados", href: "AdvancedReports", icon: BarChart3, isNew: true },
   { name: "Estratégias", href: "Estrategias", icon: Brain },

@@ -97,6 +97,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import MarketingAutomation from './pages/MarketingAutomation';
+import CustomerSupport from './pages/CustomerSupport';
 import __Layout from './Layout.jsx';
 
 
@@ -151,6 +152,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "MarketingAutomation": MarketingAutomation,
+    "CustomerSupport": CustomerSupport,
 }
 
 export const pagesConfig = {
