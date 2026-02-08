@@ -75,15 +75,15 @@ export default function GoogleCalendarSync() {
           )}
         </Button>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
           <div className="flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
             <div>
-              <p className="text-xs font-medium text-amber-900 mb-1">
-                Configure primeiro
+              <p className="text-xs font-medium text-green-900 mb-1">
+                ✓ Google Calendar conectado
               </p>
-              <p className="text-xs text-amber-700">
-                Autorize o acesso ao Google Calendar no Dashboard para usar esta funcionalidade
+              <p className="text-xs text-green-700">
+                Sincronização automática ativa todos os dias às 7h
               </p>
             </div>
           </div>
