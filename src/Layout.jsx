@@ -36,6 +36,7 @@ import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
+  { name: "Analytics", href: "Analytics", icon: BarChart3, isNew: true },
   { name: "Tarefas", href: "Tasks", icon: ListChecks, isNew: true },
   { name: "Calendário de Tarefas", href: "TaskCalendar", icon: Calendar, isNew: true },
   { name: "Marketing OS", href: "MarketingOS", icon: Zap, isNew: true },
