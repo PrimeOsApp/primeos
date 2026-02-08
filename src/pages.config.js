@@ -51,6 +51,7 @@ import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
 import Analytics from './pages/Analytics';
+import AppointmentReports from './pages/AppointmentReports';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import CRM from './pages/CRM';
 import CRMAvancado from './pages/CRMAvancado';
@@ -85,7 +86,7 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import AppointmentReports from './pages/AppointmentReports';
+import OnlineBooking from './pages/OnlineBooking';
 import __Layout from './Layout.jsx';
 
 
@@ -94,6 +95,7 @@ export const PAGES = {
     "Activities": Activities,
     "Agenda": Agenda,
     "Analytics": Analytics,
+    "AppointmentReports": AppointmentReports,
     "BusinessModelCanvas": BusinessModelCanvas,
     "CRM": CRM,
     "CRMAvancado": CRMAvancado,
@@ -128,7 +130,7 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "AppointmentReports": AppointmentReports,
+    "OnlineBooking": OnlineBooking,
 }
 
 export const pagesConfig = {
