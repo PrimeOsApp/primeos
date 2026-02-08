@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle, Loader2 } from "lucide-react";
 
 const timeSlots = [
@@ -40,7 +41,10 @@ export default function AppointmentForm({
     duration_minutes: 30,
     provider: "",
     notes: "",
-    status: "scheduled"
+    status: "scheduled",
+    follow_up_required: false,
+    follow_up_days: 7,
+    follow_up_notes: ""
   });
 
   useEffect(() => {
@@ -194,6 +198,53 @@ export default function AppointmentForm({
           placeholder="Informações adicionais sobre a consulta"
           rows={3}
         />
+      </div>
+
+      <div className="border-t pt-4 space-y-4">
+        <div className="flex items-center space-x-2">
+          <Checkbox 
+            id="follow_up" 
+            checked={form.follow_up_required}
+            onCheckedChange={(checked) => setForm({...form, follow_up_required: checked})}
+          />
+          <Label htmlFor="follow_up" className="font-medium cursor-pointer">
+            Agendar follow-up automático após consulta
+          </Label>
+        </div>
+
+        {form.follow_up_required && (
+          <div className="pl-6 space-y-3 bg-blue-50 p-4 rounded-lg">
+            <div>
+              <Label>Retorno em quantos dias?</Label>
+              <Select 
+                value={String(form.follow_up_days)} 
+                onValueChange={(v) => setForm({...form, follow_up_days: parseInt(v)})}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 dias</SelectItem>
+                  <SelectItem value="7">7 dias (1 semana)</SelectItem>
+                  <SelectItem value="15">15 dias (2 semanas)</SelectItem>
+                  <SelectItem value="30">30 dias (1 mês)</SelectItem>
+                  <SelectItem value="45">45 dias</SelectItem>
+                  <SelectItem value="60">60 dias (2 meses)</SelectItem>
+                  <SelectItem value="90">90 dias (3 meses)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Observações do follow-up</Label>
+              <Textarea 
+                value={form.follow_up_notes} 
+                onChange={(e) => setForm({...form, follow_up_notes: e.target.value})} 
+                placeholder="Instruções para o retorno (ex: trazer exames, verificar cicatrização)"
+                rows={2}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2 pt-4">
