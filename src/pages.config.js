@@ -50,6 +50,7 @@
 import AIAssistant from './pages/AIAssistant';
 import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
+import AdvancedReports from './pages/AdvancedReports';
 import Agenda from './pages/Agenda';
 import Analytics from './pages/Analytics';
 import AppointmentReports from './pages/AppointmentReports';
@@ -70,7 +71,9 @@ import CustomerSegments from './pages/CustomerSegments';
 import Dashboard from './pages/Dashboard';
 import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
+import Gamification from './pages/Gamification';
 import JornadaCliente from './pages/JornadaCliente';
+import JourneyMapping from './pages/JourneyMapping';
 import KeyActivities from './pages/KeyActivities';
 import KeyPartnerships from './pages/KeyPartnerships';
 import KeyResources from './pages/KeyResources';
@@ -93,9 +96,7 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import AdvancedReports from './pages/AdvancedReports';
-import Gamification from './pages/Gamification';
-import JourneyMapping from './pages/JourneyMapping';
+import MarketingAutomation from './pages/MarketingAutomation';
 import __Layout from './Layout.jsx';
 
 
@@ -103,6 +104,7 @@ export const PAGES = {
     "AIAssistant": AIAssistant,
     "AIInsights": AIInsights,
     "Activities": Activities,
+    "AdvancedReports": AdvancedReports,
     "Agenda": Agenda,
     "Analytics": Analytics,
     "AppointmentReports": AppointmentReports,
@@ -123,7 +125,9 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
+    "Gamification": Gamification,
     "JornadaCliente": JornadaCliente,
+    "JourneyMapping": JourneyMapping,
     "KeyActivities": KeyActivities,
     "KeyPartnerships": KeyPartnerships,
     "KeyResources": KeyResources,
@@ -146,9 +150,7 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "AdvancedReports": AdvancedReports,
-    "Gamification": Gamification,
-    "JourneyMapping": JourneyMapping,
+    "MarketingAutomation": MarketingAutomation,
 }
 
 export const pagesConfig = {

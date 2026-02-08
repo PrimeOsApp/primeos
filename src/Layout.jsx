@@ -56,6 +56,7 @@ const navigation = [
   { name: "Segmentação", href: "CustomerSegments", icon: Target, isNew: true },
   { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp, isNew: true },
   { name: "Email Automation", href: "EmailAutomation", icon: Mail, isNew: true },
+  { name: "Marketing Automation", href: "MarketingAutomation", icon: Zap, isNew: true },
   { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3, isNew: true },
   { name: "Relatórios Avançados", href: "AdvancedReports", icon: BarChart3, isNew: true },
   { name: "Estratégias", href: "Estrategias", icon: Brain },
