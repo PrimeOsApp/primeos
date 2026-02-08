@@ -9,11 +9,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { BarChart3, Plus, Loader2, TrendingUp, DollarSign, Users, Target, Eye, MousePointer } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BarChart3, Plus, Loader2, TrendingUp, DollarSign, Users, Target, Eye, MousePointer, Activity } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, subDays, parseISO } from "date-fns";
+import EngagementMetrics from "../components/metrics/EngagementMetrics";
+import { usePageTracking } from "../components/metrics/EngagementTracker";
 
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6366f1'];
 

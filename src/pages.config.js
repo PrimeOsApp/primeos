@@ -79,9 +79,9 @@ import SOPs from './pages/SOPs';
 import Sales from './pages/Sales';
 import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
+import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import TaskCalendar from './pages/TaskCalendar';
 import __Layout from './Layout.jsx';
 
 
@@ -118,9 +118,9 @@ export const PAGES = {
     "Sales": Sales,
     "ScriptsVendas": ScriptsVendas,
     "Strategy": Strategy,
+    "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "TaskCalendar": TaskCalendar,
 }
 
 export const pagesConfig = {
