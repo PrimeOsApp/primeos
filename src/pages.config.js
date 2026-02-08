@@ -92,6 +92,7 @@ import CRMAgenda from './pages/CRMAgenda';
 import SalesPipeline from './pages/SalesPipeline';
 import EmailAutomation from './pages/EmailAutomation';
 import SalesReports from './pages/SalesReports';
+import AIAssistant from './pages/AIAssistant';
 import __Layout from './Layout.jsx';
 
 
@@ -141,6 +142,7 @@ export const PAGES = {
     "SalesPipeline": SalesPipeline,
     "EmailAutomation": EmailAutomation,
     "SalesReports": SalesReports,
+    "AIAssistant": AIAssistant,
 }
 
 export const pagesConfig = {
