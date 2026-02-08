@@ -57,6 +57,7 @@ import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
 import Channels from './pages/Channels';
+import ClientPortal from './pages/ClientPortal';
 import ContentCreator from './pages/ContentCreator';
 import Conteudos from './pages/Conteudos';
 import CostStructure from './pages/CostStructure';
@@ -84,7 +85,7 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import ClientPortal from './pages/ClientPortal';
+import AppointmentReports from './pages/AppointmentReports';
 import __Layout from './Layout.jsx';
 
 
@@ -99,6 +100,7 @@ export const PAGES = {
     "Campanhas": Campanhas,
     "Canais": Canais,
     "Channels": Channels,
+    "ClientPortal": ClientPortal,
     "ContentCreator": ContentCreator,
     "Conteudos": Conteudos,
     "CostStructure": CostStructure,
@@ -126,7 +128,7 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "ClientPortal": ClientPortal,
+    "AppointmentReports": AppointmentReports,
 }
 
 export const pagesConfig = {

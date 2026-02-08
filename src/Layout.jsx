@@ -46,6 +46,7 @@ const navigation = [
   { name: "Marketing OS", href: "MarketingOS", icon: Zap, isNew: true },
   { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
   { name: "Agenda", href: "Agenda", icon: Calendar },
+  { name: "Relatórios Consultas", href: "AppointmentReports", icon: BarChart3, isNew: true },
   { name: "Prontuários", href: "Prontuarios", icon: ClipboardList },
   { name: "Canais Atendimento", href: "Canais", icon: Inbox },
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
