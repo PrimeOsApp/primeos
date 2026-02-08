@@ -30,7 +30,8 @@ import {
   ChevronUp,
   ListChecks,
   Sparkles,
-  Search
+  Search,
+  Mail
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
@@ -52,6 +53,9 @@ const navigation = [
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
   { name: "CRM", href: "CRM", icon: Users },
   { name: "CRM Avançado", href: "CRMAvancado", icon: Target },
+  { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp, isNew: true },
+  { name: "Email Automation", href: "EmailAutomation", icon: Mail, isNew: true },
+  { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3, isNew: true },
   { name: "Estratégias", href: "Estrategias", icon: Brain },
   { name: "Conteúdos", href: "Conteudos", icon: FileText },
   { name: "Campanhas", href: "Campanhas", icon: Megaphone },

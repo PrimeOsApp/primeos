@@ -89,6 +89,9 @@ import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import Patients from './pages/Patients';
 import CRMAgenda from './pages/CRMAgenda';
+import SalesPipeline from './pages/SalesPipeline';
+import EmailAutomation from './pages/EmailAutomation';
+import SalesReports from './pages/SalesReports';
 import __Layout from './Layout.jsx';
 
 
@@ -135,6 +138,9 @@ export const PAGES = {
     "ValueProposition": ValueProposition,
     "Patients": Patients,
     "CRMAgenda": CRMAgenda,
+    "SalesPipeline": SalesPipeline,
+    "EmailAutomation": EmailAutomation,
+    "SalesReports": SalesReports,
 }
 
 export const pagesConfig = {
