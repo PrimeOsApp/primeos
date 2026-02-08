@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AIAssistant from './pages/AIAssistant';
 import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
@@ -54,6 +55,7 @@ import Analytics from './pages/Analytics';
 import AppointmentReports from './pages/AppointmentReports';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import CRM from './pages/CRM';
+import CRMAgenda from './pages/CRMAgenda';
 import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
@@ -66,6 +68,7 @@ import CustomerPipeline from './pages/CustomerPipeline';
 import CustomerRelationships from './pages/CustomerRelationships';
 import CustomerSegments from './pages/CustomerSegments';
 import Dashboard from './pages/Dashboard';
+import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
 import JornadaCliente from './pages/JornadaCliente';
 import KeyActivities from './pages/KeyActivities';
@@ -77,26 +80,25 @@ import Metricas from './pages/Metricas';
 import OnlineBooking from './pages/OnlineBooking';
 import POPs from './pages/POPs';
 import PatientPipeline from './pages/PatientPipeline';
+import Patients from './pages/Patients';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
 import RevenueStreams from './pages/RevenueStreams';
 import SOPs from './pages/SOPs';
 import Sales from './pages/Sales';
+import SalesPipeline from './pages/SalesPipeline';
+import SalesReports from './pages/SalesReports';
 import ScriptsVendas from './pages/ScriptsVendas';
 import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import Patients from './pages/Patients';
-import CRMAgenda from './pages/CRMAgenda';
-import SalesPipeline from './pages/SalesPipeline';
-import EmailAutomation from './pages/EmailAutomation';
-import SalesReports from './pages/SalesReports';
-import AIAssistant from './pages/AIAssistant';
+import AdvancedReports from './pages/AdvancedReports';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AIAssistant": AIAssistant,
     "AIInsights": AIInsights,
     "Activities": Activities,
     "Agenda": Agenda,
@@ -104,6 +106,7 @@ export const PAGES = {
     "AppointmentReports": AppointmentReports,
     "BusinessModelCanvas": BusinessModelCanvas,
     "CRM": CRM,
+    "CRMAgenda": CRMAgenda,
     "CRMAvancado": CRMAvancado,
     "Campanhas": Campanhas,
     "Canais": Canais,
@@ -116,6 +119,7 @@ export const PAGES = {
     "CustomerRelationships": CustomerRelationships,
     "CustomerSegments": CustomerSegments,
     "Dashboard": Dashboard,
+    "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
     "JornadaCliente": JornadaCliente,
     "KeyActivities": KeyActivities,
@@ -127,22 +131,20 @@ export const PAGES = {
     "OnlineBooking": OnlineBooking,
     "POPs": POPs,
     "PatientPipeline": PatientPipeline,
+    "Patients": Patients,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
     "RevenueStreams": RevenueStreams,
     "SOPs": SOPs,
     "Sales": Sales,
+    "SalesPipeline": SalesPipeline,
+    "SalesReports": SalesReports,
     "ScriptsVendas": ScriptsVendas,
     "Strategy": Strategy,
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "Patients": Patients,
-    "CRMAgenda": CRMAgenda,
-    "SalesPipeline": SalesPipeline,
-    "EmailAutomation": EmailAutomation,
-    "SalesReports": SalesReports,
-    "AIAssistant": AIAssistant,
+    "AdvancedReports": AdvancedReports,
 }
 
 export const pagesConfig = {
