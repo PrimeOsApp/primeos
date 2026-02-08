@@ -18,6 +18,8 @@ import { format, subDays, parseISO } from "date-fns";
 import EngagementMetrics from "../components/metrics/EngagementMetrics";
 import { usePageTracking } from "../components/metrics/EngagementTracker";
 import MarketingSyncCard from "../components/metrics/MarketingSyncCard";
+import InteractiveTour from "../components/onboarding/InteractiveTour";
+import { metricsTour } from "../components/onboarding/tours";
 
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6366f1'];
 
@@ -25,7 +27,13 @@ export default function Metricas() {
   usePageTracking("Metricas");
   
   const [showForm, setShowForm] = useState(false);
+  const [showTour, setShowTour] = useState(false);
   const queryClient = useQueryClient();
+
+  useState(() => {
+    const timer = setTimeout(() => setShowTour(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const { data: metrics = [] } = useQuery({
     queryKey: ["metrics"],
@@ -121,16 +129,18 @@ export default function Metricas() {
               <DollarSign className="w-4 h-4" />
               Marketing & Receita
             </TabsTrigger>
-            <TabsTrigger value="engagement" className="flex items-center gap-2">
+            <TabsTrigger value="engagement" className="flex items-center gap-2" data-tour="engagement-tab">
               <Activity className="w-4 h-4" />
               Engajamento de Usuários
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="marketing" className="space-y-6">
-            <MarketingSyncCard />
+            <div data-tour="sync-card">
+              <MarketingSyncCard />
+            </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6" data-tour="kpi-cards">
               {[
                 { label: "Receita Total", value: `R$ ${(totals.receita / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600" },
                 { label: "Investimento", value: `R$ ${(totals.investimento / 1000).toFixed(0)}k`, icon: Target, color: "text-blue-600" },
@@ -188,7 +198,7 @@ export default function Metricas() {
               </Card>
             </div>
 
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm" data-tour="funnel">
               <CardHeader>
                 <CardTitle className="text-base">Funil de Conversão</CardTitle>
               </CardHeader>
@@ -284,6 +294,15 @@ export default function Metricas() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {showTour && (
+          <InteractiveTour
+            tourId={metricsTour.id}
+            steps={metricsTour.steps}
+            onComplete={() => setShowTour(false)}
+            autoStart={true}
+          />
+        )}
       </div>
     </div>
   );

@@ -126,6 +126,7 @@ export default function Layout({ children, currentPageName }) {
               size="icon"
               onClick={() => setShowWhatsNew(true)}
               className="relative"
+              data-tour="whats-new"
             >
               <Sparkles className="w-5 h-5 text-indigo-600" />
             </Button>
@@ -192,6 +193,7 @@ export default function Layout({ children, currentPageName }) {
               id="nav-container"
               className="space-y-2 overflow-y-auto h-full px-6 py-3"
               onScroll={handleScroll}
+              data-tour="navigation"
             >
               {navigation.map((item) => (
                 <NavItem key={item.name} item={item} />
