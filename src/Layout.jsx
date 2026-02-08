@@ -29,10 +29,12 @@ import {
   ChevronDown,
   ChevronUp,
   ListChecks,
-  Sparkles
+  Sparkles,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
+import GlobalSearch from "@/components/shared/GlobalSearch";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
@@ -66,6 +68,7 @@ export default function Layout({ children, currentPageName }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showScrollBottom, setShowScrollBottom] = useState(true);
   const [showWhatsNew, setShowWhatsNew] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     const lastSeenVersion = localStorage.getItem("last_seen_version");
@@ -73,6 +76,17 @@ export default function Layout({ children, currentPageName }) {
       setShowWhatsNew(true);
       localStorage.setItem("last_seen_version", LATEST_VERSION);
     }
+
+    // Global keyboard shortcut for search (Cmd+K or Ctrl+K)
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleScroll = (e) => {
@@ -126,6 +140,14 @@ export default function Layout({ children, currentPageName }) {
             <Button
               variant="ghost"
               size="icon"
+              onClick={() => setShowSearch(true)}
+              className="relative"
+            >
+              <Search className="w-5 h-5 text-slate-600" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setShowWhatsNew(true)}
               className="relative"
               data-tour="whats-new"
@@ -164,7 +186,7 @@ export default function Layout({ children, currentPageName }) {
         )}
       >
         <div className="p-6 flex-shrink-0 border-b border-slate-100">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mb-3">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg" 
               alt="Prime Odontologia" 
@@ -175,6 +197,18 @@ export default function Layout({ children, currentPageName }) {
               <p className="text-xs text-slate-500">Sistema de Gestão</p>
             </div>
           </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => setShowSearch(true)}
+            className="w-full justify-start gap-2 text-slate-500 hover:text-slate-900"
+          >
+            <Search className="w-4 h-4" />
+            <span className="flex-1 text-left">Buscar...</span>
+            <kbd className="px-1.5 py-0.5 text-xs bg-slate-100 rounded border border-slate-200">
+              ⌘K
+            </kbd>
+          </Button>
         </div>
 
         <div className="relative flex-1 overflow-hidden min-h-0">
@@ -234,6 +268,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       <WhatsNewModal open={showWhatsNew} onClose={() => setShowWhatsNew(false)} />
+      <GlobalSearch open={showSearch} onClose={() => setShowSearch(false)} />
     </div>
   );
 }
