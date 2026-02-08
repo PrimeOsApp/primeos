@@ -50,12 +50,14 @@
 import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
 import Agenda from './pages/Agenda';
+import Analytics from './pages/Analytics';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import CRM from './pages/CRM';
 import CRMAvancado from './pages/CRMAvancado';
 import Campanhas from './pages/Campanhas';
 import Canais from './pages/Canais';
 import Channels from './pages/Channels';
+import ContentCreator from './pages/ContentCreator';
 import Conteudos from './pages/Conteudos';
 import CostStructure from './pages/CostStructure';
 import CustomerPipeline from './pages/CustomerPipeline';
@@ -82,8 +84,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import Analytics from './pages/Analytics';
-import ContentCreator from './pages/ContentCreator';
 import __Layout from './Layout.jsx';
 
 
@@ -91,12 +91,14 @@ export const PAGES = {
     "AIInsights": AIInsights,
     "Activities": Activities,
     "Agenda": Agenda,
+    "Analytics": Analytics,
     "BusinessModelCanvas": BusinessModelCanvas,
     "CRM": CRM,
     "CRMAvancado": CRMAvancado,
     "Campanhas": Campanhas,
     "Canais": Canais,
     "Channels": Channels,
+    "ContentCreator": ContentCreator,
     "Conteudos": Conteudos,
     "CostStructure": CostStructure,
     "CustomerPipeline": CustomerPipeline,
@@ -123,8 +125,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "Analytics": Analytics,
-    "ContentCreator": ContentCreator,
 }
 
 export const pagesConfig = {

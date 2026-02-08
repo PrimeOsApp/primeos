@@ -14,10 +14,20 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import IntegrationWizard from "@/components/integration/IntegrationWizard";
 import AutomationStatus from "@/components/crm/AutomationStatus";
+import DateRangeFilter from "@/components/dashboard/DateRangeFilter";
+import LeadConversionChart from "@/components/dashboard/LeadConversionChart";
+import CustomerLTVChart from "@/components/dashboard/CustomerLTVChart";
+import TaskCompletionChart from "@/components/dashboard/TaskCompletionChart";
+import { subMonths } from "date-fns";
 
 const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#06b6d4"];
 
 export default function Dashboard() {
+  const [dateRange, setDateRange] = useState({
+    from: subMonths(new Date(), 3),
+    to: new Date()
+  });
+
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
     queryFn: () => base44.entities.Customer.list()
@@ -41,6 +51,16 @@ export default function Dashboard() {
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
     queryFn: () => base44.entities.Sale.list()
+  });
+
+  const { data: leads = [] } = useQuery({
+    queryKey: ["leads"],
+    queryFn: () => base44.entities.Lead.list()
+  });
+
+  const { data: tasks = [] } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: () => base44.entities.Task.list()
   });
 
   const totalRevenue = sales.reduce((sum, s) => sum + (s.total_amount || 0), 0);
@@ -89,8 +109,13 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Business Canvas Dashboard</h1>
-          <p className="text-slate-500 mt-1">Your complete business management overview</p>
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Business Canvas Dashboard</h1>
+              <p className="text-slate-500 mt-1">Your complete business management overview</p>
+            </div>
+            <DateRangeFilter dateRange={dateRange} onDateRangeChange={setDateRange} />
+          </div>
         </motion.div>
 
         {/* Integration Wizard */}
@@ -169,6 +194,16 @@ export default function Dashboard() {
             iconBg="bg-green-50"
             iconColor="text-green-600"
           />
+        </div>
+
+        {/* Advanced Analytics Charts */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <LeadConversionChart leads={leads} dateRange={dateRange} />
+          <CustomerLTVChart customers={customers} dateRange={dateRange} />
+        </div>
+
+        <div className="mb-8">
+          <TaskCompletionChart tasks={tasks} dateRange={dateRange} />
         </div>
 
         {/* Charts */}
