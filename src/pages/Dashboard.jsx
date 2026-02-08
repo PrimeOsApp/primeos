@@ -110,10 +110,6 @@ export default function Dashboard() {
           className="mb-8"
         >
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Business Canvas Dashboard</h1>
-              <p className="text-slate-500 mt-1">Your complete business management overview</p>
-            </div>
             <DateRangeFilter dateRange={dateRange} onDateRangeChange={setDateRange} />
           </div>
         </motion.div>

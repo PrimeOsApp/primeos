@@ -74,6 +74,7 @@ import KeyResources from './pages/KeyResources';
 import LeadsPipeline from './pages/LeadsPipeline';
 import MarketingOS from './pages/MarketingOS';
 import Metricas from './pages/Metricas';
+import OnlineBooking from './pages/OnlineBooking';
 import POPs from './pages/POPs';
 import PatientPipeline from './pages/PatientPipeline';
 import Prontuarios from './pages/Prontuarios';
@@ -86,7 +87,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import OnlineBooking from './pages/OnlineBooking';
 import __Layout from './Layout.jsx';
 
 
@@ -118,6 +118,7 @@ export const PAGES = {
     "LeadsPipeline": LeadsPipeline,
     "MarketingOS": MarketingOS,
     "Metricas": Metricas,
+    "OnlineBooking": OnlineBooking,
     "POPs": POPs,
     "PatientPipeline": PatientPipeline,
     "Prontuarios": Prontuarios,
@@ -130,7 +131,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "OnlineBooking": OnlineBooking,
 }
 
 export const pagesConfig = {
