@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { format, subDays, parseISO } from "date-fns";
 import EngagementMetrics from "../components/metrics/EngagementMetrics";
 import { usePageTracking } from "../components/metrics/EngagementTracker";
+import MarketingSyncCard from "../components/metrics/MarketingSyncCard";
 
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#6366f1'];
 
@@ -127,6 +128,8 @@ export default function Metricas() {
           </TabsList>
 
           <TabsContent value="marketing" className="space-y-6">
+            <MarketingSyncCard />
+            
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
               {[
                 { label: "Receita Total", value: `R$ ${(totals.receita / 1000).toFixed(0)}k`, icon: DollarSign, color: "text-emerald-600" },
