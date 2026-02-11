@@ -6,10 +6,10 @@
 4. Create an `.env.local` file and set the right environment variables at your server:
 
 ```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+VITE_ID=your_app_id
+VITE_BASE_URL=your_backend_url
 
-Run the app: `npm run dev`
+Run the app: `npm run dev.`
 
 **Publish your changes**
 
