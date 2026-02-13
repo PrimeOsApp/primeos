@@ -18,8 +18,11 @@ import {
   Users, Target, Zap, TrendingUp, MessageCircle, Instagram, Facebook,
   Phone, Mail, Star, Clock, Calendar, DollarSign, Filter, Search,
   ArrowRight, Play, Pause, Plus, Settings, BarChart3, Flame, Sparkles,
-  CheckCircle, AlertCircle, RefreshCcw, Eye, Send, UserCheck, Loader2
+  CheckCircle, AlertCircle, RefreshCcw, Eye, Send, UserCheck, Loader2, Brain
 } from "lucide-react";
+import AILeadScoring from "@/components/crm/AILeadScoring";
+import SalesForecast from "@/components/crm/SalesForecast";
+import FollowUpSuggestions from "@/components/crm/FollowUpSuggestions";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, differenceInDays, differenceInHours } from "date-fns";
@@ -265,6 +268,7 @@ export default function CRMAvancado() {
           <TabsList className="mb-6">
             <TabsTrigger value="overview"><BarChart3 className="w-4 h-4 mr-2" />Overview</TabsTrigger>
             <TabsTrigger value="leads"><Users className="w-4 h-4 mr-2" />Leads</TabsTrigger>
+            <TabsTrigger value="ai"><Brain className="w-4 h-4 mr-2" />IA Insights</TabsTrigger>
             <TabsTrigger value="workflows"><Zap className="w-4 h-4 mr-2" />Workflows</TabsTrigger>
             <TabsTrigger value="segments"><Filter className="w-4 h-4 mr-2" />Segmentos</TabsTrigger>
           </TabsList>
@@ -394,6 +398,27 @@ export default function CRMAvancado() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* AI Tab */}
+          <TabsContent value="ai">
+            <div className="space-y-6">
+              <SalesForecast />
+              {selectedLead && (
+                <div className="grid lg:grid-cols-2 gap-6">
+                  <AILeadScoring lead={selectedLead} onScored={() => queryClient.invalidateQueries({ queryKey: ["leads"] })} />
+                  <FollowUpSuggestions lead={selectedLead} />
+                </div>
+              )}
+              {!selectedLead && (
+                <Card className="border-0 shadow-sm">
+                  <CardContent className="p-8 text-center">
+                    <Brain className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-slate-500">Selecione um lead na aba "Leads" para ver análises de IA</p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </TabsContent>
 
           {/* Leads Tab */}

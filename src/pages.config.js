@@ -68,6 +68,7 @@ import CostStructure from './pages/CostStructure';
 import CustomerPipeline from './pages/CustomerPipeline';
 import CustomerRelationships from './pages/CustomerRelationships';
 import CustomerSegments from './pages/CustomerSegments';
+import CustomerSupport from './pages/CustomerSupport';
 import Dashboard from './pages/Dashboard';
 import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
@@ -78,6 +79,7 @@ import KeyActivities from './pages/KeyActivities';
 import KeyPartnerships from './pages/KeyPartnerships';
 import KeyResources from './pages/KeyResources';
 import LeadsPipeline from './pages/LeadsPipeline';
+import MarketingAutomation from './pages/MarketingAutomation';
 import MarketingOS from './pages/MarketingOS';
 import Metricas from './pages/Metricas';
 import OnlineBooking from './pages/OnlineBooking';
@@ -96,8 +98,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import MarketingAutomation from './pages/MarketingAutomation';
-import CustomerSupport from './pages/CustomerSupport';
 import __Layout from './Layout.jsx';
 
 
@@ -123,6 +123,7 @@ export const PAGES = {
     "CustomerPipeline": CustomerPipeline,
     "CustomerRelationships": CustomerRelationships,
     "CustomerSegments": CustomerSegments,
+    "CustomerSupport": CustomerSupport,
     "Dashboard": Dashboard,
     "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
@@ -133,6 +134,7 @@ export const PAGES = {
     "KeyPartnerships": KeyPartnerships,
     "KeyResources": KeyResources,
     "LeadsPipeline": LeadsPipeline,
+    "MarketingAutomation": MarketingAutomation,
     "MarketingOS": MarketingOS,
     "Metricas": Metricas,
     "OnlineBooking": OnlineBooking,
@@ -151,8 +153,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "MarketingAutomation": MarketingAutomation,
-    "CustomerSupport": CustomerSupport,
 }
 
 export const pagesConfig = {
