@@ -9,113 +9,105 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Fetch leads and interactions
-    const leads = await base44.entities.Lead.list();
-    const interactions = await base44.entities.Interaction.list();
-    const appointments = await base44.entities.CRMAppointment.list();
+    const { leadId } = await req.json();
 
-    // Analyze each lead for follow-up needs
-    const leadsAnalysis = leads.map(lead => {
-      const leadInteractions = interactions
-        .filter(i => i.customer_id === lead.id)
-        .sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-      
-      const lastInteraction = leadInteractions[0];
-      const daysSinceLastContact = lastInteraction ? 
-        Math.floor((new Date() - new Date(lastInteraction.created_date)) / (1000 * 60 * 60 * 24)) : 999;
-      
-      const leadAppointments = appointments.filter(a => a.customer_id === lead.id);
-      const upcomingAppointment = leadAppointments.find(a => 
-        new Date(a.date) > new Date() && a.status !== 'cancelled'
-      );
+    if (!leadId) {
+      return Response.json({ error: 'Lead ID required' }, { status: 400 });
+    }
 
-      return {
-        id: lead.id,
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        stage: lead.stage,
-        status: lead.status,
-        score: lead.score || 0,
-        source: lead.source,
-        interest: lead.interest,
-        last_interaction_date: lastInteraction?.created_date,
-        last_interaction_type: lastInteraction?.type,
-        last_interaction_outcome: lastInteraction?.outcome,
-        days_since_last_contact: daysSinceLastContact,
-        total_interactions: leadInteractions.length,
-        has_upcoming_appointment: !!upcomingAppointment,
-        next_action: lead.next_action
-      };
+    const lead = await base44.asServiceRole.entities.Lead.get(leadId);
+    
+    if (!lead) {
+      return Response.json({ error: 'Lead not found' }, { status: 404 });
+    }
+
+    // Fetch lead interactions
+    const interactions = await base44.asServiceRole.entities.LeadInteraction.filter({
+      lead_id: leadId
     });
 
-    const prompt = `Você é um especialista em gestão de relacionamento e engajamento de leads para a Prime Odontologia.
+    const lastInteraction = interactions.sort((a, b) => 
+      new Date(b.created_date) - new Date(a.created_date)
+    )[0];
 
-LEADS PARA ANÁLISE:
-${JSON.stringify(leadsAnalysis, null, 2)}
+    // AI Follow-up Strategy
+    const followUpPrompt = `Você é um especialista em estratégias de follow-up de vendas.
+Analise este lead e forneça recomendações personalizadas de follow-up.
 
-Analise cada lead e identifique:
-1. Quais leads precisam de follow-up urgente (sinais de desengajamento)
-2. Qual o melhor timing para cada follow-up
-3. O canal ideal (WhatsApp, email, ligação)
-4. Mensagem personalizada sugerida
-5. Prioridade do follow-up (crítico/alto/médio/baixo)
-6. Razão específica para o follow-up
+LEAD:
+Nome: ${lead.name}
+Status: ${lead.status}
+Score de IA: ${lead.ai_score || 'Não calculado'}
+Classificação: ${lead.ai_classification || 'N/A'}
+Probabilidade de Conversão: ${lead.ai_conversion_probability || 0}%
+Origem: ${lead.source}
+Interesse: ${lead.interest || 'N/A'}
 
-SINAIS DE ENGAJAMENTO A CONSIDERAR:
-- Dias sem contato (mais de 7 dias = risco)
-- Score do lead (alto score = prioridade)
-- Estágio no pipeline
-- Outcome da última interação
-- Frequência de interações
-- Presença de agendamento futuro
+ÚLTIMA INTERAÇÃO:
+${lastInteraction ? `
+Tipo: ${lastInteraction.type}
+Data: ${lastInteraction.created_date}
+Notas: ${lastInteraction.notes}
+Próxima Ação: ${lastInteraction.next_action || 'N/A'}
+` : 'Nenhuma interação registrada'}
 
-Forneça recomendações acionáveis e priorizadas.`;
+HISTÓRICO (${interactions.length} interações):
+${interactions.slice(0, 3).map(i => `- ${i.type} em ${i.created_date}: ${i.notes.substring(0, 50)}...`).join('\n')}
 
-    const response = await base44.integrations.Core.InvokeLLM({
-      prompt,
+ANÁLISE DE IA PRÉVIA:
+${lead.ai_analysis ? `
+Pontos Fortes: ${lead.ai_analysis.strengths?.join(', ')}
+Pontos Fracos: ${lead.ai_analysis.weaknesses?.join(', ')}
+Melhor Próxima Ação: ${lead.ai_analysis.next_best_action}
+` : 'Não disponível'}
+
+Forneça:
+1. Melhor horário para follow-up (dia da semana e hora)
+2. Canal recomendado (email, telefone, WhatsApp)
+3. Abordagem sugerida (script/mensagem)
+4. Momento ideal (quando fazer o contato)
+5. Táticas específicas para este lead
+6. Mensagens personalizadas (3 opções)`;
+
+    const followUpStrategy = await base44.integrations.Core.InvokeLLM({
+      prompt: followUpPrompt,
       response_json_schema: {
         type: "object",
         properties: {
-          summary: { type: "string" },
-          urgent_follow_ups: {
+          optimal_time: {
+            type: "object",
+            properties: {
+              day_of_week: { type: "string" },
+              time_range: { type: "string" },
+              reasoning: { type: "string" }
+            }
+          },
+          recommended_channel: { type: "string" },
+          approach: { type: "string" },
+          timing: { type: "string" },
+          tactics: { type: "array", items: { type: "string" } },
+          message_options: {
             type: "array",
             items: {
               type: "object",
               properties: {
-                lead_id: { type: "string" },
-                lead_name: { type: "string" },
-                priority: { type: "string", enum: ["critical", "high", "medium", "low"] },
-                reason: { type: "string" },
-                recommended_channel: { type: "string" },
-                timing: { type: "string" },
-                suggested_message: { type: "string" },
-                engagement_score: { type: "number" },
-                risk_of_losing: { type: "boolean" }
+                title: { type: "string" },
+                message: { type: "string" }
               }
             }
           },
-          engagement_insights: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                insight: { type: "string" },
-                affected_leads: { type: "number" },
-                recommendation: { type: "string" }
-              }
-            }
-          },
-          total_follow_ups_needed: { type: "number" },
-          critical_count: { type: "number" }
+          urgency: { type: "string" }
         }
       }
     });
 
-    return Response.json({ success: true, data: response, leads_analyzed: leadsAnalysis.length });
+    return Response.json({ 
+      success: true, 
+      strategy: followUpStrategy
+    });
 
   } catch (error) {
-    console.error('Follow-up Reminders Error:', error);
+    console.error('Follow-up Strategy Error:', error);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });

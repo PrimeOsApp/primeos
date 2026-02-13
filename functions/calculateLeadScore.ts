@@ -3,88 +3,106 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { event, data } = await req.json();
+    const user = await base44.auth.me();
+    
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!data?.id) {
+    const { leadId } = await req.json();
+
+    if (!leadId) {
       return Response.json({ error: 'Lead ID required' }, { status: 400 });
     }
 
-    // Calculate lead score based on multiple factors
-    let score = 0;
-
-    // Source scoring (40 points max)
-    const sourceScores = {
-      referral: 40,
-      website: 30,
-      social_media: 25,
-      whatsapp: 35,
-      cold_outreach: 15,
-      other: 10
-    };
-    score += sourceScores[data.source] || 10;
-
-    // Status scoring (30 points max)
-    const statusScores = {
-      qualified: 30,
-      contacted: 20,
-      new: 10,
-      lost: 0
-    };
-    score += statusScores[data.status] || 10;
-
-    // Interest level scoring (30 points max)
-    const interestScores = {
-      high: 30,
-      medium: 20,
-      low: 10
-    };
-    score += interestScores[data.interest_level] || 15;
-
-    // Get interactions count for this lead
-    const interactions = await base44.asServiceRole.entities.LeadInteraction.filter({
-      lead_id: data.id
-    });
+    const lead = await base44.asServiceRole.entities.Lead.get(leadId);
     
-    // Engagement bonus (interactions + notes)
-    const engagementBonus = Math.min(interactions.length * 5, 20);
-    score += engagementBonus;
-
-    // Notes bonus
-    if (data.notes && data.notes.length > 50) {
-      score += 10;
+    if (!lead) {
+      return Response.json({ error: 'Lead not found' }, { status: 404 });
     }
 
-    // Update lead with calculated score
-    await base44.asServiceRole.entities.Lead.update(data.id, {
-      score: Math.min(score, 100),
-      last_score_update: new Date().toISOString()
+    // Fetch lead interactions
+    const interactions = await base44.asServiceRole.entities.LeadInteraction.filter({
+      lead_id: leadId
     });
 
-    console.log(`Lead ${data.id} score updated to ${score}`);
+    // AI Lead Scoring
+    const scoringPrompt = `Você é um especialista em scoring de leads para CRM.
+Analise este lead e forneça um score de 0-100 baseado em múltiplos fatores.
 
-    // Check if score crosses threshold for task creation
-    if (score >= 70 && data.status !== 'lost') {
-      // Create high-priority task for sales team
-      await base44.asServiceRole.functions.invoke('createSalesTask', {
-        leadId: data.id,
-        leadName: data.name,
-        leadEmail: data.email,
-        leadPhone: data.phone,
-        score: score,
-        priority: score >= 85 ? 'critical' : 'high'
-      });
-    }
+DADOS DO LEAD:
+Nome: ${lead.name}
+Email: ${lead.email}
+Telefone: ${lead.phone}
+Empresa: ${lead.company || 'N/A'}
+Origem: ${lead.source}
+Status Atual: ${lead.status}
+Interesse: ${lead.interest || 'N/A'}
+Orçamento: ${lead.budget || 'N/A'}
+Data de Criação: ${lead.created_date}
+
+HISTÓRICO DE INTERAÇÕES (${interactions.length} total):
+${interactions.slice(0, 5).map(i => `- ${i.type}: ${i.notes} (${i.created_date})`).join('\n')}
+
+FATORES PARA CONSIDERAR:
+1. Qualidade dos dados de contato (completude)
+2. Nível de engajamento (interações)
+3. Origem do lead (qualidade da fonte)
+4. Orçamento disponível
+5. Tempo desde o primeiro contato
+6. Padrão de interações (consistência)
+
+Forneça:
+- Score de 0-100
+- Classificação (frio/morno/quente/muito quente)
+- Principais razões do score
+- Probabilidade de conversão (%)
+- Pontos fortes e fracos do lead`;
+
+    const scoreResult = await base44.integrations.Core.InvokeLLM({
+      prompt: scoringPrompt,
+      response_json_schema: {
+        type: "object",
+        properties: {
+          score: { type: "number" },
+          classification: { type: "string" },
+          reasons: { type: "array", items: { type: "string" } },
+          conversion_probability: { type: "number" },
+          strengths: { type: "array", items: { type: "string" } },
+          weaknesses: { type: "array", items: { type: "string" } },
+          next_best_action: { type: "string" }
+        }
+      }
+    });
+
+    // Update lead with AI score
+    await base44.asServiceRole.entities.Lead.update(leadId, {
+      ai_score: scoreResult.score,
+      ai_classification: scoreResult.classification,
+      ai_conversion_probability: scoreResult.conversion_probability,
+      ai_analysis: {
+        reasons: scoreResult.reasons,
+        strengths: scoreResult.strengths,
+        weaknesses: scoreResult.weaknesses,
+        next_best_action: scoreResult.next_best_action,
+        last_scored: new Date().toISOString()
+      }
+    });
+
+    // Award points
+    await base44.functions.invoke('awardPoints', {
+      action: 'lead_scored',
+      metadata: { bonus_multiplier: 1.5 }
+    });
 
     return Response.json({ 
       success: true, 
-      score,
-      message: `Lead score calculated: ${score}/100`
+      score: scoreResult,
+      message: 'Lead scored! +37 pontos'
     });
 
   } catch (error) {
-    console.error('Error calculating lead score:', error);
-    return Response.json({ 
-      error: error.message 
-    }, { status: 500 });
+    console.error('Lead Scoring Error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
   }
 });
