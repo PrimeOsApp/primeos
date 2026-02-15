@@ -1,335 +1,239 @@
-import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
-import StatCard from "@/components/shared/StatCard";
+import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
-  Users, Activity, DollarSign, Package, ShoppingCart, 
-  TrendingUp, ArrowRight, MessageCircle, Building2
+  Smartphone, Download, Star, DollarSign, TrendingUp, 
+  Users, AlertCircle, Apple, Globe
 } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
-import IntegrationWizard from "@/components/integration/IntegrationWizard";
-import AutomationStatus from "@/components/crm/AutomationStatus";
-import DateRangeFilter from "@/components/dashboard/DateRangeFilter";
-import LeadConversionChart from "@/components/dashboard/LeadConversionChart";
-import CustomerLTVChart from "@/components/dashboard/CustomerLTVChart";
-import TaskCompletionChart from "@/components/dashboard/TaskCompletionChart";
-import { subMonths } from "date-fns";
-
-const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#06b6d4"];
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
-  const [dateRange, setDateRange] = useState({
-    from: subMonths(new Date(), 3),
-    to: new Date()
+  const { data: apps = [] } = useQuery({
+    queryKey: ["mobileApps"],
+    queryFn: () => base44.entities.MobileApp.list()
   });
 
-  const { data: customers = [] } = useQuery({
-    queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["appReviews"],
+    queryFn: () => base44.entities.AppReview.list("-review_date", 100)
   });
 
-  const { data: activities = [] } = useQuery({
-    queryKey: ["activities"],
-    queryFn: () => base44.entities.Activity.list()
+  const { data: analytics = [] } = useQuery({
+    queryKey: ["appAnalytics"],
+    queryFn: () => base44.entities.AppAnalytics.list("-date", 30)
   });
 
-  const { data: expenses = [] } = useQuery({
-    queryKey: ["expenses"],
-    queryFn: () => base44.entities.Expense.list()
-  });
+  // Calculate KPIs
+  const totalDownloads = apps.reduce((sum, app) => 
+    sum + (app.downloads_ios || 0) + (app.downloads_android || 0), 0
+  );
+  
+  const totalRevenue = apps.reduce((sum, app) => sum + (app.revenue_total || 0), 0);
+  
+  const avgRating = apps.length > 0 
+    ? apps.reduce((sum, app) => {
+        const ios = app.rating_ios || 0;
+        const android = app.rating_android || 0;
+        return sum + (ios + android) / 2;
+      }, 0) / apps.length
+    : 0;
 
-  const { data: products = [] } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list()
-  });
+  const publishedApps = apps.filter(a => a.status === 'published').length;
+  const inReviewApps = apps.filter(a => a.status === 'review').length;
 
-  const { data: sales = [] } = useQuery({
-    queryKey: ["sales"],
-    queryFn: () => base44.entities.Sale.list()
-  });
+  // Recent analytics
+  const last7DaysDownloads = analytics
+    .filter(a => {
+      const date = new Date(a.date);
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      return date >= weekAgo;
+    })
+    .reduce((sum, a) => sum + (a.downloads || 0), 0);
 
-  const { data: leads = [] } = useQuery({
-    queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list()
-  });
-
-  const { data: tasks = [] } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: () => base44.entities.Task.list()
-  });
-
-  const totalRevenue = sales.reduce((sum, s) => sum + (s.total_amount || 0), 0);
-  const totalExpenses = expenses.filter(e => e.status === "paid").reduce((sum, e) => sum + (e.amount || 0), 0);
-  const activeCustomers = customers.filter(c => c.status === "active").length;
-  const pendingActivities = activities.filter(a => a.status === "pending" || a.status === "in_progress").length;
-  const whatsappSales = sales.filter(s => s.channel === "whatsapp").length;
-
-  const customerSegments = customers.reduce((acc, c) => {
-    const segment = c.segment || "other";
-    acc[segment] = (acc[segment] || 0) + 1;
-    return acc;
-  }, {});
-
-  const segmentData = Object.entries(customerSegments).map(([name, value]) => ({
-    name: name.replace(/_/g, " "),
-    value
-  }));
-
-  const expenseCategories = expenses.reduce((acc, e) => {
-    const cat = e.category || "other";
-    acc[cat] = (acc[cat] || 0) + (e.amount || 0);
-    return acc;
-  }, {});
-
-  const expenseData = Object.entries(expenseCategories)
-    .map(([name, value]) => ({
-      name: name.replace(/_/g, " ").slice(0, 12),
-      value
-    }))
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 6);
-
-  const quickLinks = [
-    { label: "Customer Relations", icon: Users, href: "CRM", color: "bg-indigo-500" },
-    { label: "Key Activities", icon: Activity, href: "Activities", color: "bg-purple-500" },
-    { label: "Cost Structure", icon: DollarSign, href: "CostStructure", color: "bg-rose-500" },
-    { label: "Revenue & Products", icon: ShoppingCart, href: "Revenue", color: "bg-emerald-500" }
-  ];
+  const recentReviews = reviews.slice(0, 5);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 p-6">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <DateRangeFilter dateRange={dateRange} onDateRangeChange={setDateRange} />
-          </div>
-        </motion.div>
-
-        {/* Integration Wizard */}
         <div className="mb-8">
-          <IntegrationWizard 
-            existingSecrets={['GOOGLE_CALENDAR', 'GOOGLE_ADS_CLIENT_ID', 'GOOGLE_ADS_DEVELOPER_TOKEN']}
-            authorizedConnectors={['googlecalendar']}
-          />
+          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
+            <Smartphone className="w-8 h-8 text-indigo-600" />
+            App Store Dashboard
+          </h1>
+          <p className="text-slate-500 mt-1">Gestão de Apps iOS & Android</p>
         </div>
 
-        {/* CRM Automation Status */}
-        <div className="mb-8">
-          <AutomationStatus />
-        </div>
-
-        {/* Quick Access Cards */}
+        {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {quickLinks.map((link, idx) => (
-            <motion.div
-              key={link.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <Link to={createPageUrl(link.href)}>
-                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer group border-0 bg-white/80 backdrop-blur-sm">
-                  <CardContent className="p-5">
-                    <div className={`w-12 h-12 rounded-xl ${link.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                      <link.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{link.label}</h3>
-                    <ArrowRight className="w-4 h-4 text-slate-400 mt-2 group-hover:translate-x-1 transition-transform" />
-                  </CardContent>
-                </Card>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <StatCard
-            title="Total Revenue"
-            value={`$${totalRevenue.toLocaleString()}`}
-            icon={TrendingUp}
-            iconBg="bg-emerald-50"
-            iconColor="text-emerald-600"
-          />
-          <StatCard
-            title="Total Expenses"
-            value={`$${totalExpenses.toLocaleString()}`}
-            icon={DollarSign}
-            iconBg="bg-rose-50"
-            iconColor="text-rose-600"
-          />
-          <StatCard
-            title="Active Customers"
-            value={activeCustomers}
-            subtitle={`of ${customers.length} total`}
-            icon={Users}
-            iconBg="bg-indigo-50"
-            iconColor="text-indigo-600"
-          />
-          <StatCard
-            title="Pending Tasks"
-            value={pendingActivities}
-            icon={Activity}
-            iconBg="bg-purple-50"
-            iconColor="text-purple-600"
-          />
-          <StatCard
-            title="WhatsApp Sales"
-            value={whatsappSales}
-            subtitle={`of ${sales.length} total`}
-            icon={MessageCircle}
-            iconBg="bg-green-50"
-            iconColor="text-green-600"
-          />
-        </div>
-
-        {/* Advanced Analytics Charts */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <LeadConversionChart leads={leads} dateRange={dateRange} />
-          <CustomerLTVChart customers={customers} dateRange={dateRange} />
-        </div>
-
-        <div className="mb-8">
-          <TaskCompletionChart tasks={tasks} dateRange={dateRange} />
-        </div>
-
-        {/* Charts */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">Customer Segments</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {segmentData.length > 0 ? (
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={segmentData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={100}
-                        paddingAngle={5}
-                        dataKey="value"
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      >
-                        {segmentData.map((_, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              ) : (
-                <div className="h-64 flex items-center justify-center text-slate-400">
-                  No customer data yet
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">Expense Breakdown</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {expenseData.length > 0 ? (
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={expenseData} layout="vertical">
-                      <XAxis type="number" tickFormatter={(v) => `$${v}`} />
-                      <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 12 }} />
-                      <Tooltip formatter={(v) => `$${v.toLocaleString()}`} />
-                      <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              ) : (
-                <div className="h-64 flex items-center justify-center text-slate-400">
-                  No expense data yet
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-semibold">Recent Sales</CardTitle>
-              <Link to={createPageUrl("Revenue")}>
-                <Button variant="ghost" size="sm">View All</Button>
-              </Link>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {sales.slice(0, 5).map((sale) => (
-                  <div key={sale.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-medium text-sm">
-                        {sale.customer_name?.charAt(0) || "?"}
-                      </div>
-                      <div>
-                        <p className="font-medium text-slate-900 text-sm">{sale.customer_name}</p>
-                        <p className="text-xs text-slate-500">{sale.channel}</p>
-                      </div>
-                    </div>
-                    <span className="font-semibold text-emerald-600">${sale.total_amount?.toLocaleString()}</span>
-                  </div>
-                ))}
-                {sales.length === 0 && (
-                  <p className="text-center text-slate-400 py-8">No sales yet</p>
-                )}
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <Smartphone className="w-5 h-5 text-indigo-600" />
+                <Badge variant="outline">{publishedApps} live</Badge>
               </div>
+              <p className="text-3xl font-bold text-indigo-600">{apps.length}</p>
+              <p className="text-sm text-slate-500">Total Apps</p>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-semibold">Active Products</CardTitle>
-              <Link to={createPageUrl("Revenue")}>
-                <Button variant="ghost" size="sm">View All</Button>
-              </Link>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <Download className="w-5 h-5 text-green-600" />
+                <Badge className="bg-green-100 text-green-700">+{last7DaysDownloads}</Badge>
+              </div>
+              <p className="text-3xl font-bold text-green-600">
+                {(totalDownloads / 1000).toFixed(1)}k
+              </p>
+              <p className="text-sm text-slate-500">Downloads</p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <Star className="w-5 h-5 text-amber-600" />
+                <Badge variant="outline">{reviews.length} reviews</Badge>
+              </div>
+              <p className="text-3xl font-bold text-amber-600">{avgRating.toFixed(1)}</p>
+              <p className="text-sm text-slate-500">Avg Rating</p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <DollarSign className="w-5 h-5 text-emerald-600" />
+                <TrendingUp className="w-4 h-4 text-emerald-600" />
+              </div>
+              <p className="text-3xl font-bold text-emerald-600">
+                ${(totalRevenue / 1000).toFixed(1)}k
+              </p>
+              <p className="text-sm text-slate-500">Revenue</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Apps List */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base">Seus Apps</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {products.filter(p => p.status === "active").slice(0, 5).map((product) => (
-                  <div key={product.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {product.image_url ? (
-                        <img src={product.image_url} alt={product.name} className="w-10 h-10 rounded-lg object-cover" />
-                      ) : (
-                        <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
-                          <Package className="w-5 h-5 text-indigo-600" />
-                        </div>
+                {apps.map((app) => (
+                  <div key={app.id} className="flex items-center gap-4 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-all">
+                    {app.icon_url ? (
+                      <img src={app.icon_url} alt={app.app_name} className="w-12 h-12 rounded-xl object-cover" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                        {app.app_name?.charAt(0)}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{app.app_name}</p>
+                      <div className="flex items-center gap-2 text-xs text-slate-500">
+                        <span className="flex items-center gap-1">
+                          <Star className="w-3 h-3 text-amber-500" />
+                          {((app.rating_ios || 0) + (app.rating_android || 0)) / 2 || 0}
+                        </span>
+                        <span>•</span>
+                        <span>{((app.downloads_ios || 0) + (app.downloads_android || 0)).toLocaleString()} downloads</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      {(app.platform === 'ios' || app.platform === 'both') && (
+                        <Badge variant="outline" className="bg-slate-900 text-white border-slate-900">
+                          <Apple className="w-3 h-3" />
+                        </Badge>
                       )}
-                      <div>
-                        <p className="font-medium text-slate-900 text-sm">{product.name}</p>
-                        <p className="text-xs text-slate-500">Stock: {product.stock_quantity || 0}</p>
-                      </div>
+                      {(app.platform === 'android' || app.platform === 'both') && (
+                        <Badge variant="outline" className="bg-green-600 text-white border-green-600">
+                          <Globe className="w-3 h-3" />
+                        </Badge>
+                      )}
                     </div>
-                    <span className="font-semibold text-slate-900">${product.price?.toLocaleString()}</span>
+                    <Badge className={cn(
+                      app.status === 'published' ? 'bg-green-100 text-green-700' :
+                      app.status === 'review' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-slate-100 text-slate-700'
+                    )}>
+                      {app.status}
+                    </Badge>
                   </div>
                 ))}
-                {products.length === 0 && (
-                  <p className="text-center text-slate-400 py-8">No products yet</p>
+                {apps.length === 0 && (
+                  <div className="text-center py-8 text-slate-400">
+                    <Smartphone className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>Nenhum app cadastrado</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Recent Reviews */}
+          <Card className="border-0 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base">Reviews Recentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {recentReviews.map((review) => (
+                  <div key={review.id} className="p-3 bg-slate-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">{review.user_name || 'Anônimo'}</p>
+                        <Badge variant="outline" className="text-xs">{review.platform}</Badge>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={cn(
+                            "w-3 h-3",
+                            i < review.rating ? "text-amber-500 fill-amber-500" : "text-slate-300"
+                          )} />
+                        ))}
+                      </div>
+                    </div>
+                    {review.title && <p className="text-sm font-medium mb-1">{review.title}</p>}
+                    <p className="text-sm text-slate-600 line-clamp-2">{review.review_text}</p>
+                    {review.sentiment && (
+                      <Badge className={cn(
+                        "mt-2 text-xs",
+                        review.sentiment === 'positive' ? 'bg-green-100 text-green-700' :
+                        review.sentiment === 'negative' ? 'bg-red-100 text-red-700' :
+                        'bg-slate-100 text-slate-700'
+                      )}>
+                        {review.sentiment}
+                      </Badge>
+                    )}
+                  </div>
+                ))}
+                {recentReviews.length === 0 && (
+                  <div className="text-center py-8 text-slate-400">
+                    <Star className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>Nenhuma review ainda</p>
+                  </div>
                 )}
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Alerts */}
+        {inReviewApps > 0 && (
+          <Card className="border-0 shadow-sm mt-6 border-l-4 border-l-yellow-500">
+            <CardContent className="p-4 flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-yellow-600" />
+              <p className="text-sm">
+                <span className="font-semibold">{inReviewApps} app(s)</span> em revisão nas stores
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

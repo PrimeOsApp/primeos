@@ -40,7 +40,7 @@ import GlobalSearch from "@/components/shared/GlobalSearch";
 
 const navigation = [
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
-  { name: "Portal Cliente", href: "ClientPortal", icon: Users, isNew: true },
+  { name: "Meus Apps", href: "Apps", icon: Activity, isNew: true },
   { name: "Analytics", href: "Analytics", icon: BarChart3, isNew: true },
   { name: "AI Content Creator", href: "ContentCreator", icon: Sparkles, isNew: true },
   { name: "Tarefas", href: "Tasks", icon: ListChecks, isNew: true },
