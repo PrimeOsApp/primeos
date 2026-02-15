@@ -23,6 +23,9 @@ import {
 import AILeadScoring from "@/components/crm/AILeadScoring";
 import SalesForecast from "@/components/crm/SalesForecast";
 import FollowUpSuggestions from "@/components/crm/FollowUpSuggestions";
+import NextActionSuggestions from "@/components/crm/NextActionSuggestions";
+import LeadRoutingRecommendations from "@/components/crm/LeadRoutingRecommendations";
+import ConversionPrediction from "@/components/crm/ConversionPrediction";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, differenceInDays, differenceInHours } from "date-fns";
@@ -405,16 +408,23 @@ export default function CRMAvancado() {
             <div className="space-y-6">
               <SalesForecast />
               {selectedLead && (
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <AILeadScoring lead={selectedLead} onScored={() => queryClient.invalidateQueries({ queryKey: ["leads"] })} />
+                <>
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <AILeadScoring lead={selectedLead} onScored={() => queryClient.invalidateQueries({ queryKey: ["leads"] })} />
+                    <ConversionPrediction lead={selectedLead} />
+                  </div>
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    <NextActionSuggestions lead={selectedLead} />
+                    <LeadRoutingRecommendations lead={selectedLead} onAssign={() => queryClient.invalidateQueries({ queryKey: ["leads"] })} />
+                  </div>
                   <FollowUpSuggestions lead={selectedLead} />
-                </div>
+                </>
               )}
               {!selectedLead && (
                 <Card className="border-0 shadow-sm">
                   <CardContent className="p-8 text-center">
                     <Brain className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                    <p className="text-slate-500">Selecione um lead na aba "Leads" para ver análises de IA</p>
+                    <p className="text-slate-500">Selecione um lead na aba "Leads" para ver análises de IA completas</p>
                   </CardContent>
                 </Card>
               )}
