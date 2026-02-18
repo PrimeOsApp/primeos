@@ -17,7 +17,9 @@ import {
   Users,
   Pencil,
   Activity,
+  Brain,
 } from "lucide-react";
+import PatientAIInsights from "@/components/patients/PatientAIInsights";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -191,11 +193,15 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="allergies" className="w-full">
-                  <TabsList className="grid grid-cols-4 w-full">
+                  <TabsList className="grid grid-cols-5 w-full">
                     <TabsTrigger value="allergies">Alergias</TabsTrigger>
                     <TabsTrigger value="medications">Medicamentos</TabsTrigger>
                     <TabsTrigger value="conditions">Condições</TabsTrigger>
                     <TabsTrigger value="treatments">Tratamentos</TabsTrigger>
+                    <TabsTrigger value="ai" className="flex items-center gap-1">
+                      <Brain className="w-3.5 h-3.5 text-indigo-600" />
+                      IA
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="allergies" className="space-y-4 pt-4">
@@ -305,6 +311,10 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                     )}
                   </TabsContent>
                 </Tabs>
+
+                  <TabsContent value="ai" className="pt-4">
+                    <PatientAIInsights patient={patient} />
+                  </TabsContent>
 
                 {patient.notes && (
                   <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
