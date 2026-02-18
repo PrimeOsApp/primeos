@@ -147,6 +147,15 @@ export default function Layout({ children, currentPageName }) {
   };
 
   const NavItem = ({ item }) => {
+    if (item.section) {
+      return (
+        <div className="pt-4 pb-1 px-2 first:pt-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            {item.section}
+          </span>
+        </div>
+      );
+    }
     const isActive = currentPageName === item.href;
     return (
       <Link
