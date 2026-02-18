@@ -293,8 +293,9 @@ export default function Agenda() {
         </Card>
           </TabsContent>
         </Tabs>
+      </div>
 
-        <Dialog open={showForm} onOpenChange={(open) => {
+      <Dialog open={showForm} onOpenChange={(open) => {
           setShowForm(open);
           if (!open) {
             setEditingAppointment(null);
