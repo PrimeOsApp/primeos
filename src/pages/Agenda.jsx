@@ -323,7 +323,6 @@ export default function Agenda() {
             />
           </DialogContent>
         </Dialog>
-      </div>
     </div>
   );
 }
