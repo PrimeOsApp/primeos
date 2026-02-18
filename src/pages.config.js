@@ -54,6 +54,7 @@ import AdvancedReports from './pages/AdvancedReports';
 import Agenda from './pages/Agenda';
 import Analytics from './pages/Analytics';
 import AppointmentReports from './pages/AppointmentReports';
+import Apps from './pages/Apps';
 import BusinessModelCanvas from './pages/BusinessModelCanvas';
 import CRM from './pages/CRM';
 import CRMAgenda from './pages/CRMAgenda';
@@ -98,7 +99,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import Apps from './pages/Apps';
 import __Layout from './Layout.jsx';
 
 
@@ -110,6 +110,7 @@ export const PAGES = {
     "Agenda": Agenda,
     "Analytics": Analytics,
     "AppointmentReports": AppointmentReports,
+    "Apps": Apps,
     "BusinessModelCanvas": BusinessModelCanvas,
     "CRM": CRM,
     "CRMAgenda": CRMAgenda,
@@ -154,7 +155,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "Apps": Apps,
 }
 
 export const pagesConfig = {
