@@ -41,12 +41,19 @@ export default function OnlineBooking() {
     queryKey: ['appointments', bookingData.date],
     queryFn: async () => {
       if (!bookingData.date) return [];
-      const appointments = await base44.entities.Appointment.filter({ 
-        date: bookingData.date,
-        status: { $ne: 'cancelled' }
-      });
-      return appointments;
+      return base44.entities.Appointment.filter({ date: bookingData.date });
     },
+    enabled: !!bookingData.date
+  });
+
+  const { data: dentists = [] } = useQuery({
+    queryKey: ['dentists_active'],
+    queryFn: () => base44.entities.Dentist.filter({ is_active: true }),
+  });
+
+  const { data: blockouts = [] } = useQuery({
+    queryKey: ['blockouts', bookingData.date],
+    queryFn: () => bookingData.date ? base44.entities.DentistBlockout.filter({ date: bookingData.date }) : [],
     enabled: !!bookingData.date
   });
 
