@@ -61,7 +61,9 @@ export default function OnlineBooking() {
     setBookingData(prev => ({
       ...prev,
       service_type: service.type,
-      duration_minutes: service.duration
+      duration_minutes: service.duration,
+      dentist_id: '',
+      provider: ''
     }));
     setCurrentStep(STEPS.DATE);
   };
