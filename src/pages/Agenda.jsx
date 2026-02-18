@@ -140,6 +140,8 @@ export default function Agenda() {
     setView("day");
   };
 
+  const [mainTab, setMainTab] = useState("calendar");
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-6">
       <div className="max-w-7xl mx-auto">
@@ -150,41 +152,59 @@ export default function Agenda() {
                 <Calendar className="w-8 h-8 text-blue-600" />
                 Agenda de Consultas
               </h1>
-              <p className="text-slate-500 mt-1">Gerencie agendamentos e consultas</p>
+              <p className="text-slate-500 mt-1">Gerencie agendamentos, profissionais e recursos</p>
             </div>
-            <div className="flex gap-2">
-              <Button 
-                onClick={() => sendRemindersMutation.mutate()}
-                variant="outline"
-                disabled={sendRemindersMutation.isPending}
-              >
-                <Bell className="w-4 h-4 mr-2" />
-                Enviar Lembretes
-              </Button>
-              <Button onClick={() => {
-                setEditingAppointment(null);
-                setInitialDate("");
-                setInitialTime("");
-                setShowForm(true);
-              }} className="bg-blue-600 hover:bg-blue-700">
-                <Plus className="w-4 h-4 mr-2" />Nova Consulta
-              </Button>
-            </div>
+            <Button onClick={() => {
+              setEditingAppointment(null);
+              setInitialDate("");
+              setInitialTime("");
+              setShowForm(true);
+            }} className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="w-4 h-4 mr-2" />Nova Consulta
+            </Button>
           </div>
         </motion.div>
 
-        <div className="mb-6">
-          <GoogleCalendarSync />
-        </div>
+        <Tabs value={mainTab} onValueChange={setMainTab} className="space-y-5">
+          <TabsList className="flex w-full max-w-xl h-auto gap-1">
+            <TabsTrigger value="calendar" className="flex items-center gap-1.5 flex-1">
+              <Calendar className="w-4 h-4" />Agenda
+            </TabsTrigger>
+            <TabsTrigger value="lembretes" className="flex items-center gap-1.5 flex-1">
+              <BellRing className="w-4 h-4" />Lembretes
+            </TabsTrigger>
+            <TabsTrigger value="profissionais" className="flex items-center gap-1.5 flex-1">
+              <Users className="w-4 h-4" />Profissionais
+            </TabsTrigger>
+            <TabsTrigger value="recursos" className="flex items-center gap-1.5 flex-1">
+              <MonitorCheck className="w-4 h-4" />Recursos
+            </TabsTrigger>
+          </TabsList>
 
-        <div className="mb-6">
-          <AIReturnSuggestions onSchedule={(prefill) => {
-            setEditingAppointment(null);
-            setInitialDate(prefill.date || "");
-            setInitialTime(prefill.time || "");
-            setShowForm(true);
-          }} />
-        </div>
+          <TabsContent value="lembretes">
+            <ReminderPanel />
+          </TabsContent>
+
+          <TabsContent value="profissionais">
+            <DentistAvailability />
+          </TabsContent>
+
+          <TabsContent value="recursos">
+            <ResourceManager />
+          </TabsContent>
+
+          <TabsContent value="calendar" className="space-y-5">
+            <div>
+              <GoogleCalendarSync />
+            </div>
+            <div>
+              <AIReturnSuggestions onSchedule={(prefill) => {
+                setEditingAppointment(null);
+                setInitialDate(prefill.date || "");
+                setInitialTime(prefill.time || "");
+                setShowForm(true);
+              }} />
+            </div>
 
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
