@@ -74,6 +74,7 @@ const navigation = [
   { name: "Marketing Automation", href: "MarketingAutomation", icon: Zap },
 
   { section: "Finanças & Relatórios" },
+  { name: "Financeiro", href: "Financeiro", icon: DollarSign },
   { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
   { name: "Métricas", href: "Metricas", icon: BarChart3 },
   { name: "Analytics", href: "Analytics", icon: BarChart3 },
