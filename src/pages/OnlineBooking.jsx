@@ -260,11 +260,14 @@ export default function OnlineBooking() {
                     </div>
 
                     <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                      <div className="flex items-center gap-2 text-sm text-blue-900">
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-blue-900">
                         <CalendarIcon className="w-4 h-4" />
                         <span className="font-medium">{bookingData.date}</span>
-                        <Clock className="w-4 h-4 ml-4" />
+                        <Clock className="w-4 h-4" />
                         <span className="font-medium">{bookingData.time}</span>
+                        {bookingData.provider && (
+                          <span className="font-medium text-indigo-700">👨‍⚕️ {bookingData.provider}</span>
+                        )}
                       </div>
                     </div>
 
