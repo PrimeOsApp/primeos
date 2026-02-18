@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
-  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain
+  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain,
+  Users, MonitorCheck, BellRing
 } from "lucide-react";
 import AIReturnSuggestions from "../components/agenda/AIReturnSuggestions";
 import { toast } from "sonner";
@@ -18,6 +19,9 @@ import MonthView from "../components/agenda/MonthView";
 import WeekView from "../components/agenda/WeekView";
 import DayView from "../components/agenda/DayView";
 import AppointmentForm from "../components/agenda/AppointmentForm";
+import DentistAvailability from "../components/agenda/DentistAvailability";
+import ResourceManager from "../components/agenda/ResourceManager";
+import ReminderPanel from "../components/agenda/ReminderPanel";
 
 export default function Agenda() {
   const [view, setView] = useState("day");
