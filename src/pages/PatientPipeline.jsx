@@ -37,6 +37,7 @@ export default function PatientPipeline() {
   const [activeStage, setActiveStage] = useState("whatsapp");
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showNewPatient, setShowNewPatient] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [generatingScript, setGeneratingScript] = useState(false);
   const [salesScript, setSalesScript] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -241,9 +242,14 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                     <MessageCircle className="w-5 h-5 text-green-600" />
                     Select or Add Patient
                   </CardTitle>
-                  <Button onClick={() => setShowNewPatient(true)} className="bg-green-600 hover:bg-green-700">
-                    <Plus className="w-4 h-4 mr-2" />New Patient
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button onClick={() => setShowOnboarding(true)} className="bg-indigo-600 hover:bg-indigo-700">
+                      <UserPlus className="w-4 h-4 mr-2" />Novo Paciente (Onboarding)
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowNewPatient(true)}>
+                      <Plus className="w-4 h-4 mr-2" />Cadastro Rápido
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
