@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
-  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell
+  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain
 } from "lucide-react";
+import AIReturnSuggestions from "../components/agenda/AIReturnSuggestions";
 import { toast } from "sonner";
 import { format, startOfWeek, addWeeks, addMonths, startOfMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -170,6 +171,15 @@ export default function Agenda() {
 
         <div className="mb-6">
           <GoogleCalendarSync />
+        </div>
+
+        <div className="mb-6">
+          <AIReturnSuggestions onSchedule={(prefill) => {
+            setEditingAppointment(null);
+            setInitialDate(prefill.date || "");
+            setInitialTime(prefill.time || "");
+            setShowForm(true);
+          }} />
         </div>
 
         <Card className="border-0 shadow-sm">

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, CheckCircle, X, Edit, Clock, User, Phone, Database } from "lucide-react";
+import SmartReminderButton from "./SmartReminderButton";
+import AIReschedulePanel from "./AIReschedulePanel";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import PatientMedicalSummary from "./PatientMedicalSummary";
@@ -127,6 +129,8 @@ export default function AppointmentCard({
         <p className="text-sm text-slate-600 mb-3 italic">{appointment.notes}</p>
       )}
 
+      <AIReschedulePanel appointment={appointment} onSelectSlot={(date, time) => onEdit({ ...appointment, date, time })} />
+
       <div className="flex items-center gap-2 pt-3 border-t">
         {appointment.patient_id && (
           <Button 
@@ -161,6 +165,8 @@ export default function AppointmentCard({
             WhatsApp
           </Button>
         )}
+
+        <SmartReminderButton appointment={appointment} />
         
         {appointment.status === "scheduled" && (
           <Button 
