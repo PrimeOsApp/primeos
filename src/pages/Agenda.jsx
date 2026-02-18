@@ -291,6 +291,8 @@ export default function Agenda() {
             </Tabs>
           </CardContent>
         </Card>
+          </TabsContent>
+        </Tabs>
 
         <Dialog open={showForm} onOpenChange={(open) => {
           setShowForm(open);
