@@ -254,6 +254,21 @@ export default function Financeiro() {
             />
           </TabsContent>
 
+          {/* RELATÓRIOS */}
+          <TabsContent value="relatorios">
+            <ReportBuilder transactions={transactions} />
+          </TabsContent>
+
+          {/* ORÇAMENTO */}
+          <TabsContent value="orcamento">
+            <BudgetPlanner transactions={transactions} />
+          </TabsContent>
+
+          {/* BANCO */}
+          <TabsContent value="banco">
+            <BankConnect onImported={() => queryClient.invalidateQueries({ queryKey: ["financialTransactions"] })} />
+          </TabsContent>
+
           {/* CATEGORIAS */}
           <TabsContent value="categorias" className="space-y-6">
             <div className="flex items-center gap-3">
