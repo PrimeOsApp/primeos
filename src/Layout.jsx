@@ -42,45 +42,53 @@ import GlobalSearch from "@/components/shared/GlobalSearch";
 import SettingsDialog from "@/components/shared/SettingsDialog";
 
 const navigation = [
-  // --- Fluxo do Operador ---
+  { section: "Operacional" },
   { name: "Pipeline Pacientes", href: "PatientPipeline", icon: Heart },
   { name: "Prontuários", href: "Prontuarios", icon: ClipboardList },
   { name: "Agenda", href: "Agenda", icon: Calendar },
+  { name: "Tarefas", href: "Tasks", icon: ListChecks },
+  { name: "Calendário de Tarefas", href: "TaskCalendar", icon: Calendar },
+  { name: "POPs", href: "POPs", icon: FileText },
+  { name: "Canais Atendimento", href: "Canais", icon: Inbox },
+  { name: "Suporte ao Cliente", href: "CustomerSupport", icon: HeadphonesIcon },
+
+  { section: "CRM & Pacientes" },
   { name: "Jornada Cliente", href: "JornadaCliente", icon: TrendingUp },
   { name: "CRM", href: "CRM", icon: Users },
   { name: "CRM Avançado", href: "CRMAvancado", icon: Target },
+  { name: "Segmentação", href: "CustomerSegments", icon: Target },
+  { name: "Jornada do Cliente", href: "JourneyMapping", icon: TrendingUp },
+
+  { section: "Vendas" },
   { name: "Leads", href: "LeadsPipeline", icon: Users },
+  { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp },
   { name: "Sales", href: "Sales", icon: DollarSign },
-  { name: "POPs", href: "POPs", icon: FileText },
-  // --- Gestão & Relatórios ---
-  { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
-  { name: "Tarefas", href: "Tasks", icon: ListChecks },
-  { name: "Calendário de Tarefas", href: "TaskCalendar", icon: Calendar },
-  { name: "Relatórios Consultas", href: "AppointmentReports", icon: BarChart3 },
-  { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3 },
-  { name: "Relatórios Avançados", href: "AdvancedReports", icon: BarChart3 },
-  { name: "Analytics", href: "Analytics", icon: BarChart3 },
-  { name: "Métricas", href: "Metricas", icon: BarChart3 },
-  // --- Marketing & Automação ---
+  { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
+
+  { section: "Marketing" },
   { name: "Marketing OS", href: "MarketingOS", icon: Zap },
   { name: "Campanhas", href: "Campanhas", icon: Megaphone },
   { name: "Conteúdos", href: "Conteudos", icon: FileText },
   { name: "AI Content Creator", href: "ContentCreator", icon: Sparkles },
   { name: "Email Automation", href: "EmailAutomation", icon: Mail },
   { name: "Marketing Automation", href: "MarketingAutomation", icon: Zap },
-  { name: "Segmentação", href: "CustomerSegments", icon: Target },
-  { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp },
-  { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
-  // --- IA & Estratégia ---
+
+  { section: "Finanças & Relatórios" },
+  { name: "Dashboard", href: "Dashboard", icon: LayoutDashboard },
+  { name: "Métricas", href: "Metricas", icon: BarChart3 },
+  { name: "Analytics", href: "Analytics", icon: BarChart3 },
+  { name: "Relatórios Consultas", href: "AppointmentReports", icon: BarChart3 },
+  { name: "Relatórios Vendas", href: "SalesReports", icon: BarChart3 },
+  { name: "Relatórios Avançados", href: "AdvancedReports", icon: BarChart3 },
+
+  { section: "Estratégia & IA" },
   { name: "AI Insights", href: "AIInsights", icon: Brain },
   { name: "Assistente IA", href: "AIAssistant", icon: Brain },
-  { name: "Jornada do Cliente", href: "JourneyMapping", icon: TrendingUp },
   { name: "Estratégias", href: "Estrategias", icon: Brain },
   { name: "Estratégia", href: "Strategy", icon: Target },
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
-  // --- Sistema ---
-  { name: "Canais Atendimento", href: "Canais", icon: Inbox },
-  { name: "Suporte ao Cliente", href: "CustomerSupport", icon: HeadphonesIcon },
+
+  { section: "Sistema" },
   { name: "Meus Apps", href: "Apps", icon: Activity },
   { name: "Gamificação", href: "Gamification", icon: Zap },
   { name: "Admin Panel", href: "AdminPanel", icon: Shield },
