@@ -203,13 +203,51 @@ export default function OnlineBooking() {
                 )}
 
                 {currentStep === STEPS.TIME && (
-                  <TimeSlotPicker
-                    date={bookingData.date}
-                    duration={bookingData.duration_minutes}
-                    existingAppointments={existingAppointments}
-                    onTimeSelect={handleTimeSelect}
-                    onBack={handleBack}
-                  />
+                  <div className="space-y-5">
+                    {dentists.length > 0 && (
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-3 text-center">Escolha o Profissional (opcional)</h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+                          <button
+                            onClick={() => setBookingData(p => ({ ...p, dentist_id: '', provider: '' }))}
+                            className={`p-3 rounded-xl border-2 text-sm transition-all ${!bookingData.dentist_id ? 'border-blue-500 bg-blue-50 font-semibold text-blue-700' : 'border-gray-200 hover:border-blue-300'}`}
+                          >
+                            Qualquer profissional
+                          </button>
+                          {dentists.map(d => {
+                            const dayOfWeek = bookingData.date ? new Date(bookingData.date + 'T12:00:00').getDay() : -1;
+                            const wh = d.working_hours?.[dayOfWeek];
+                            const worksToday = wh?.active;
+                            const hasBlockout = blockouts.some(b => b.dentist_id === d.id && b.is_full_day);
+                            const available = worksToday && !hasBlockout;
+                            return (
+                              <button
+                                key={d.id}
+                                disabled={!available}
+                                onClick={() => setBookingData(p => ({ ...p, dentist_id: d.id, provider: d.name }))}
+                                className={`p-3 rounded-xl border-2 text-sm transition-all ${!available ? 'opacity-40 cursor-not-allowed border-gray-100 bg-gray-50' : bookingData.dentist_id === d.id ? 'border-blue-500 bg-blue-50 font-semibold text-blue-700' : 'border-gray-200 hover:border-blue-300'}`}
+                              >
+                                <div className="w-8 h-8 rounded-full mx-auto mb-1 flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: d.color || '#6366f1' }}>
+                                  {d.name.charAt(0)}
+                                </div>
+                                <p className="truncate">{d.name}</p>
+                                <p className="text-xs text-gray-500">{!available ? 'Indisponível' : 'Disponível'}</p>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    <TimeSlotPicker
+                      date={bookingData.date}
+                      duration={bookingData.duration_minutes}
+                      existingAppointments={existingAppointments.filter(a =>
+                        !bookingData.dentist_id || a.dentist_id === bookingData.dentist_id || !a.dentist_id
+                      )}
+                      onTimeSelect={handleTimeSelect}
+                      onBack={handleBack}
+                    />
+                  </div>
                 )}
 
                 {currentStep === STEPS.INFO && (
