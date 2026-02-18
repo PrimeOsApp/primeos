@@ -76,6 +76,7 @@ const navigation = [
   { name: "Estratégia", href: "Strategy", icon: Target },
   { name: "AI Insights", href: "AIInsights", icon: Brain, isNew: true },
   { name: "Assistente IA", href: "AIAssistant", icon: Brain, isNew: true },
+  { name: "Admin Panel", href: "AdminPanel", icon: Shield, isNew: true },
   { name: "Gamificação", href: "Gamification", icon: Zap, isNew: true },
   { name: "Jornada do Cliente", href: "JourneyMapping", icon: TrendingUp, isNew: true },
 ];
