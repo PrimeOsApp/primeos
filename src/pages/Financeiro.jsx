@@ -171,15 +171,24 @@ export default function Financeiro() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid grid-cols-3 max-w-md">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />Dashboard
+          <TabsList className="flex flex-wrap h-auto gap-1 p-1 w-full max-w-2xl">
+            <TabsTrigger value="dashboard" className="flex items-center gap-1.5 text-xs">
+              <BarChart3 className="w-3.5 h-3.5" />Dashboard
             </TabsTrigger>
-            <TabsTrigger value="transacoes" className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4" />Transações
+            <TabsTrigger value="transacoes" className="flex items-center gap-1.5 text-xs">
+              <DollarSign className="w-3.5 h-3.5" />Transações
             </TabsTrigger>
-            <TabsTrigger value="categorias" className="flex items-center gap-2">
-              <PieChart className="w-4 h-4" />Categorias
+            <TabsTrigger value="categorias" className="flex items-center gap-1.5 text-xs">
+              <PieChart className="w-3.5 h-3.5" />Categorias
+            </TabsTrigger>
+            <TabsTrigger value="relatorios" className="flex items-center gap-1.5 text-xs">
+              <FileSpreadsheet className="w-3.5 h-3.5" />Relatórios
+            </TabsTrigger>
+            <TabsTrigger value="orcamento" className="flex items-center gap-1.5 text-xs">
+              <Target className="w-3.5 h-3.5" />Orçamento
+            </TabsTrigger>
+            <TabsTrigger value="banco" className="flex items-center gap-1.5 text-xs">
+              <Building2 className="w-3.5 h-3.5" />Banco
             </TabsTrigger>
           </TabsList>
 
