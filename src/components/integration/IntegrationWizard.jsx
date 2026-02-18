@@ -87,44 +87,6 @@ const INTEGRATIONS = {
       }
     ]
   },
-  facebookAds: {
-    id: 'facebookAds',
-    name: 'Facebook Ads',
-    icon: TrendingUp,
-    color: 'text-indigo-600',
-    bgColor: 'bg-indigo-50',
-    borderColor: 'border-indigo-200',
-    description: 'Importe métricas do Facebook Marketing API',
-    requiredSecrets: [
-      'FACEBOOK_ACCESS_TOKEN',
-      'FACEBOOK_AD_ACCOUNT_ID'
-    ],
-    steps: [
-      {
-        title: 'Access Token',
-        secretKey: 'FACEBOOK_ACCESS_TOKEN',
-        instructions: [
-          'Acesse Facebook Business Manager',
-          'Configurações → Usuários do Sistema',
-          'Crie usuário do sistema',
-          'Gere token com permissão ads_read',
-          'Copie o token de longa duração'
-        ],
-        link: 'https://business.facebook.com'
-      },
-      {
-        title: 'Ad Account ID',
-        secretKey: 'FACEBOOK_AD_ACCOUNT_ID',
-        instructions: [
-          'Acesse Gerenciador de Anúncios',
-          'Veja o ID da conta (act_XXXXXXXXXX)',
-          'Copie incluindo o prefixo "act_"',
-          'Cole em Settings → Secrets'
-        ],
-        link: 'https://business.facebook.com/adsmanager'
-      }
-    ]
-  },
   googleCalendar: {
     id: 'googleCalendar',
     name: 'Google Calendar',
