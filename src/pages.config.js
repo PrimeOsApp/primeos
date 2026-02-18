@@ -50,6 +50,7 @@
 import AIAssistant from './pages/AIAssistant';
 import AIInsights from './pages/AIInsights';
 import Activities from './pages/Activities';
+import AdminPanel from './pages/AdminPanel';
 import AdvancedReports from './pages/AdvancedReports';
 import Agenda from './pages/Agenda';
 import Analytics from './pages/Analytics';
@@ -99,7 +100,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import AdminPanel from './pages/AdminPanel';
 import __Layout from './Layout.jsx';
 
 
@@ -107,6 +107,7 @@ export const PAGES = {
     "AIAssistant": AIAssistant,
     "AIInsights": AIInsights,
     "Activities": Activities,
+    "AdminPanel": AdminPanel,
     "AdvancedReports": AdvancedReports,
     "Agenda": Agenda,
     "Analytics": Analytics,
@@ -156,7 +157,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "AdminPanel": AdminPanel,
 }
 
 export const pagesConfig = {
