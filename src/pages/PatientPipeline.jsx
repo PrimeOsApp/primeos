@@ -725,6 +725,21 @@ Keep it friendly, professional, and concise for WhatsApp.`,
           )}
         </AnimatePresence>
 
+        {/* Onboarding Wizard */}
+        {showOnboarding && (
+          <PatientOnboardingWizard
+            onClose={() => setShowOnboarding(false)}
+            onComplete={(patient) => {
+              if (patient) {
+                setSelectedPatient(patient);
+                setActiveStage("crm");
+                queryClient.invalidateQueries({ queryKey: ["customers"] });
+              }
+              setShowOnboarding(false);
+            }}
+          />
+        )}
+
         {/* New Patient Dialog */}
         <Dialog open={showNewPatient} onOpenChange={setShowNewPatient}>
           <DialogContent className="sm:max-w-md">
