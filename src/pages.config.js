@@ -74,6 +74,7 @@ import CustomerSupport from './pages/CustomerSupport';
 import Dashboard from './pages/Dashboard';
 import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
+import Financeiro from './pages/Financeiro';
 import Gamification from './pages/Gamification';
 import JornadaCliente from './pages/JornadaCliente';
 import JourneyMapping from './pages/JourneyMapping';
@@ -100,7 +101,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import Financeiro from './pages/Financeiro';
 import __Layout from './Layout.jsx';
 
 
@@ -132,6 +132,7 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
+    "Financeiro": Financeiro,
     "Gamification": Gamification,
     "JornadaCliente": JornadaCliente,
     "JourneyMapping": JourneyMapping,
@@ -158,7 +159,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "Financeiro": Financeiro,
 }
 
 export const pagesConfig = {

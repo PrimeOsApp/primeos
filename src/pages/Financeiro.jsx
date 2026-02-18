@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
-  Search, Filter, Download, PieChart, BarChart3, Wallet
+  Search, Filter, Download, PieChart, BarChart3, Wallet,
+  Target, Building2, FileSpreadsheet
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
@@ -19,6 +20,9 @@ import TransactionForm from "../components/financeiro/TransactionForm";
 import TransactionList from "../components/financeiro/TransactionList";
 import CashFlowChart from "../components/financeiro/CashFlowChart";
 import ImportStatement from "../components/financeiro/ImportStatement";
+import ReportBuilder from "../components/financeiro/ReportBuilder";
+import BudgetPlanner from "../components/financeiro/BudgetPlanner";
+import BankConnect from "../components/financeiro/BankConnect";
 
 const COLORS = ["#10b981", "#6366f1", "#f59e0b", "#f43f5e", "#3b82f6", "#8b5cf6", "#ec4899"];
 
