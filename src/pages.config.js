@@ -99,6 +99,7 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
+import AdminPanel from './pages/AdminPanel';
 import __Layout from './Layout.jsx';
 
 
@@ -155,6 +156,7 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
+    "AdminPanel": AdminPanel,
 }
 
 export const pagesConfig = {
