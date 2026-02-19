@@ -90,6 +90,7 @@ const navigation = [
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
 
   { section: "Sistema" },
+  { name: "Integração EHR", href: "EHRIntegration", icon: Activity },
   { name: "Meus Apps", href: "Apps", icon: Activity },
   { name: "Gamificação", href: "Gamification", icon: Zap },
   { name: "Admin Panel", href: "AdminPanel", icon: Shield },
