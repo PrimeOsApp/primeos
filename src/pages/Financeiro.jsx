@@ -41,7 +41,9 @@ export default function Financeiro() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [showPaymentLink, setShowPaymentLink] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [defaultFormType, setDefaultFormType] = useState(null);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
