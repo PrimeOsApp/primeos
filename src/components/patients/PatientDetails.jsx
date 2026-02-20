@@ -31,7 +31,8 @@ import PatientCheckup from "@/components/patients/PatientCheckup";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-export default function PatientDetails({ patient, onBack, onEdit }) {
+export default function PatientDetails({ patient: initialPatient, onBack, onEdit }) {
+  const [patient, setPatient] = useState(initialPatient);
   const age = patient.date_of_birth
     ? new Date().getFullYear() - new Date(patient.date_of_birth).getFullYear()
     : null;
@@ -230,20 +231,39 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="appointments" className="w-full">
-                  <TabsList className="grid grid-cols-6 w-full">
-                    <TabsTrigger value="appointments">Consultas</TabsTrigger>
-                    <TabsTrigger value="allergies">Alergias</TabsTrigger>
-                    <TabsTrigger value="medications">Medicamentos</TabsTrigger>
-                    <TabsTrigger value="conditions">Condições</TabsTrigger>
-                    <TabsTrigger value="treatments">Tratamentos</TabsTrigger>
-                    <TabsTrigger value="ai" className="flex items-center gap-1">
-                      <Brain className="w-3.5 h-3.5 text-indigo-600" />
-                      IA
+                  <TabsList className="flex flex-wrap gap-1 h-auto w-full mb-2">
+                    <TabsTrigger value="appointments" className="text-xs">Consultas</TabsTrigger>
+                    <TabsTrigger value="prescriptions" className="text-xs">Prescrições</TabsTrigger>
+                    <TabsTrigger value="checkup" className="text-xs">Check-up</TabsTrigger>
+                    <TabsTrigger value="images" className="text-xs">Imagens</TabsTrigger>
+                    <TabsTrigger value="family" className="text-xs">Família</TabsTrigger>
+                    <TabsTrigger value="allergies" className="text-xs">Alergias</TabsTrigger>
+                    <TabsTrigger value="medications" className="text-xs">Medicamentos</TabsTrigger>
+                    <TabsTrigger value="conditions" className="text-xs">Condições</TabsTrigger>
+                    <TabsTrigger value="treatments" className="text-xs">Tratamentos</TabsTrigger>
+                    <TabsTrigger value="ai" className="text-xs flex items-center gap-1">
+                      <Brain className="w-3 h-3 text-indigo-600" />IA
                     </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="appointments" className="pt-4">
                     <PatientAppointmentHistory patient={patient} />
+                  </TabsContent>
+
+                  <TabsContent value="prescriptions" className="pt-4">
+                    <PatientPrescriptions patient={patient} onUpdate={setPatient} />
+                  </TabsContent>
+
+                  <TabsContent value="checkup" className="pt-4">
+                    <PatientCheckup patient={patient} onUpdate={setPatient} />
+                  </TabsContent>
+
+                  <TabsContent value="images" className="pt-4">
+                    <PatientImageExams patient={patient} onUpdate={setPatient} />
+                  </TabsContent>
+
+                  <TabsContent value="family" className="pt-4">
+                    <PatientFamilyHistory patient={patient} onUpdate={setPatient} />
                   </TabsContent>
 
                   <TabsContent value="allergies" className="space-y-4 pt-4">
@@ -254,14 +274,8 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                             <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
                               <p className="font-semibold text-red-900">{allergy.allergen}</p>
-                              {allergy.severity && (
-                                <Badge className="mt-1 bg-red-100 text-red-700">
-                                  {allergy.severity}
-                                </Badge>
-                              )}
-                              {allergy.reaction && (
-                                <p className="text-sm text-red-700 mt-2">{allergy.reaction}</p>
-                              )}
+                              {allergy.severity && <Badge className="mt-1 bg-red-100 text-red-700">{allergy.severity}</Badge>}
+                              {allergy.reaction && <p className="text-sm text-red-700 mt-2">{allergy.reaction}</p>}
                             </div>
                           </div>
                         </div>
@@ -285,11 +299,7 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                               <div className="grid grid-cols-2 gap-2 mt-2 text-sm text-blue-700">
                                 {med.dosage && <p>Dosagem: {med.dosage}</p>}
                                 {med.frequency && <p>Frequência: {med.frequency}</p>}
-                                {med.start_date && (
-                                  <p>
-                                    Início: {format(new Date(med.start_date), "dd/MM/yyyy", { locale: ptBR })}
-                                  </p>
-                                )}
+                                {med.start_date && <p>Início: {format(new Date(med.start_date), "dd/MM/yyyy", { locale: ptBR })}</p>}
                                 {med.prescribing_doctor && <p>Médico: {med.prescribing_doctor}</p>}
                               </div>
                             </div>
@@ -332,15 +342,11 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                               <p className="font-semibold text-indigo-900">{treatment.treatment}</p>
                               <div className="grid grid-cols-2 gap-2 mt-2 text-sm text-indigo-700">
                                 {treatment.tooth_number && <p>Dente: {treatment.tooth_number}</p>}
-                                {treatment.date && (
-                                  <p>Data: {format(new Date(treatment.date), "dd/MM/yyyy", { locale: ptBR })}</p>
-                                )}
+                                {treatment.date && <p>Data: {format(new Date(treatment.date), "dd/MM/yyyy", { locale: ptBR })}</p>}
                                 {treatment.dentist && <p>Dentista: {treatment.dentist}</p>}
                                 {treatment.cost && <p>Custo: R$ {treatment.cost.toFixed(2)}</p>}
                               </div>
-                              {treatment.notes && (
-                                <p className="text-sm text-indigo-600 mt-2">{treatment.notes}</p>
-                              )}
+                              {treatment.notes && <p className="text-sm text-indigo-600 mt-2">{treatment.notes}</p>}
                             </div>
                           </div>
                         </div>
@@ -352,11 +358,11 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                       </div>
                     )}
                   </TabsContent>
-                </Tabs>
 
                   <TabsContent value="ai" className="pt-4">
                     <PatientAIInsights patient={patient} />
                   </TabsContent>
+                </Tabs>
 
                 {patient.notes && (
                   <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
