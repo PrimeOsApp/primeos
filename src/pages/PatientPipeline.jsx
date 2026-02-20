@@ -351,9 +351,14 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                         <Badge className="bg-emerald-100 text-emerald-700 mt-1">{selectedPatient.status}</Badge>
                       </div>
                     </div>
-                    <Button onClick={() => setActiveStage("script")} className="w-full bg-indigo-600 hover:bg-indigo-700">
-                      Continue to Sales Script <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button onClick={() => setActiveStage("script")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Script IA <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      <Button onClick={() => setActiveStage("appointment")} variant="outline" className="flex-1">
+                        <Calendar className="w-4 h-4 mr-2" /> Agendar
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
                 <Card className="border-0 shadow-sm">
