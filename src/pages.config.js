@@ -72,6 +72,7 @@ import CustomerRelationships from './pages/CustomerRelationships';
 import CustomerSegments from './pages/CustomerSegments';
 import CustomerSupport from './pages/CustomerSupport';
 import Dashboard from './pages/Dashboard';
+import EHR from './pages/EHR';
 import EHRIntegration from './pages/EHRIntegration';
 import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
@@ -102,7 +103,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import EHR from './pages/EHR';
 import __Layout from './Layout.jsx';
 
 
@@ -132,6 +132,7 @@ export const PAGES = {
     "CustomerSegments": CustomerSegments,
     "CustomerSupport": CustomerSupport,
     "Dashboard": Dashboard,
+    "EHR": EHR,
     "EHRIntegration": EHRIntegration,
     "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
@@ -162,7 +163,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "EHR": EHR,
 }
 
 export const pagesConfig = {
