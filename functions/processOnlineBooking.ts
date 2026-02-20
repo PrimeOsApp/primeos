@@ -105,6 +105,13 @@ Deno.serve(async (req) => {
 
     console.log(`Appointment created: ${appointment.id} | ${data.patient_name} | ${data.date} ${data.time} | dentist: ${assignedProvider}`);
 
+    // Build patient self-service token
+    const phone = (data.patient_phone || '').replace(/\D/g, '');
+    const last4 = phone.slice(-4) || '0000';
+    const selfServiceToken = `${appointment.id}_${last4}`;
+    const appBaseUrl = `https://${Deno.env.get('BASE44_APP_ID')}.base44.app`;
+    const manageLink = `${appBaseUrl}/MeuAgendamento?token=${selfServiceToken}`;
+
     // Send confirmation email
     if (data.patient_email) {
       try {
@@ -122,7 +129,7 @@ Deno.serve(async (req) => {
             <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Horário</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.time}</td></tr>
             <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Duração</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.duration_minutes} minutos</td></tr>
             ${assignedProvider ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Profissional</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${assignedProvider}</td></tr>` : ''}
-            ${assignedResourceName ? `<tr><td style="padding:8px 0;color:#64748b;font-size:13px">Local</td><td style="padding:8px 0;font-weight:600">${assignedResourceName}</td></tr>` : ''}
+            ${assignedResourceName ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Local</td><td style="padding:8px 0;font-weight:600">${assignedResourceName}</td></tr>` : ''}
           </table>
               <div style="background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;color:#475569">
                 <p style="margin:0 0 4px"><strong>Observações:</strong></p>
@@ -132,7 +139,13 @@ Deno.serve(async (req) => {
                   <li>Cancelamentos com pelo menos 24h de antecedência</li>
                 </ul>
               </div>
-              <p style="margin-top:20px;color:#94a3b8;font-size:12px">Prime Odontologia · Responda este email para dúvidas</p>
+              <div style="margin-top:16px;text-align:center">
+                <a href="${manageLink}" style="display:inline-block;background:#4f46e5;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">
+                  📅 Cancelar ou Reagendar
+                </a>
+                <p style="margin-top:8px;font-size:11px;color:#94a3b8">Este link é pessoal. Não compartilhe com terceiros.</p>
+              </div>
+              <p style="margin-top:16px;color:#94a3b8;font-size:12px">Prime Odontologia · Responda este email para dúvidas</p>
             </div>
           `
         });
