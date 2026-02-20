@@ -12,14 +12,17 @@ import {
   Pill,
   AlertTriangle,
   FileText,
-  X as XRay,
   Shield,
   Users,
   Pencil,
   Activity,
   Brain,
+  MapPin,
+  CreditCard,
+  Briefcase,
 } from "lucide-react";
 import PatientAIInsights from "@/components/patients/PatientAIInsights";
+import PatientAppointmentHistory from "@/components/patients/PatientAppointmentHistory";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -119,6 +122,35 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                     </div>
                   </div>
                 )}
+                {patient.cpf && (
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-5 h-5 text-slate-400" />
+                    <div>
+                      <p className="text-xs text-slate-500">CPF</p>
+                      <p className="text-sm text-slate-900">{patient.cpf}</p>
+                    </div>
+                  </div>
+                )}
+                {patient.occupation && (
+                  <div className="flex items-center gap-3">
+                    <Briefcase className="w-5 h-5 text-slate-400" />
+                    <div>
+                      <p className="text-xs text-slate-500">Profissão</p>
+                      <p className="text-sm text-slate-900">{patient.occupation}</p>
+                    </div>
+                  </div>
+                )}
+                {patient.address?.city && (
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 text-slate-400" />
+                    <div>
+                      <p className="text-xs text-slate-500">Endereço</p>
+                      <p className="text-sm text-slate-900">
+                        {[patient.address.street, patient.address.number, patient.address.city, patient.address.state].filter(Boolean).join(", ")}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -192,8 +224,9 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                 <CardTitle className="text-xl">Histórico Médico</CardTitle>
               </CardHeader>
               <CardContent>
-                <Tabs defaultValue="allergies" className="w-full">
-                  <TabsList className="grid grid-cols-5 w-full">
+                <Tabs defaultValue="appointments" className="w-full">
+                  <TabsList className="grid grid-cols-6 w-full">
+                    <TabsTrigger value="appointments">Consultas</TabsTrigger>
                     <TabsTrigger value="allergies">Alergias</TabsTrigger>
                     <TabsTrigger value="medications">Medicamentos</TabsTrigger>
                     <TabsTrigger value="conditions">Condições</TabsTrigger>
@@ -203,6 +236,10 @@ export default function PatientDetails({ patient, onBack, onEdit }) {
                       IA
                     </TabsTrigger>
                   </TabsList>
+
+                  <TabsContent value="appointments" className="pt-4">
+                    <PatientAppointmentHistory patient={patient} />
+                  </TabsContent>
 
                   <TabsContent value="allergies" className="space-y-4 pt-4">
                     {patient.allergies && patient.allergies.length > 0 ? (
