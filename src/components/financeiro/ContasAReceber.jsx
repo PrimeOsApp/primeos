@@ -42,6 +42,7 @@ export default function ContasAReceber({ onAddNew, onGeneratePaymentLink }) {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [cobrancaTx, setCobrancaTx] = useState(null);
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
