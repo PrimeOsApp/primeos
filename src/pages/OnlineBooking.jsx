@@ -28,7 +28,7 @@ const STEP_LABELS = {
 export default function OnlineBooking() {
   const [step, setStep] = useState("service");
   const [booking, setBooking] = useState({
-    service_type: "", date: "", time: "", duration_minutes: 30,
+    service_type: "", reason: "", date: "", time: "", duration_minutes: 30,
     dentist_id: "", provider: "", resource_id: "", resource_name: "",
     patient_name: "", patient_phone: "", patient_email: "", notes: "",
   });
