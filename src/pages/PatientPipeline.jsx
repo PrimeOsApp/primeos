@@ -16,9 +16,11 @@ import {
   MessageCircle, Users, FileText, Calendar, Stethoscope, 
   Heart, RefreshCcw, ArrowRight, Phone, Plus, Send, Copy,
   ChevronRight, Sparkles, Loader2, CheckCircle, Clock, AlertCircle,
-  User, Activity, ClipboardList, UserPlus
+  User, Activity, ClipboardList, UserPlus, ExternalLink
 } from "lucide-react";
 import PatientOnboardingWizard from "../components/onboarding/PatientOnboardingWizard";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format, addDays } from "date-fns";
