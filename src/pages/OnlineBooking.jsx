@@ -109,7 +109,7 @@ export default function OnlineBooking() {
   };
 
   const reset = () => {
-    setBooking({ service_type:"",date:"",time:"",duration_minutes:30,dentist_id:"",provider:"",resource_id:"",resource_name:"",patient_name:"",patient_phone:"",patient_email:"",notes:"" });
+    setBooking({ service_type:"",reason:"",date:"",time:"",duration_minutes:30,dentist_id:"",provider:"",resource_id:"",resource_name:"",patient_name:"",patient_phone:"",patient_email:"",notes:"" });
     setStep("service"); setSuccess(false); setError("");
   };
 
