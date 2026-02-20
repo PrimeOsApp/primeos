@@ -3,114 +3,135 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const bookingData = await req.json();
+    const data = await req.json();
 
-    // Validate required fields
-    if (!bookingData.patient_name || !bookingData.patient_phone || !bookingData.date || !bookingData.time) {
-      return Response.json({ 
-        success: false,
-        error: 'Dados incompletos' 
-      }, { status: 400 });
+    if (!data.patient_name || !data.patient_phone || !data.date || !data.time) {
+      return Response.json({ success: false, error: 'Dados incompletos' }, { status: 400 });
     }
 
-    // Check if time slot is still available
-    const existingAppointments = await base44.asServiceRole.entities.Appointment.filter({
-      date: bookingData.date,
-      time: bookingData.time,
-      status: { $ne: 'cancelled' }
+    const db = base44.asServiceRole;
+
+    // Check for conflicts – if dentist_id provided, check only that dentist's slots; else check all
+    const filter = { date: data.date };
+    const existing = await db.entities.Appointment.filter(filter);
+
+    const slotStart = timeToMin(data.time);
+    const slotEnd = slotStart + (data.duration_minutes || 30);
+
+    const conflicting = existing.filter(a => {
+      if (a.status === 'cancelled') return false;
+      if (data.dentist_id && a.dentist_id && a.dentist_id !== data.dentist_id) return false;
+      if (!a.time) return false;
+      const aStart = timeToMin(a.time);
+      const aEnd = aStart + (a.duration_minutes || 30);
+      return slotStart < aEnd && slotEnd > aStart;
     });
 
-    if (existingAppointments.length > 0) {
+    if (conflicting.length > 0) {
       return Response.json({
         success: false,
         error: 'Este horário não está mais disponível. Por favor, escolha outro.'
       });
     }
 
-    // Create the appointment
-    const appointment = await base44.asServiceRole.entities.Appointment.create({
-      patient_name: bookingData.patient_name,
-      patient_phone: bookingData.patient_phone,
-      service_type: bookingData.service_type || 'consultation',
-      date: bookingData.date,
-      time: bookingData.time,
-      duration_minutes: bookingData.duration_minutes || 30,
-      status: 'scheduled',
-      notes: bookingData.notes || '',
-      reminder_sent: false
-    });
+    // Auto-assign dentist if not specified
+    let assignedDentist = data.dentist_id || null;
+    let assignedProvider = data.provider || null;
 
-    // Send confirmation message
-    const confirmationMessage = `
-✅ *Agendamento Confirmado!*
-
-📋 *Detalhes da Consulta:*
-👤 Paciente: ${bookingData.patient_name}
-📅 Data: ${bookingData.date}
-🕐 Horário: ${bookingData.time}
-⏱️ Duração: ${bookingData.duration_minutes} minutos
-
-📍 Endereço da clínica será enviado posteriormente.
-
-⚠️ *Importante:*
-- Chegue 10 minutos antes
-- Traga documento com foto
-- Em caso de cancelamento, avise com 24h de antecedência
-
-Para reagendar, responda esta mensagem.
-
-Até breve! 🦷
-    `.trim();
-
-    // Send email if provided
-    if (bookingData.patient_email) {
-      try {
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: bookingData.patient_email,
-          subject: '✅ Consulta Agendada - Prime Odontologia',
-          body: `
-            <h2>Agendamento Confirmado!</h2>
-            <p>Olá ${bookingData.patient_name},</p>
-            <p>Sua consulta foi agendada com sucesso!</p>
-            <hr>
-            <p><strong>Data:</strong> ${bookingData.date}</p>
-            <p><strong>Horário:</strong> ${bookingData.time}</p>
-            <p><strong>Duração:</strong> ${bookingData.duration_minutes} minutos</p>
-            <hr>
-            <p><strong>Observações importantes:</strong></p>
-            <ul>
-              <li>Chegue 10 minutos antes do horário agendado</li>
-              <li>Traga documento com foto</li>
-              <li>Em caso de cancelamento, avise com 24 horas de antecedência</li>
-            </ul>
-            <p>Qualquer dúvida, entre em contato conosco.</p>
-            <p>Até breve! 🦷</p>
-          `
-        });
-      } catch (emailError) {
-        console.error('Error sending email:', emailError);
-        // Continue even if email fails
+    if (!assignedDentist) {
+      const activeDentists = await db.entities.Dentist.filter({ is_active: true });
+      const busyDentistIds = new Set(
+        existing.filter(a => a.status !== 'cancelled' && a.dentist_id && isOverlapping(a, slotStart, slotEnd))
+              .map(a => a.dentist_id)
+      );
+      const available = activeDentists.find(d => !busyDentistIds.has(d.id));
+      if (available) {
+        assignedDentist = available.id;
+        assignedProvider = available.name;
       }
     }
 
-    // In a real implementation, you would send WhatsApp message here
-    // For now, we just log it
-    console.log('WhatsApp message to send:', {
-      phone: bookingData.patient_phone,
-      message: confirmationMessage
+    // Create appointment
+    const appointment = await db.entities.Appointment.create({
+      patient_name: data.patient_name,
+      patient_phone: data.patient_phone,
+      service_type: data.service_type || 'consultation',
+      date: data.date,
+      time: data.time,
+      duration_minutes: data.duration_minutes || 30,
+      dentist_id: assignedDentist,
+      provider: assignedProvider,
+      resource_id: data.resource_id || null,
+      resource_name: data.resource_name || null,
+      status: 'scheduled',
+      notes: data.notes || '',
+      reminder_sent: false,
+      reminder_confirmed: 'pending',
     });
+
+    console.log(`Appointment created: ${appointment.id} | ${data.patient_name} | ${data.date} ${data.time} | dentist: ${assignedProvider}`);
+
+    // Send confirmation email
+    if (data.patient_email) {
+      try {
+        await db.integrations.Core.SendEmail({
+          to: data.patient_email,
+          from_name: 'Prime Odontologia',
+          subject: '✅ Consulta Agendada - Prime Odontologia',
+          body: `
+            <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px">
+              <h2 style="color:#4f46e5;margin-top:0">Agendamento Confirmado! 🦷</h2>
+              <p>Olá <strong>${data.patient_name}</strong>, sua consulta foi agendada com sucesso.</p>
+              <table style="width:100%;border-collapse:collapse;margin:16px 0">
+                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Data</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${formatDate(data.date)}</td></tr>
+                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Horário</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.time}</td></tr>
+                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Duração</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.duration_minutes} minutos</td></tr>
+                ${assignedProvider ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Profissional</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${assignedProvider}</td></tr>` : ''}
+                ${data.resource_name ? `<tr><td style="padding:8px 0;color:#64748b;font-size:13px">Local</td><td style="padding:8px 0;font-weight:600">${data.resource_name}</td></tr>` : ''}
+              </table>
+              <div style="background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;color:#475569">
+                <p style="margin:0 0 4px"><strong>Observações:</strong></p>
+                <ul style="margin:0;padding-left:16px">
+                  <li>Chegue 10 minutos antes</li>
+                  <li>Traga documento com foto</li>
+                  <li>Cancelamentos com pelo menos 24h de antecedência</li>
+                </ul>
+              </div>
+              <p style="margin-top:20px;color:#94a3b8;font-size:12px">Prime Odontologia · Responda este email para dúvidas</p>
+            </div>
+          `
+        });
+        console.log(`Confirmation email sent to ${data.patient_email}`);
+      } catch (emailErr) {
+        console.error('Email error:', emailErr.message);
+      }
+    }
 
     return Response.json({
       success: true,
       appointment_id: appointment.id,
-      message: 'Agendamento realizado com sucesso! Você receberá uma confirmação em breve.'
+      dentist: assignedProvider,
+      message: 'Agendamento realizado com sucesso!'
     });
 
   } catch (error) {
-    console.error('Booking error:', error);
-    return Response.json({ 
-      success: false,
-      error: 'Erro ao processar agendamento. Tente novamente.'
-    }, { status: 500 });
+    console.error('Booking error:', error.message);
+    return Response.json({ success: false, error: 'Erro ao processar agendamento.' }, { status: 500 });
   }
 });
+
+function timeToMin(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function isOverlapping(a, slotStart, slotEnd) {
+  const aStart = timeToMin(a.time);
+  const aEnd = aStart + (a.duration_minutes || 30);
+  return slotStart < aEnd && slotEnd > aStart;
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}

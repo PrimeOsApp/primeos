@@ -1,404 +1,337 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar as CalendarIcon, Clock, User, Phone, Mail, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  CalendarIcon, Clock, User, Phone, Mail, CheckCircle2,
+  Loader2, AlertCircle, ChevronRight, Stethoscope
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AvailabilityCalendar from "@/components/booking/AvailabilityCalendar";
 import ServiceSelection from "@/components/booking/ServiceSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
+import DentistPicker from "@/components/booking/DentistPicker";
+import ResourcePicker from "@/components/booking/ResourcePicker";
+import { cn } from "@/lib/utils";
 
-const STEPS = {
-  SERVICE: 'service',
-  DATE: 'date',
-  TIME: 'time',
-  INFO: 'info',
-  CONFIRM: 'confirm'
+const STEPS = ["service", "dentist", "date", "time", "info", "confirm"];
+const STEP_LABELS = {
+  service: "Serviço", dentist: "Profissional", date: "Data",
+  time: "Horário", info: "Dados", confirm: "Confirmado"
 };
 
 export default function OnlineBooking() {
-  const [currentStep, setCurrentStep] = useState(STEPS.SERVICE);
-  const [bookingData, setBookingData] = useState({
-    service_type: '',
-    date: '',
-    time: '',
-    duration_minutes: 30,
-    patient_name: '',
-    patient_phone: '',
-    patient_email: '',
-    notes: ''
+  const [step, setStep] = useState("service");
+  const [booking, setBooking] = useState({
+    service_type: "", date: "", time: "", duration_minutes: 30,
+    dentist_id: "", provider: "", resource_id: "", resource_name: "",
+    patient_name: "", patient_phone: "", patient_email: "", notes: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-  const [error, setError] = useState('');
-
-  // Fetch existing appointments to check availability
-  const { data: existingAppointments = [] } = useQuery({
-    queryKey: ['appointments', bookingData.date],
-    queryFn: async () => {
-      if (!bookingData.date) return [];
-      return base44.entities.Appointment.filter({ date: bookingData.date });
-    },
-    enabled: !!bookingData.date
-  });
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [confirmedId, setConfirmedId] = useState(null);
+  const [error, setError] = useState("");
 
   const { data: dentists = [] } = useQuery({
-    queryKey: ['dentists_active'],
+    queryKey: ["dentists_active"],
     queryFn: () => base44.entities.Dentist.filter({ is_active: true }),
   });
 
-  const { data: blockouts = [] } = useQuery({
-    queryKey: ['blockouts', bookingData.date],
-    queryFn: () => bookingData.date ? base44.entities.DentistBlockout.filter({ date: bookingData.date }) : [],
-    enabled: !!bookingData.date
+  const { data: resources = [] } = useQuery({
+    queryKey: ["resources_active"],
+    queryFn: () => base44.entities.Resource.filter({ is_active: true }),
   });
 
-  const handleServiceSelect = (service) => {
-    setBookingData(prev => ({
-      ...prev,
-      service_type: service.type,
-      duration_minutes: service.duration,
-      dentist_id: '',
-      provider: ''
-    }));
-    setCurrentStep(STEPS.DATE);
+  const { data: appointments = [] } = useQuery({
+    queryKey: ["appointments_date", booking.date],
+    queryFn: () => booking.date
+      ? base44.entities.Appointment.filter({ date: booking.date })
+      : [],
+    enabled: !!booking.date,
+  });
+
+  const { data: blockouts = [] } = useQuery({
+    queryKey: ["blockouts_date", booking.date],
+    queryFn: () => booking.date
+      ? base44.entities.DentistBlockout.filter({ date: booking.date })
+      : [],
+    enabled: !!booking.date,
+  });
+
+  const selectedDentist = dentists.find(d => d.id === booking.dentist_id) || null;
+
+  // Filter appointments for selected dentist (or all if none selected)
+  const relevantAppointments = appointments.filter(a => {
+    if (a.status === "cancelled") return false;
+    if (!booking.dentist_id) return true;
+    return !a.dentist_id || a.dentist_id === booking.dentist_id;
+  });
+
+  const back = () => {
+    const idx = STEPS.indexOf(step);
+    if (idx > 0) setStep(STEPS[idx - 1]);
   };
 
-  const handleDateSelect = (date) => {
-    setBookingData(prev => ({ ...prev, date }));
-    setCurrentStep(STEPS.TIME);
+  const handleServiceSelect = (svc) => {
+    setBooking(b => ({ ...b, service_type: svc.type, duration_minutes: svc.duration }));
+    setStep("dentist");
   };
 
-  const handleTimeSelect = (time) => {
-    setBookingData(prev => ({ ...prev, time }));
-    setCurrentStep(STEPS.INFO);
+  const handleDentistSelect = (dentistId, providerName) => {
+    setBooking(b => ({ ...b, dentist_id: dentistId || "", provider: providerName || "" }));
+  };
+
+  const handleResourceSelect = (resourceId, resourceName) => {
+    setBooking(b => ({ ...b, resource_id: resourceId || "", resource_name: resourceName || "" }));
   };
 
   const handleSubmit = async () => {
-    setError('');
-    
-    if (!bookingData.patient_name || !bookingData.patient_phone) {
-      setError('Por favor, preencha todos os campos obrigatórios');
+    setError("");
+    if (!booking.patient_name || !booking.patient_phone) {
+      setError("Por favor, preencha nome e telefone.");
       return;
     }
-
-    setIsSubmitting(true);
-    
-    try {
-      const response = await base44.functions.invoke('processOnlineBooking', bookingData);
-      
-      if (response.data.success) {
-        setBookingSuccess(true);
-        setCurrentStep(STEPS.CONFIRM);
-      } else {
-        setError(response.data.error || 'Erro ao processar agendamento');
-      }
-    } catch (err) {
-      setError('Erro ao processar agendamento. Tente novamente.');
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
+    setSubmitting(true);
+    const res = await base44.functions.invoke("processOnlineBooking", booking);
+    if (res.data?.success) {
+      setConfirmedId(res.data.appointment_id);
+      setSuccess(true);
+      setStep("confirm");
+    } else {
+      setError(res.data?.error || "Erro ao processar agendamento.");
     }
+    setSubmitting(false);
   };
 
-  const handleBack = () => {
-    const steps = Object.values(STEPS);
-    const currentIndex = steps.indexOf(currentStep);
-    if (currentIndex > 0) {
-      setCurrentStep(steps[currentIndex - 1]);
-    }
+  const reset = () => {
+    setBooking({ service_type:"",date:"",time:"",duration_minutes:30,dentist_id:"",provider:"",resource_id:"",resource_name:"",patient_name:"",patient_phone:"",patient_email:"",notes:"" });
+    setStep("service"); setSuccess(false); setError("");
   };
 
-  const resetBooking = () => {
-    setBookingData({
-      service_type: '',
-      date: '',
-      time: '',
-      duration_minutes: 30,
-      patient_name: '',
-      patient_phone: '',
-      patient_email: '',
-      notes: ''
-    });
-    setCurrentStep(STEPS.SERVICE);
-    setBookingSuccess(false);
-    setError('');
-  };
+  const stepsForProgress = STEPS.slice(0, -1); // exclude confirm
+  const stepIdx = STEPS.indexOf(step);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+      <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Agendamento Online
-          </h1>
-          <p className="text-gray-600">
-            Agende sua consulta de forma rápida e fácil
-          </p>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 bg-white border border-indigo-100 rounded-full px-4 py-1.5 mb-4 shadow-sm">
+            <Stethoscope className="w-4 h-4 text-indigo-600" />
+            <span className="text-sm font-medium text-indigo-700">Prime Odontologia</span>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900">Agendamento Online</h1>
+          <p className="text-slate-500 mt-1">Agende sua consulta de forma rápida e fácil</p>
         </div>
 
-        {/* Progress Steps */}
-        {!bookingSuccess && (
-          <div className="mb-8">
-            <div className="flex justify-between items-center max-w-2xl mx-auto">
-              {[
-                { key: STEPS.SERVICE, label: 'Serviço', icon: CalendarIcon },
-                { key: STEPS.DATE, label: 'Data', icon: CalendarIcon },
-                { key: STEPS.TIME, label: 'Horário', icon: Clock },
-                { key: STEPS.INFO, label: 'Dados', icon: User }
-              ].map((step, index, array) => {
-                const isActive = currentStep === step.key;
-                const isPast = Object.values(STEPS).indexOf(currentStep) > Object.values(STEPS).indexOf(step.key);
-                
-                return (
-                  <div key={step.key} className="flex items-center flex-1">
-                    <div className="flex flex-col items-center flex-1">
-                      <div className={`
-                        w-12 h-12 rounded-full flex items-center justify-center transition-all
-                        ${isActive ? 'bg-blue-600 text-white scale-110' : ''}
-                        ${isPast ? 'bg-green-600 text-white' : ''}
-                        ${!isActive && !isPast ? 'bg-gray-200 text-gray-500' : ''}
-                      `}>
-                        <step.icon className="w-5 h-5" />
-                      </div>
-                      <span className={`text-xs mt-2 font-medium ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                        {step.label}
-                      </span>
-                    </div>
-                    {index < array.length - 1 && (
-                      <div className={`h-1 flex-1 mx-2 ${isPast ? 'bg-green-600' : 'bg-gray-200'}`} />
-                    )}
+        {/* Progress */}
+        {step !== "confirm" && (
+          <div className="flex items-center justify-center gap-1 mb-6 flex-wrap">
+            {stepsForProgress.map((s, i) => {
+              const idx = STEPS.indexOf(s);
+              const done = stepIdx > idx;
+              const active = step === s;
+              return (
+                <div key={s} className="flex items-center gap-1">
+                  <div className={cn(
+                    "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all",
+                    active && "bg-indigo-600 text-white",
+                    done && "bg-indigo-100 text-indigo-700",
+                    !active && !done && "bg-slate-100 text-slate-400"
+                  )}>
+                    {done ? <CheckCircle2 className="w-3 h-3" /> : <span>{i + 1}</span>}
+                    {STEP_LABELS[s]}
                   </div>
-                );
-              })}
-            </div>
+                  {i < stepsForProgress.length - 1 && (
+                    <ChevronRight className="w-3 h-3 text-slate-300" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 
         {/* Content */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, y: 20 }}
+            key={step}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.25 }}
           >
-            <Card className="shadow-xl">
-              <CardContent className="p-8">
-                {currentStep === STEPS.SERVICE && (
+            <Card className="shadow-xl border-0">
+              <CardContent className="p-6 sm:p-8">
+
+                {step === "service" && (
                   <ServiceSelection onSelect={handleServiceSelect} />
                 )}
 
-                {currentStep === STEPS.DATE && (
-                  <AvailabilityCalendar 
-                    onDateSelect={handleDateSelect}
-                    onBack={handleBack}
+                {step === "dentist" && (
+                  <div className="space-y-6">
+                    <DentistPicker
+                      dentists={dentists}
+                      selectedId={booking.dentist_id}
+                      date={booking.date}
+                      blockouts={blockouts}
+                      onChange={handleDentistSelect}
+                    />
+                    {resources.filter(r => r.type === "cadeira" || r.type === "sala").length > 0 && (
+                      <ResourcePicker
+                        resources={resources}
+                        selectedId={booking.resource_id}
+                        date={booking.date}
+                        appointments={appointments}
+                        onChange={handleResourceSelect}
+                      />
+                    )}
+                    <div className="flex gap-3 pt-2">
+                      <Button variant="outline" onClick={back} className="flex-1">← Voltar</Button>
+                      <Button onClick={() => setStep("date")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Escolher Data →
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {step === "date" && (
+                  <AvailabilityCalendar
+                    onDateSelect={(date) => { setBooking(b => ({ ...b, date })); setStep("time"); }}
+                    onBack={back}
                   />
                 )}
 
-                {currentStep === STEPS.TIME && (
-                  <div className="space-y-5">
-                    {dentists.length > 0 && (
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-3 text-center">Escolha o Profissional (opcional)</h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
-                          <button
-                            onClick={() => setBookingData(p => ({ ...p, dentist_id: '', provider: '' }))}
-                            className={`p-3 rounded-xl border-2 text-sm transition-all ${!bookingData.dentist_id ? 'border-blue-500 bg-blue-50 font-semibold text-blue-700' : 'border-gray-200 hover:border-blue-300'}`}
-                          >
-                            Qualquer profissional
-                          </button>
-                          {dentists.map(d => {
-                            const dayOfWeek = bookingData.date ? new Date(bookingData.date + 'T12:00:00').getDay() : -1;
-                            const wh = d.working_hours?.[dayOfWeek];
-                            const worksToday = wh?.active;
-                            const hasBlockout = blockouts.some(b => b.dentist_id === d.id && b.is_full_day);
-                            const available = worksToday && !hasBlockout;
-                            return (
-                              <button
-                                key={d.id}
-                                disabled={!available}
-                                onClick={() => setBookingData(p => ({ ...p, dentist_id: d.id, provider: d.name }))}
-                                className={`p-3 rounded-xl border-2 text-sm transition-all ${!available ? 'opacity-40 cursor-not-allowed border-gray-100 bg-gray-50' : bookingData.dentist_id === d.id ? 'border-blue-500 bg-blue-50 font-semibold text-blue-700' : 'border-gray-200 hover:border-blue-300'}`}
-                              >
-                                <div className="w-8 h-8 rounded-full mx-auto mb-1 flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: d.color || '#6366f1' }}>
-                                  {d.name.charAt(0)}
-                                </div>
-                                <p className="truncate">{d.name}</p>
-                                <p className="text-xs text-gray-500">{!available ? 'Indisponível' : 'Disponível'}</p>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    <TimeSlotPicker
-                      date={bookingData.date}
-                      duration={bookingData.duration_minutes}
-                      existingAppointments={existingAppointments.filter(a =>
-                        !bookingData.dentist_id || a.dentist_id === bookingData.dentist_id || !a.dentist_id
-                      )}
-                      onTimeSelect={handleTimeSelect}
-                      onBack={handleBack}
-                    />
-                  </div>
+                {step === "time" && (
+                  <TimeSlotPicker
+                    date={booking.date}
+                    duration={booking.duration_minutes}
+                    existingAppointments={relevantAppointments}
+                    dentist={selectedDentist}
+                    blockouts={blockouts}
+                    onTimeSelect={(time) => { setBooking(b => ({ ...b, time })); setStep("info"); }}
+                    onBack={back}
+                  />
                 )}
 
-                {currentStep === STEPS.INFO && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-6">
-                      <h2 className="text-2xl font-bold text-gray-900">Seus Dados</h2>
-                      <p className="text-gray-600 mt-2">
-                        Complete com suas informações para confirmar o agendamento
-                      </p>
-                    </div>
+                {step === "info" && (
+                  <div className="space-y-5">
+                    <h2 className="text-xl font-bold text-slate-900 text-center">Seus Dados</h2>
 
-                    <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                      <div className="flex flex-wrap items-center gap-3 text-sm text-blue-900">
-                        <CalendarIcon className="w-4 h-4" />
-                        <span className="font-medium">{bookingData.date}</span>
-                        <Clock className="w-4 h-4" />
-                        <span className="font-medium">{bookingData.time}</span>
-                        {bookingData.provider && (
-                          <span className="font-medium text-indigo-700">👨‍⚕️ {bookingData.provider}</span>
-                        )}
+                    {/* Summary */}
+                    <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="w-4 h-4 text-indigo-500" />
+                        <div>
+                          <p className="text-xs text-indigo-400">Data</p>
+                          <p className="font-semibold text-indigo-800">
+                            {booking.date ? new Date(booking.date + "T12:00").toLocaleDateString("pt-BR") : "—"}
+                          </p>
+                        </div>
                       </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-indigo-500" />
+                        <div>
+                          <p className="text-xs text-indigo-400">Horário</p>
+                          <p className="font-semibold text-indigo-800">{booking.time || "—"}</p>
+                        </div>
+                      </div>
+                      {booking.provider && (
+                        <div className="flex items-center gap-2 col-span-2">
+                          <User className="w-4 h-4 text-indigo-500" />
+                          <div>
+                            <p className="text-xs text-indigo-400">Profissional</p>
+                            <p className="font-semibold text-indigo-800">{booking.provider}</p>
+                          </div>
+                        </div>
+                      )}
+                      {booking.resource_name && (
+                        <div className="flex items-center gap-2 col-span-2">
+                          <Badge className="bg-indigo-100 text-indigo-700 border-0 text-xs">{booking.resource_name}</Badge>
+                        </div>
+                      )}
                     </div>
 
-                    <div>
-                      <Label htmlFor="name">Nome Completo *</Label>
-                      <Input
-                        id="name"
-                        value={bookingData.patient_name}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, patient_name: e.target.value }))}
-                        placeholder="Seu nome completo"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="phone">Telefone/WhatsApp *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={bookingData.patient_phone}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, patient_phone: e.target.value }))}
-                        placeholder="(00) 00000-0000"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={bookingData.patient_email}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, patient_email: e.target.value }))}
-                        placeholder="seu@email.com"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="notes">Observações</Label>
-                      <Textarea
-                        id="notes"
-                        value={bookingData.notes}
-                        onChange={(e) => setBookingData(prev => ({ ...prev, notes: e.target.value }))}
-                        placeholder="Alguma informação adicional que gostaria de compartilhar?"
-                        rows={3}
-                        className="mt-1"
-                      />
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Nome Completo *</Label>
+                        <Input value={booking.patient_name} onChange={e => setBooking(b => ({ ...b, patient_name: e.target.value }))} placeholder="Seu nome completo" className="mt-1" />
+                      </div>
+                      <div>
+                        <Label>WhatsApp *</Label>
+                        <Input type="tel" value={booking.patient_phone} onChange={e => setBooking(b => ({ ...b, patient_phone: e.target.value }))} placeholder="(00) 00000-0000" className="mt-1" />
+                      </div>
+                      <div>
+                        <Label>Email <span className="text-slate-400 text-xs">(para confirmação)</span></Label>
+                        <Input type="email" value={booking.patient_email} onChange={e => setBooking(b => ({ ...b, patient_email: e.target.value }))} placeholder="seu@email.com" className="mt-1" />
+                      </div>
+                      <div>
+                        <Label>Observações</Label>
+                        <Textarea value={booking.notes} onChange={e => setBooking(b => ({ ...b, notes: e.target.value }))} placeholder="Alguma informação relevante..." rows={3} className="mt-1" />
+                      </div>
                     </div>
 
                     {error && (
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-red-800">{error}</p>
+                      <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        {error}
                       </div>
                     )}
 
-                    <div className="flex gap-3 pt-4">
-                      <Button
-                        variant="outline"
-                        onClick={handleBack}
-                        disabled={isSubmitting}
-                        className="flex-1"
-                      >
-                        Voltar
-                      </Button>
+                    <div className="flex gap-3">
+                      <Button variant="outline" onClick={back} disabled={submitting} className="flex-1">← Voltar</Button>
                       <Button
                         onClick={handleSubmit}
-                        disabled={isSubmitting || !bookingData.patient_name || !bookingData.patient_phone}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700"
+                        disabled={submitting || !booking.patient_name || !booking.patient_phone}
+                        className="flex-1 bg-indigo-600 hover:bg-indigo-700"
                       >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Processando...
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="w-4 h-4 mr-2" />
-                            Confirmar Agendamento
-                          </>
-                        )}
+                        {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
+                        Confirmar
                       </Button>
                     </div>
                   </div>
                 )}
 
-                {currentStep === STEPS.CONFIRM && bookingSuccess && (
-                  <div className="text-center py-8">
-                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <CheckCircle2 className="w-10 h-10 text-green-600" />
+                {step === "confirm" && success && (
+                  <div className="text-center py-6">
+                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-5">
+                      <CheckCircle2 className="w-10 h-10 text-emerald-600" />
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                      Agendamento Confirmado!
-                    </h2>
-                    <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                      Você receberá uma confirmação por WhatsApp/Email em breve. 
-                      Enviaremos um lembrete 1 dia antes da consulta.
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">Agendamento Confirmado!</h2>
+                    <p className="text-slate-500 mb-6 max-w-sm mx-auto text-sm">
+                      Você receberá uma confirmação por email em breve. Enviaremos um lembrete 1 dia antes.
                     </p>
-                    
-                    <div className="bg-blue-50 p-6 rounded-lg mb-8 max-w-md mx-auto">
-                      <div className="space-y-3 text-left">
-                        <div className="flex items-center gap-3">
-                          <CalendarIcon className="w-5 h-5 text-blue-600" />
-                          <div>
-                            <p className="text-sm text-gray-600">Data</p>
-                            <p className="font-semibold text-gray-900">{bookingData.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Clock className="w-5 h-5 text-blue-600" />
-                          <div>
-                            <p className="text-sm text-gray-600">Horário</p>
-                            <p className="font-semibold text-gray-900">{bookingData.time}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <User className="w-5 h-5 text-blue-600" />
-                          <div>
-                            <p className="text-sm text-gray-600">Paciente</p>
-                            <p className="font-semibold text-gray-900">{bookingData.patient_name}</p>
-                          </div>
-                        </div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-left space-y-3 mb-6 text-sm max-w-sm mx-auto">
+                      <div className="flex items-center gap-3">
+                        <CalendarIcon className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                        <div><p className="text-xs text-slate-400">Data</p><p className="font-semibold">{new Date(booking.date + "T12:00").toLocaleDateString("pt-BR", { weekday:"long",day:"numeric",month:"long" })}</p></div>
                       </div>
+                      <div className="flex items-center gap-3">
+                        <Clock className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                        <div><p className="text-xs text-slate-400">Horário</p><p className="font-semibold">{booking.time} · {booking.duration_minutes} min</p></div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <User className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                        <div><p className="text-xs text-slate-400">Paciente</p><p className="font-semibold">{booking.patient_name}</p></div>
+                      </div>
+                      {booking.provider && (
+                        <div className="flex items-center gap-3">
+                          <Stethoscope className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                          <div><p className="text-xs text-slate-400">Profissional</p><p className="font-semibold">{booking.provider}</p></div>
+                        </div>
+                      )}
+                      {booking.resource_name && (
+                        <div className="flex items-center gap-3">
+                          <Badge className="bg-indigo-100 text-indigo-700 border-0 text-xs">{booking.resource_name}</Badge>
+                        </div>
+                      )}
                     </div>
-
-                    <Button
-                      onClick={resetBooking}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      Fazer Novo Agendamento
+                    <Button onClick={reset} className="bg-indigo-600 hover:bg-indigo-700">
+                      Novo Agendamento
                     </Button>
                   </div>
                 )}
