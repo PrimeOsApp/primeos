@@ -168,12 +168,18 @@ export default function ContasAReceber({ onAddNew, onGeneratePaymentLink }) {
                   <p className="font-bold text-emerald-600 text-sm">
                     R$ {(t.amount || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                   </p>
+                  <Button size="sm" variant="outline"
+                    onClick={() => setCobrancaTx(t)}
+                    className="h-7 text-xs border-indigo-200 text-indigo-700 hover:bg-indigo-50 gap-1">
+                    <FileText className="w-3 h-3" />
+                    {t.boleto_status === "gerado" ? "Ver Boleto" : t.status === "pago" ? "Detalhes" : "Cobrar"}
+                  </Button>
                   {t.status !== "pago" && t.status !== "cancelado" && (
                     <Button size="sm" variant="outline" onClick={() => markReceivedMutation.mutate(t.id)}
                       disabled={markReceivedMutation.isPending}
                       className="h-7 text-xs border-emerald-300 text-emerald-700 hover:bg-emerald-50 gap-1">
                       {markReceivedMutation.isPending ? <RefreshCw className="w-3 h-3 animate-spin" /> : <CheckCircle className="w-3 h-3" />}
-                      Recebido
+                      Pago
                     </Button>
                   )}
                 </div>
