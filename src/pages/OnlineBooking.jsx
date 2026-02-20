@@ -213,9 +213,62 @@ export default function OnlineBooking() {
                     existingAppointments={relevantAppointments}
                     dentist={selectedDentist}
                     blockouts={blockouts}
-                    onTimeSelect={(time) => { setBooking(b => ({ ...b, time })); setStep("info"); }}
+                    onTimeSelect={(time) => { setBooking(b => ({ ...b, time })); setStep("resource"); }}
                     onBack={back}
                   />
+                )}
+
+                {step === "resource" && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h2 className="text-xl font-bold text-slate-900">Cadeira / Sala</h2>
+                      <p className="text-slate-500 text-sm mt-1">Deseja reservar um local específico?</p>
+                    </div>
+
+                    {/* Booking summary so far */}
+                    <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="w-4 h-4 text-indigo-500" />
+                        <div>
+                          <p className="text-xs text-indigo-400">Data</p>
+                          <p className="font-semibold text-indigo-800">{new Date(booking.date + "T12:00").toLocaleDateString("pt-BR")}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-indigo-500" />
+                        <div>
+                          <p className="text-xs text-indigo-400">Horário</p>
+                          <p className="font-semibold text-indigo-800">{booking.time} · {booking.duration_minutes}min</p>
+                        </div>
+                      </div>
+                      {booking.provider && (
+                        <div className="flex items-center gap-2 col-span-2">
+                          <User className="w-4 h-4 text-indigo-500" />
+                          <div>
+                            <p className="text-xs text-indigo-400">Profissional</p>
+                            <p className="font-semibold text-indigo-800">{booking.provider}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <ResourcePicker
+                      resources={resources}
+                      selectedId={booking.resource_id}
+                      date={booking.date}
+                      appointments={appointments}
+                      slotTime={booking.time}
+                      duration={booking.duration_minutes}
+                      onChange={handleResourceSelect}
+                    />
+
+                    <div className="flex gap-3 pt-2">
+                      <Button variant="outline" onClick={back} className="flex-1">← Voltar</Button>
+                      <Button onClick={() => setStep("info")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Continuar →
+                      </Button>
+                    </div>
+                  </div>
                 )}
 
                 {step === "info" && (
