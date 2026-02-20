@@ -36,8 +36,7 @@ import {
   HeadphonesIcon,
   Settings,
   Shield,
-  Stethoscope,
-  Bell
+  Stethoscope
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
