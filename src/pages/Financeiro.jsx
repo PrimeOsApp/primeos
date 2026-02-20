@@ -185,9 +185,12 @@ export default function Financeiro() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="flex flex-wrap h-auto gap-1 p-1 w-full max-w-3xl">
+          <TabsList className="flex flex-wrap h-auto gap-1 p-1 w-full max-w-4xl">
             <TabsTrigger value="dashboard" className="flex items-center gap-1.5 text-xs">
               <BarChart3 className="w-3.5 h-3.5" />Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="fluxo" className="flex items-center gap-1.5 text-xs">
+              <CalendarRange className="w-3.5 h-3.5" />Fluxo Projetado
             </TabsTrigger>
             <TabsTrigger value="transacoes" className="flex items-center gap-1.5 text-xs">
               <DollarSign className="w-3.5 h-3.5" />Transações
@@ -203,6 +206,9 @@ export default function Financeiro() {
             </TabsTrigger>
             <TabsTrigger value="categorias" className="flex items-center gap-1.5 text-xs">
               <PieChart className="w-3.5 h-3.5" />Categorias
+            </TabsTrigger>
+            <TabsTrigger value="config-categorias" className="flex items-center gap-1.5 text-xs">
+              <Tag className="w-3.5 h-3.5" />Config. Categorias
             </TabsTrigger>
             <TabsTrigger value="relatorios" className="flex items-center gap-1.5 text-xs">
               <FileSpreadsheet className="w-3.5 h-3.5" />Relatórios
