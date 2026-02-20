@@ -525,9 +525,16 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                         </div>
                       )}
                     </ScrollArea>
-                    <Button onClick={() => setActiveStage("clinical")} className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700">
-                      Continue to Clinical Care <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <div className="flex gap-2 mt-4">
+                      <Button onClick={() => setActiveStage("clinical")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Atendimento Clínico <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      <Link to={createPageUrl("Agenda")} className="flex-1">
+                        <Button variant="outline" className="w-full text-blue-700 border-blue-200 hover:bg-blue-50">
+                          <ExternalLink className="w-4 h-4 mr-2" /> Ver Agenda
+                        </Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
