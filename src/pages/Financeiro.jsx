@@ -10,8 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
-  Search, Filter, Download, PieChart, BarChart3, Wallet,
-  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale
+  Search, PieChart, BarChart3, Wallet,
+  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
