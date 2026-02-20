@@ -1,129 +1,154 @@
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
+import { Clock, Sun, Sunset } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
-const timeSlots = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"
+const DEFAULT_SLOTS = [
+  "07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30",
+  "12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30",
+  "17:00","17:30","18:00","18:30","19:00"
 ];
 
-export default function TimeSlotPicker({ date, duration, existingAppointments, onTimeSelect, onBack }) {
-  const isTimeAvailable = (time) => {
-    // Check if time slot conflicts with existing appointments
-    const [hours, minutes] = time.split(':').map(Number);
-    const slotStart = hours * 60 + minutes;
+function generateSlots(start, end, slotDuration) {
+  if (!start || !end) return DEFAULT_SLOTS;
+  const slots = [];
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
+  let cur = sh * 60 + sm;
+  const endMin = eh * 60 + em;
+  while (cur + slotDuration <= endMin) {
+    const h = String(Math.floor(cur / 60)).padStart(2, "0");
+    const m = String(cur % 60).padStart(2, "0");
+    slots.push(`${h}:${m}`);
+    cur += slotDuration;
+  }
+  return slots;
+}
+
+function toMin(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+export default function TimeSlotPicker({
+  date, duration, existingAppointments, dentist,
+  blockouts = [], onTimeSelect, onBack,
+}) {
+  const slots = useMemo(() => {
+    const dayOfWeek = date ? new Date(date + "T12:00:00").getDay() : 1;
+    if (dentist) {
+      const wh = dentist.working_hours?.[dayOfWeek];
+      if (wh?.active && wh.start && wh.end) {
+        return generateSlots(wh.start, wh.end, dentist.slot_duration_minutes || 30);
+      }
+    }
+    return DEFAULT_SLOTS;
+  }, [date, dentist]);
+
+  const dentistBlockoutTimes = useMemo(() => {
+    if (!dentist) return [];
+    return blockouts
+      .filter(b => b.dentist_id === dentist.id && !b.is_full_day && b.start_time && b.end_time)
+      .map(b => ({ start: toMin(b.start_time), end: toMin(b.end_time) }));
+  }, [blockouts, dentist]);
+
+  const isAvailable = (time) => {
+    const slotStart = toMin(time);
     const slotEnd = slotStart + duration;
 
-    return !existingAppointments.some(apt => {
-      if (apt.time) {
-        const [aptHours, aptMinutes] = apt.time.split(':').map(Number);
-        const aptStart = aptHours * 60 + aptMinutes;
-        const aptEnd = aptStart + (apt.duration_minutes || 30);
-
-        return (slotStart < aptEnd && slotEnd > aptStart);
-      }
-      return false;
+    // Check appointment conflicts
+    const conflictsAppt = existingAppointments.some(a => {
+      if (!a.time || a.status === "cancelled") return false;
+      const aStart = toMin(a.time);
+      const aEnd = aStart + (a.duration_minutes || 30);
+      return slotStart < aEnd && slotEnd > aStart;
     });
+    if (conflictsAppt) return false;
+
+    // Check dentist blockouts
+    const conflictsBlock = dentistBlockoutTimes.some(b => slotStart < b.end && slotEnd > b.start);
+    if (conflictsBlock) return false;
+
+    return true;
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
+  const morning = slots.filter(t => toMin(t) < 12 * 60);
+  const afternoon = slots.filter(t => toMin(t) >= 12 * 60);
+
+  const availableCount = slots.filter(isAvailable).length;
+
+  const SlotGroup = ({ label, Icon, times }) => (
+    times.length > 0 && (
+      <div className="mb-5">
+        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <Icon className="w-3.5 h-3.5" /> {label}
+        </h3>
+        <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+          {times.map(time => {
+            const avail = isAvailable(time);
+            return (
+              <Button
+                key={time}
+                onClick={() => onTimeSelect(time)}
+                disabled={!avail}
+                variant="outline"
+                className={cn(
+                  "h-11 font-medium text-sm transition-all",
+                  avail
+                    ? "hover:bg-indigo-600 hover:text-white hover:border-indigo-600 border-slate-200"
+                    : "opacity-30 cursor-not-allowed bg-slate-50"
+                )}
+              >
+                {time}
+              </Button>
+            );
+          })}
+        </div>
+      </div>
+    )
+  );
 
   return (
     <div>
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Escolha o Horário</h2>
-        <p className="text-gray-600 mt-2 capitalize">
-          {formatDate(date)}
-        </p>
+        <h2 className="text-xl font-bold text-slate-900">Escolha o Horário</h2>
+        {date && (
+          <p className="text-slate-500 mt-1 text-sm capitalize">
+            {new Date(date + "T12:00:00").toLocaleDateString("pt-BR", {
+              weekday: "long", day: "numeric", month: "long", year: "numeric"
+            })}
+          </p>
+        )}
+        {dentist && (
+          <div className="inline-flex items-center gap-2 mt-2 px-3 py-1 bg-indigo-50 rounded-full">
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: dentist.color || "#6366f1" }} />
+            <span className="text-xs font-medium text-indigo-700">{dentist.name}</span>
+          </div>
+        )}
       </div>
 
-      <div className="max-w-2xl mx-auto">
-        {/* Morning Slots */}
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            Manhã
-          </h3>
-          <div className="grid grid-cols-4 gap-3">
-            {timeSlots.filter(t => parseInt(t.split(':')[0]) < 12).map(time => {
-              const available = isTimeAvailable(time);
-              return (
-                <Button
-                  key={time}
-                  onClick={() => onTimeSelect(time)}
-                  disabled={!available}
-                  variant={available ? "outline" : "ghost"}
-                  className={`
-                    h-12 font-medium transition-all
-                    ${available 
-                      ? 'hover:bg-blue-600 hover:text-white hover:border-blue-600' 
-                      : 'opacity-40 cursor-not-allowed'
-                    }
-                  `}
-                >
-                  {time}
-                </Button>
-              );
-            })}
+      {availableCount === 0 ? (
+        <div className="text-center py-10 text-slate-400">
+          <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
+          <p className="font-medium">Sem horários disponíveis</p>
+          <p className="text-sm mt-1">Tente outra data ou profissional</p>
+          <Button variant="outline" onClick={onBack} className="mt-4">← Voltar</Button>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center gap-3 mb-4 p-3 bg-slate-50 rounded-xl text-sm">
+            <Badge className="bg-indigo-100 text-indigo-700 border-0">{availableCount} horários disponíveis</Badge>
+            <span className="text-slate-500">· Duração: {duration} min</span>
+            <span className="text-slate-400 text-xs ml-auto">cinza = ocupado</span>
           </div>
-        </div>
 
-        {/* Afternoon Slots */}
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-            <Clock className="w-4 h-4" />
-            Tarde
-          </h3>
-          <div className="grid grid-cols-4 gap-3">
-            {timeSlots.filter(t => parseInt(t.split(':')[0]) >= 12).map(time => {
-              const available = isTimeAvailable(time);
-              return (
-                <Button
-                  key={time}
-                  onClick={() => onTimeSelect(time)}
-                  disabled={!available}
-                  variant={available ? "outline" : "ghost"}
-                  className={`
-                    h-12 font-medium transition-all
-                    ${available 
-                      ? 'hover:bg-blue-600 hover:text-white hover:border-blue-600' 
-                      : 'opacity-40 cursor-not-allowed'
-                    }
-                  `}
-                >
-                  {time}
-                </Button>
-              );
-            })}
-          </div>
-        </div>
+          <SlotGroup label="Manhã" Icon={Sun} times={morning} />
+          <SlotGroup label="Tarde / Noite" Icon={Sunset} times={afternoon} />
 
-        <div className="flex gap-2 pt-4">
-          <Button
-            variant="outline"
-            onClick={onBack}
-            className="flex-1"
-          >
-            Voltar
-          </Button>
-        </div>
-
-        <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-          <p className="text-sm text-blue-900">
-            <strong>Duração:</strong> {duration} minutos
-          </p>
-          <p className="text-sm text-blue-900 mt-1">
-            Horários em cinza já estão ocupados
-          </p>
-        </div>
-      </div>
+          <Button variant="outline" onClick={onBack} className="w-full mt-2">← Voltar</Button>
+        </>
+      )}
     </div>
   );
 }
