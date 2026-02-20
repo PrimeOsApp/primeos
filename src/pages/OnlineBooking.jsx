@@ -19,10 +19,10 @@ import DentistPicker from "@/components/booking/DentistPicker";
 import ResourcePicker from "@/components/booking/ResourcePicker";
 import { cn } from "@/lib/utils";
 
-const STEPS = ["service", "dentist", "date", "time", "info", "confirm"];
+const STEPS = ["service", "dentist", "date", "time", "resource", "info", "confirm"];
 const STEP_LABELS = {
-  service: "Serviço", dentist: "Profissional", date: "Data",
-  time: "Horário", info: "Dados", confirm: "Confirmado"
+  service: "Motivo", dentist: "Profissional", date: "Data",
+  time: "Horário", resource: "Local", info: "Dados", confirm: "Confirmado"
 };
 
 export default function OnlineBooking() {
