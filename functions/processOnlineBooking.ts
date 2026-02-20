@@ -51,7 +51,41 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Verify resource availability if requested
+    if (data.resource_id) {
+      const resourceConflict = existing.filter(a => {
+        if (a.resource_id !== data.resource_id || a.status === 'cancelled' || !a.time) return false;
+        const rStart = timeToMin(a.time);
+        const rEnd = rStart + (a.duration_minutes || 30);
+        return slotStart < rEnd && slotEnd > rStart;
+      });
+      if (resourceConflict.length > 0) {
+        return Response.json({
+          success: false,
+          error: 'O recurso selecionado já está ocupado neste horário. Por favor, escolha outro local.'
+        });
+      }
+    }
+
+    // Auto-assign resource if not specified
+    let assignedResource = data.resource_id || null;
+    let assignedResourceName = data.resource_name || null;
+    if (!assignedResource) {
+      const allResources = await db.entities.Resource.filter({ is_active: true });
+      const chairs = allResources.filter(r => r.type === 'cadeira' || r.type === 'sala');
+      const busyResourceIds = new Set(
+        existing.filter(a => a.status !== 'cancelled' && a.resource_id && isOverlapping(a, slotStart, slotEnd))
+              .map(a => a.resource_id)
+      );
+      const freeChair = chairs.find(c => !busyResourceIds.has(c.id));
+      if (freeChair) {
+        assignedResource = freeChair.id;
+        assignedResourceName = freeChair.name;
+      }
+    }
+
     // Create appointment
+    const noteWithReason = [data.reason ? `Motivo: ${data.reason}` : '', data.notes || ''].filter(Boolean).join('\n');
     const appointment = await db.entities.Appointment.create({
       patient_name: data.patient_name,
       patient_phone: data.patient_phone,
@@ -61,10 +95,10 @@ Deno.serve(async (req) => {
       duration_minutes: data.duration_minutes || 30,
       dentist_id: assignedDentist,
       provider: assignedProvider,
-      resource_id: data.resource_id || null,
-      resource_name: data.resource_name || null,
+      resource_id: assignedResource,
+      resource_name: assignedResourceName,
       status: 'scheduled',
-      notes: data.notes || '',
+      notes: noteWithReason,
       reminder_sent: false,
       reminder_confirmed: 'pending',
     });
