@@ -6,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Users, Database, Activity, Settings, BarChart3, AlertTriangle, RefreshCw } from "lucide-react";
+import { Shield, Users, Database, Activity, Settings, BarChart3, AlertTriangle, RefreshCw, SlidersHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import AdminUsersTab from "@/components/admin/AdminUsersTab";
 import AdminDataTab from "@/components/admin/AdminDataTab";
 import AdminSystemTab from "@/components/admin/AdminSystemTab";
 import AdminMetricsTab from "@/components/admin/AdminMetricsTab";
 import AdminActivityLog from "@/components/admin/AdminActivityLog";
+import AdminSettingsTab from "@/components/admin/AdminSettingsTab";
 
 export default function AdminPanel() {
   const [user, setUser] = useState(null);
