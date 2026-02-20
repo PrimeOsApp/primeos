@@ -709,9 +709,20 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                         </div>
                       )}
                     </ScrollArea>
-                    <Button onClick={() => setActiveStage("retention")} className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700">
-                      Continue to Retention <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <div className="flex gap-2 mt-4">
+                      <Button onClick={() => setActiveStage("retention")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Retenção <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      {selectedPatient?.phone && (
+                        <Button variant="outline" className="flex-1 text-green-700 border-green-200 hover:bg-green-50"
+                          onClick={() => {
+                            const msg = `Olá ${selectedPatient.name}! 😊\n\nSeguindo seu atendimento, como está se sentindo?\n\nEstamos à disposição para qualquer dúvida!`;
+                            window.open(`https://wa.me/55${selectedPatient.phone.replace(/\D/g,"")}?text=${encodeURIComponent(msg)}`, "_blank");
+                          }}>
+                          <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp
+                        </Button>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
