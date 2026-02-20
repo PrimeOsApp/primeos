@@ -78,7 +78,7 @@ export default function OnlineBooking() {
   };
 
   const handleServiceSelect = (svc) => {
-    setBooking(b => ({ ...b, service_type: svc.type, duration_minutes: svc.duration }));
+    setBooking(b => ({ ...b, service_type: svc.type, reason: svc.reason, duration_minutes: svc.duration }));
     setStep("dentist");
   };
 
