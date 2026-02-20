@@ -604,9 +604,16 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                         </div>
                       )}
                     </ScrollArea>
-                    <Button onClick={() => setActiveStage("followup")} className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700">
-                      Continue to Follow-up <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <div className="flex gap-2 mt-4">
+                      <Button onClick={() => setActiveStage("followup")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                        Follow-up <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      <Link to={createPageUrl("EHR")} className="flex-1">
+                        <Button variant="outline" className="w-full text-indigo-700 border-indigo-200 hover:bg-indigo-50">
+                          <ClipboardList className="w-4 h-4 mr-2" /> Prontuário
+                        </Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
