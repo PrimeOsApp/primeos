@@ -7,21 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { format } from "date-fns";
-
-const CATEGORIES_RECEITA = [
-  { value: "consulta", label: "Consulta" },
-  { value: "procedimento", label: "Procedimento" },
-  { value: "outros_receita", label: "Outros" },
-];
-const CATEGORIES_DESPESA = [
-  { value: "material", label: "Material/Insumo" },
-  { value: "equipamento", label: "Equipamento" },
-  { value: "aluguel", label: "Aluguel" },
-  { value: "salario", label: "Salário" },
-  { value: "marketing", label: "Marketing" },
-  { value: "impostos", label: "Impostos" },
-  { value: "outros_despesa", label: "Outros" },
-];
+import { loadCategories } from "./CategoryManager";
 
 const PAYMENT_METHODS = [
   { value: "pix", label: "PIX" },

@@ -27,6 +27,8 @@ import ContasAPagar from "../components/financeiro/ContasAPagar";
 import ContasAReceber from "../components/financeiro/ContasAReceber";
 import ConciliacaoBancaria from "../components/financeiro/ConciliacaoBancaria";
 import PaymentLink from "../components/financeiro/PaymentLink";
+import ProjectedCashFlow from "../components/financeiro/ProjectedCashFlow";
+import CategoryManager from "../components/financeiro/CategoryManager";
 
 const COLORS = ["#10b981", "#6366f1", "#f59e0b", "#f43f5e", "#3b82f6", "#8b5cf6", "#ec4899"];
 
