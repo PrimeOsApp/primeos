@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertTriangle, CheckCircle, Clock, TrendingUp, Search,
-  Bell, Plus, RefreshCw, CreditCard, Link, Copy, ExternalLink
+  Bell, Plus, RefreshCw, CreditCard, FileText, SendHorizonal
 } from "lucide-react";
 import { format, isPast, isToday, differenceInDays, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
+import CobrancaModal from "./CobrancaModal";
 
 const statusConfig = {
   pago: { label: "Recebido", color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
