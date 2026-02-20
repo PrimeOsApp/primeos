@@ -87,6 +87,9 @@ export default function AdminPanel() {
             <TabsTrigger value="system" className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white text-slate-400 gap-2">
               <Settings className="w-4 h-4" /> Sistema
             </TabsTrigger>
+            <TabsTrigger value="settings" className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white text-slate-400 gap-2">
+              <SlidersHorizontal className="w-4 h-4" /> Configurações
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="metrics"><AdminMetricsTab /></TabsContent>
@@ -94,6 +97,7 @@ export default function AdminPanel() {
           <TabsContent value="data"><AdminDataTab /></TabsContent>
           <TabsContent value="activity"><AdminActivityLog /></TabsContent>
           <TabsContent value="system"><AdminSystemTab /></TabsContent>
+          <TabsContent value="settings"><AdminSettingsTab /></TabsContent>
         </Tabs>
       </div>
     </div>
