@@ -259,28 +259,64 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                       <motion.div
                         key={patient.id}
                         whileHover={{ y: -2 }}
-                        onClick={() => { setSelectedPatient(patient); setActiveStage("crm"); }}
                         className={cn(
-                          "p-4 rounded-xl border-2 cursor-pointer transition-all",
+                          "p-4 rounded-xl border-2 transition-all",
                           selectedPatient?.id === patient.id ? "border-green-500 bg-green-50" : "border-slate-100 hover:border-green-200"
                         )}
                       >
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-semibold">
+                        {/* Clickable top area selects patient */}
+                        <div className="flex items-center gap-3 mb-3 cursor-pointer" onClick={() => { setSelectedPatient(patient); setActiveStage("crm"); }}>
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
                             {patient.name?.charAt(0)?.toUpperCase()}
                           </div>
-                          <div>
-                            <h3 className="font-semibold">{patient.name}</h3>
-                            <p className="text-xs text-slate-500">{patient.segment || "Patient"}</p>
+                          <div className="min-w-0">
+                            <h3 className="font-semibold truncate">{patient.name}</h3>
+                            <p className="text-xs text-slate-500">{patient.phone || patient.segment || "Paciente"}</p>
                           </div>
                         </div>
-                        {patient.phone && (
-                          <div className="flex items-center gap-2 text-sm text-slate-600">
-                            <Phone className="w-3.5 h-3.5 text-green-500" />
-                            {patient.phone}
-                          </div>
-                        )}
-                        <Badge variant="outline" className="mt-2 text-xs">{patient.status}</Badge>
+
+                        {/* Quick-action buttons */}
+                        <div className="flex gap-1.5">
+                          {patient.phone && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 h-8 text-xs text-green-700 border-green-200 hover:bg-green-50"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const cleanPhone = patient.phone.replace(/\D/g, "");
+                                window.open(`https://wa.me/55${cleanPhone}`, "_blank");
+                              }}
+                            >
+                              <MessageCircle className="w-3 h-3 mr-1" /> WhatsApp
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 h-8 text-xs text-blue-700 border-blue-200 hover:bg-blue-50"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPatient(patient);
+                              setActiveStage("appointment");
+                            }}
+                          >
+                            <Calendar className="w-3 h-3 mr-1" /> Agenda
+                          </Button>
+                          <Link
+                            to={createPageUrl("EHR")}
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex-1"
+                          >
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full h-8 text-xs text-indigo-700 border-indigo-200 hover:bg-indigo-50"
+                            >
+                              <ClipboardList className="w-3 h-3 mr-1" /> Prontuário
+                            </Button>
+                          </Link>
+                        </div>
                       </motion.div>
                     ))}
                   </div>
