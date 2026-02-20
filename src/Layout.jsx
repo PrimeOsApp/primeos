@@ -65,6 +65,7 @@ const navigation = [
   { name: "Leads", href: "LeadsPipeline", icon: Users },
   { name: "Pipeline Vendas", href: "SalesPipeline", icon: TrendingUp },
   { name: "Sales", href: "Sales", icon: DollarSign },
+  { name: "Revenue Stream", href: "RevenueStreams", icon: ShoppingCart },
   { name: "Scripts Vendas", href: "ScriptsVendas", icon: BookOpen },
 
   { section: "Marketing" },
