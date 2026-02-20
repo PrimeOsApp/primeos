@@ -371,7 +371,7 @@ export default function Financeiro() {
                   <div className="space-y-3">
                     {catBreakdown.sort((a, b) => b.value - a.value).map((cat, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
+                        <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color || COLORS[i % COLORS.length] }} />
                         <span className="flex-1 text-sm text-slate-700 capitalize">{cat.name.replace("_", " ")}</span>
                         <span className="font-semibold text-slate-900 text-sm">
                           R$ {cat.value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
