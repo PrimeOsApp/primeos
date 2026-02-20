@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
   Search, Filter, Download, PieChart, BarChart3, Wallet,
-  Target, Building2, FileSpreadsheet
+  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
@@ -23,6 +23,10 @@ import ImportStatement from "../components/financeiro/ImportStatement";
 import ReportBuilder from "../components/financeiro/ReportBuilder";
 import BudgetPlanner from "../components/financeiro/BudgetPlanner";
 import BankConnect from "../components/financeiro/BankConnect";
+import ContasAPagar from "../components/financeiro/ContasAPagar";
+import ContasAReceber from "../components/financeiro/ContasAReceber";
+import ConciliacaoBancaria from "../components/financeiro/ConciliacaoBancaria";
+import PaymentLink from "../components/financeiro/PaymentLink";
 
 const COLORS = ["#10b981", "#6366f1", "#f59e0b", "#f43f5e", "#3b82f6", "#8b5cf6", "#ec4899"];
 
