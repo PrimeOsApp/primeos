@@ -183,12 +183,21 @@ export default function Financeiro() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="flex flex-wrap h-auto gap-1 p-1 w-full max-w-2xl">
+          <TabsList className="flex flex-wrap h-auto gap-1 p-1 w-full max-w-3xl">
             <TabsTrigger value="dashboard" className="flex items-center gap-1.5 text-xs">
               <BarChart3 className="w-3.5 h-3.5" />Dashboard
             </TabsTrigger>
             <TabsTrigger value="transacoes" className="flex items-center gap-1.5 text-xs">
               <DollarSign className="w-3.5 h-3.5" />Transações
+            </TabsTrigger>
+            <TabsTrigger value="a-receber" className="flex items-center gap-1.5 text-xs">
+              <ArrowDownCircle className="w-3.5 h-3.5" />A Receber
+            </TabsTrigger>
+            <TabsTrigger value="a-pagar" className="flex items-center gap-1.5 text-xs">
+              <ArrowUpCircle className="w-3.5 h-3.5" />A Pagar
+            </TabsTrigger>
+            <TabsTrigger value="conciliacao" className="flex items-center gap-1.5 text-xs">
+              <Scale className="w-3.5 h-3.5" />Conciliação
             </TabsTrigger>
             <TabsTrigger value="categorias" className="flex items-center gap-1.5 text-xs">
               <PieChart className="w-3.5 h-3.5" />Categorias
