@@ -417,9 +417,17 @@ Keep it friendly, professional, and concise for WhatsApp.`,
                       </div>
                     </div>
                   )}
-                  <Button onClick={() => setActiveStage("appointment")} className="w-full bg-indigo-600 hover:bg-indigo-700">
-                    Continue to Appointment <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button onClick={() => setActiveStage("appointment")} className="flex-1 bg-indigo-600 hover:bg-indigo-700">
+                      Agendar <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    {selectedPatient?.phone && (
+                      <Button variant="outline" className="flex-1 text-green-700 border-green-200 hover:bg-green-50"
+                        onClick={() => window.open(`https://wa.me/55${selectedPatient.phone.replace(/\D/g,"")}`, "_blank")}>
+                        <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
