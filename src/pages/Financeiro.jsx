@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
 import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { loadCategories } from "../components/financeiro/CategoryManager";
 import TransactionForm from "../components/financeiro/TransactionForm";
 import TransactionList from "../components/financeiro/TransactionList";
 import CashFlowChart from "../components/financeiro/CashFlowChart";
