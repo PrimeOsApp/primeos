@@ -20,7 +20,7 @@ import TransactionForm from "../components/financeiro/TransactionForm";
 import TransactionList from "../components/financeiro/TransactionList";
 import CashFlowChart from "../components/financeiro/CashFlowChart";
 import ImportStatement from "../components/financeiro/ImportStatement";
-import ReportBuilder from "../components/financeiro/ReportBuilder";
+import ReportBuilder from "../components/financeiro/ReportBuilder.jsx";
 import BudgetPlanner from "../components/financeiro/BudgetPlanner";
 import BankConnect from "../components/financeiro/BankConnect";
 import ContasAPagar from "../components/financeiro/ContasAPagar";
