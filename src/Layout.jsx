@@ -91,6 +91,7 @@ const navigation = [
   { name: "Business Model", href: "BusinessModelCanvas", icon: Puzzle },
 
   { section: "Sistema" },
+  { name: "Prontuário EHR", href: "EHR", icon: Stethoscope },
   { name: "Integração EHR", href: "EHRIntegration", icon: Activity },
   { name: "Meus Apps", href: "Apps", icon: Activity },
   { name: "Gamificação", href: "Gamification", icon: Zap },
