@@ -104,6 +104,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import FollowUpAutomation from './pages/FollowUpAutomation';
+import MeuAgendamento from './pages/MeuAgendamento';
 import __Layout from './Layout.jsx';
 
 
@@ -165,6 +166,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "FollowUpAutomation": FollowUpAutomation,
+    "MeuAgendamento": MeuAgendamento,
 }
 
 export const pagesConfig = {
