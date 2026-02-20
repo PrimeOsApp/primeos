@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  CalendarIcon, Clock, User, Phone, Mail, CheckCircle2,
+  CalendarIcon, Clock, User, CheckCircle2,
   Loader2, AlertCircle, ChevronRight, Stethoscope
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
