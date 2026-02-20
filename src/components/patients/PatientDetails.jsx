@@ -21,8 +21,13 @@ import {
   CreditCard,
   Briefcase,
 } from "lucide-react";
+import { useState } from "react";
 import PatientAIInsights from "@/components/patients/PatientAIInsights";
 import PatientAppointmentHistory from "@/components/patients/PatientAppointmentHistory";
+import PatientImageExams from "@/components/patients/PatientImageExams";
+import PatientFamilyHistory from "@/components/patients/PatientFamilyHistory";
+import PatientPrescriptions from "@/components/patients/PatientPrescriptions";
+import PatientCheckup from "@/components/patients/PatientCheckup";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
