@@ -275,6 +275,24 @@ export default function Financeiro() {
             />
           </TabsContent>
 
+          {/* A RECEBER */}
+          <TabsContent value="a-receber">
+            <ContasAReceber
+              onAddNew={() => openNewForm("receita")}
+              onGeneratePaymentLink={() => setShowPaymentLink(true)}
+            />
+          </TabsContent>
+
+          {/* A PAGAR */}
+          <TabsContent value="a-pagar">
+            <ContasAPagar onAddNew={() => openNewForm("despesa")} />
+          </TabsContent>
+
+          {/* CONCILIAÇÃO */}
+          <TabsContent value="conciliacao">
+            <ConciliacaoBancaria />
+          </TabsContent>
+
           {/* RELATÓRIOS */}
           <TabsContent value="relatorios">
             <ReportBuilder transactions={transactions} />
