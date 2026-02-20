@@ -5,13 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Plus, Search, Users, FileText } from "lucide-react";
-import PatientForm from "@/components/patients/PatientForm";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, Search, Users, FileText, Filter } from "lucide-react";
+import PatientFormExpanded from "@/components/patients/PatientFormExpanded";
 import PatientCard from "@/components/patients/PatientCard";
 import PatientDetails from "@/components/patients/PatientDetails";
 
 export default function Patients() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterGender, setFilterGender] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [editingPatient, setEditingPatient] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState(null);
@@ -72,11 +75,16 @@ export default function Patients() {
     setShowForm(false);
   };
 
-  const filteredPatients = patients.filter((patient) =>
-    patient.patient_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.patient_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.patient_phone?.includes(searchTerm)
-  );
+  const filteredPatients = patients.filter((patient) => {
+    const matchSearch =
+      patient.patient_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      patient.patient_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      patient.patient_phone?.includes(searchTerm) ||
+      patient.cpf?.includes(searchTerm);
+    const matchStatus = filterStatus === "all" || patient.status === filterStatus;
+    const matchGender = filterGender === "all" || patient.gender === filterGender;
+    return matchSearch && matchStatus && matchGender;
+  });
 
   const activePatients = patients.filter(p => p.status === "ativo").length;
 
@@ -157,16 +165,41 @@ export default function Patients() {
           </Card>
         </div>
 
-        {/* Search */}
-        <div className="mb-6">
-          <div className="relative">
+        {/* Search + Filters */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <Input
-              placeholder="Buscar por nome, email ou telefone..."
+              placeholder="Buscar por nome, email, telefone ou CPF..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
+          </div>
+          <div className="flex gap-2">
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-36">
+                <Filter className="w-4 h-4 mr-1 text-slate-400" />
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos status</SelectItem>
+                <SelectItem value="ativo">Ativo</SelectItem>
+                <SelectItem value="inativo">Inativo</SelectItem>
+                <SelectItem value="arquivado">Arquivado</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={filterGender} onValueChange={setFilterGender}>
+              <SelectTrigger className="w-36">
+                <SelectValue placeholder="Gênero" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                <SelectItem value="masculino">Masculino</SelectItem>
+                <SelectItem value="feminino">Feminino</SelectItem>
+                <SelectItem value="outro">Outro</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -179,7 +212,7 @@ export default function Patients() {
               exit={{ opacity: 0, y: -20 }}
               className="mb-8"
             >
-              <PatientForm
+              <PatientFormExpanded
                 patient={editingPatient}
                 onSubmit={handleSubmit}
                 onCancel={() => {
