@@ -306,6 +306,11 @@ export default function Financeiro() {
             <ConciliacaoBancaria />
           </TabsContent>
 
+          {/* CONFIG CATEGORIAS */}
+          <TabsContent value="config-categorias">
+            <CategoryManager />
+          </TabsContent>
+
           {/* RELATÓRIOS */}
           <TabsContent value="relatorios">
             <ReportBuilder transactions={transactions} />
