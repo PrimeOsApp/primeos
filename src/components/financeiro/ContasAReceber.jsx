@@ -188,6 +188,16 @@ export default function ContasAReceber({ onAddNew, onGeneratePaymentLink }) {
           </Card>
         ))}
       </div>
+
+      <CobrancaModal
+        transaction={cobrancaTx}
+        open={!!cobrancaTx}
+        onClose={() => setCobrancaTx(null)}
+        onUpdated={() => {
+          queryClient.invalidateQueries({ queryKey: ["financialTransactions"] });
+          setCobrancaTx(null);
+        }}
+      />
     </div>
   );
 }
