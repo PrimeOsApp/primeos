@@ -369,10 +369,17 @@ export default function Financeiro() {
 
       <TransactionForm
         open={showForm}
-        onClose={() => { setShowForm(false); setEditing(null); }}
+        onClose={() => { setShowForm(false); setEditing(null); setDefaultFormType(null); }}
         onSave={handleSave}
         transaction={editing}
+        defaultType={defaultFormType}
         isLoading={createMutation.isPending || updateMutation.isPending}
+      />
+
+      <PaymentLink
+        open={showPaymentLink}
+        onClose={() => setShowPaymentLink(false)}
+        onCreated={() => queryClient.invalidateQueries({ queryKey: ["financialTransactions"] })}
       />
 
       <ImportStatement
