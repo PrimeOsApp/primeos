@@ -75,6 +75,12 @@ export default function Financeiro() {
     else createMutation.mutate(data);
   };
 
+  const openNewForm = (type) => {
+    setEditing(null);
+    setDefaultFormType(type);
+    setShowForm(true);
+  };
+
   // Period filter
   const periodFiltered = useMemo(() => {
     const now = new Date();
