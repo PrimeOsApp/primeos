@@ -42,6 +42,58 @@ export default function PaymentLink({ open, onClose, onCreated }) {
     notes: "",
   });
 
+  const isInIframe = window.self !== window.top;
+
+  const generateStripeLink = async () => {
+    if (isInIframe) {
+      toast.error("O checkout Stripe só funciona no app publicado, não no preview.");
+      return;
+    }
+    if (!form.patient_name || !form.amount) {
+      toast.error("Preencha paciente e valor.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const amount = parseFloat(form.amount.replace(",", "."));
+      const res = await base44.functions.invoke("stripeCheckout", {
+        patient_name: form.patient_name,
+        amount,
+        service: form.service,
+        description: form.notes,
+        success_url: window.location.origin + window.location.pathname + "?payment=success",
+        cancel_url: window.location.origin + window.location.pathname + "?payment=cancelled",
+      });
+
+      if (res.data?.url) {
+        // Register in system
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + parseInt(form.due_days));
+        await base44.entities.FinancialTransaction.create({
+          type: "receita",
+          category: "consulta",
+          description: `${form.service} - ${form.patient_name} [Stripe]`,
+          amount,
+          date: new Date().toISOString().split("T")[0],
+          due_date: dueDate.toISOString().split("T")[0],
+          status: "pendente",
+          patient_name: form.patient_name,
+          payment_method: "cartao_credito",
+          notes: `Stripe session: ${res.data.session_id}`,
+          bank_statement_ref: res.data.session_id,
+        });
+        onCreated?.();
+        window.open(res.data.url, "_blank");
+        toast.success("Redirecionando para o checkout Stripe!");
+        onClose();
+        reset();
+      }
+    } catch (err) {
+      toast.error("Erro ao criar sessão Stripe: " + err.message);
+    }
+    setLoading(false);
+  };
+
   const generateLink = async () => {
     if (!form.patient_name || !form.amount) {
       toast.error("Preencha paciente e valor.");
@@ -49,11 +101,7 @@ export default function PaymentLink({ open, onClose, onCreated }) {
     }
     setLoading(true);
     try {
-      // Generate a payment link using LLM to create a structured payment message
-      // Since Stripe is not yet configured, generate a PIX/WhatsApp based link
       const amount = parseFloat(form.amount.replace(",", "."));
-      
-      // Build a friendly payment message
       const dueDate = new Date();
       dueDate.setDate(dueDate.getDate() + parseInt(form.due_days));
       
@@ -69,7 +117,6 @@ export default function PaymentLink({ open, onClose, onCreated }) {
         `_Para confirmar o pagamento, responda esta mensagem._`
       );
 
-      // Simulate generating a unique payment code
       const paymentCode = `PRIME-${Date.now().toString(36).toUpperCase()}`;
       
       setGeneratedLink({
@@ -83,7 +130,6 @@ export default function PaymentLink({ open, onClose, onCreated }) {
         installments: form.installments,
       });
 
-      // Create the transaction in the system
       const txDate = new Date().toISOString().split("T")[0];
       const txDue = dueDate.toISOString().split("T")[0];
       await base44.entities.FinancialTransaction.create({
