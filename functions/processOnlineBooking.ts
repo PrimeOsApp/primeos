@@ -113,16 +113,17 @@ Deno.serve(async (req) => {
           from_name: 'Prime Odontologia',
           subject: '✅ Consulta Agendada - Prime Odontologia',
           body: `
-            <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px">
-              <h2 style="color:#4f46e5;margin-top:0">Agendamento Confirmado! 🦷</h2>
-              <p>Olá <strong>${data.patient_name}</strong>, sua consulta foi agendada com sucesso.</p>
-              <table style="width:100%;border-collapse:collapse;margin:16px 0">
-                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Data</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${formatDate(data.date)}</td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Horário</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.time}</td></tr>
-                <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Duração</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.duration_minutes} minutos</td></tr>
-                ${assignedProvider ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Profissional</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${assignedProvider}</td></tr>` : ''}
-                ${data.resource_name ? `<tr><td style="padding:8px 0;color:#64748b;font-size:13px">Local</td><td style="padding:8px 0;font-weight:600">${data.resource_name}</td></tr>` : ''}
-              </table>
+          <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px">
+          <h2 style="color:#4f46e5;margin-top:0">Agendamento Confirmado! 🦷</h2>
+          <p>Olá <strong>${data.patient_name}</strong>, sua consulta foi agendada com sucesso.</p>
+          <table style="width:100%;border-collapse:collapse;margin:16px 0">
+            ${data.reason ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Motivo</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.reason}</td></tr>` : ''}
+            <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Data</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${formatDate(data.date)}</td></tr>
+            <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Horário</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.time}</td></tr>
+            <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Duração</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.duration_minutes} minutos</td></tr>
+            ${assignedProvider ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Profissional</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${assignedProvider}</td></tr>` : ''}
+            ${assignedResourceName ? `<tr><td style="padding:8px 0;color:#64748b;font-size:13px">Local</td><td style="padding:8px 0;font-weight:600">${assignedResourceName}</td></tr>` : ''}
+          </table>
               <div style="background:#f8fafc;border-radius:8px;padding:12px;font-size:13px;color:#475569">
                 <p style="margin:0 0 4px"><strong>Observações:</strong></p>
                 <ul style="margin:0;padding-left:16px">
