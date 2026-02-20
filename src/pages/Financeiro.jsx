@@ -115,14 +115,18 @@ export default function Financeiro() {
   const pendentes = transactions.filter(t => t.status === "pendente").reduce((s, t) => s + (t.amount || 0), 0);
   const vencidos = transactions.filter(t => t.status === "vencido").reduce((s, t) => s + (t.amount || 0), 0);
 
-  // Category breakdown (expenses)
+  // Category breakdown (expenses) - using custom categories
+  const customCategories = useMemo(() => loadCategories(), []);
   const catBreakdown = useMemo(() => {
     const map = {};
     periodFiltered.filter(t => t.type === "despesa" && t.status !== "cancelado").forEach(t => {
       map[t.category] = (map[t.category] || 0) + (t.amount || 0);
     });
-    return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [periodFiltered]);
+    return Object.entries(map).map(([key, value]) => {
+      const found = customCategories.despesa.find(c => c.value === key);
+      return { name: found?.label || key.replace(/_/g, " "), value, color: found?.color || "#64748b" };
+    });
+  }, [periodFiltered, customCategories]);
 
   const kpis = [
     { label: "Receita Total", value: totalReceitas, icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50" },
