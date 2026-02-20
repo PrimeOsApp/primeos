@@ -236,16 +236,26 @@ export default function PaymentLink({ open, onClose, onCreated }) {
               </div>
             </div>
 
+            {isInIframe && (
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700 flex gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <p>O checkout Stripe funciona apenas no app publicado. Use "PIX / WhatsApp" para testar no preview.</p>
+              </div>
+            )}
+
             <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-700">
-              <p className="font-semibold mb-1 flex items-center gap-1"><Zap className="w-3.5 h-3.5" /> A cobrança será registrada automaticamente no sistema financeiro.</p>
-              <p>Para aceitar pagamentos online via cartão, configure o Stripe no painel de integrações.</p>
+              <p className="font-semibold mb-1 flex items-center gap-1"><Zap className="w-3.5 h-3.5" /> A cobrança é registrada automaticamente no financeiro.</p>
             </div>
 
-            <div className="flex gap-2 justify-end">
+            <div className="flex gap-2 justify-end flex-wrap">
               <Button variant="outline" onClick={() => { onClose(); reset(); }}>Cancelar</Button>
-              <Button onClick={generateLink} disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Link className="w-4 h-4" />}
-                Gerar Cobrança
+              <Button variant="outline" onClick={generateLink} disabled={loading} className="border-green-300 text-green-700 hover:bg-green-50 gap-2">
+                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <QrCode className="w-4 h-4" />}
+                PIX / WhatsApp
+              </Button>
+              <Button onClick={generateStripeLink} disabled={loading || isInIframe} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
+                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                Pagar com Stripe
               </Button>
             </div>
           </div>
