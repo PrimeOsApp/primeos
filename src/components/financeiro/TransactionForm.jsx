@@ -34,7 +34,8 @@ export default function TransactionForm({ open, onClose, onSave, transaction, is
   }, [transaction, open]);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
-  const categories = form.type === "receita" ? CATEGORIES_RECEITA : CATEGORIES_DESPESA;
+  const allCategories = loadCategories();
+  const categories = form.type === "receita" ? allCategories.receita : allCategories.despesa;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
