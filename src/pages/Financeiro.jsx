@@ -221,6 +221,11 @@ export default function Financeiro() {
             </TabsTrigger>
           </TabsList>
 
+          {/* FLUXO PROJETADO */}
+          <TabsContent value="fluxo">
+            <ProjectedCashFlow transactions={transactions} />
+          </TabsContent>
+
           {/* DASHBOARD */}
           <TabsContent value="dashboard" className="space-y-6">
             <div className="flex items-center gap-3">
