@@ -352,7 +352,7 @@ export default function Financeiro() {
                       <RechartsPie>
                         <Pie data={catBreakdown} cx="50%" cy="50%" innerRadius={60} outerRadius={100} dataKey="value"
                           label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                          {catBreakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                          {catBreakdown.map((entry, i) => <Cell key={i} fill={entry.color || COLORS[i % COLORS.length]} />)}
                         </Pie>
                         <Tooltip formatter={v => `R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`} />
                       </RechartsPie>
