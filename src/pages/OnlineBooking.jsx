@@ -277,6 +277,15 @@ export default function OnlineBooking() {
 
                     {/* Summary */}
                     <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+                      {booking.reason && (
+                        <div className="flex items-center gap-2 col-span-2">
+                          <Stethoscope className="w-4 h-4 text-indigo-500" />
+                          <div>
+                            <p className="text-xs text-indigo-400">Motivo</p>
+                            <p className="font-semibold text-indigo-800">{booking.reason}</p>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2">
                         <CalendarIcon className="w-4 h-4 text-indigo-500" />
                         <div>
@@ -290,7 +299,7 @@ export default function OnlineBooking() {
                         <Clock className="w-4 h-4 text-indigo-500" />
                         <div>
                           <p className="text-xs text-indigo-400">Horário</p>
-                          <p className="font-semibold text-indigo-800">{booking.time || "—"}</p>
+                          <p className="font-semibold text-indigo-800">{booking.time || "—"} · {booking.duration_minutes}min</p>
                         </div>
                       </div>
                       {booking.provider && (
