@@ -879,6 +879,8 @@ Keep it friendly, professional, and concise for WhatsApp.`,
             </motion.div>
           )}
         </AnimatePresence>
+        </div> {/* end flex-1 */}
+        </div> {/* end main layout */}
 
         {/* Onboarding Wizard */}
         {showOnboarding && (
