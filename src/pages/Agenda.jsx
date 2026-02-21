@@ -119,6 +119,15 @@ export default function Agenda() {
     }
   };
 
+  const handleReschedule = (appointmentId, newDate, newTime) => {
+    const apt = appointments.find(a => a.id === appointmentId);
+    if (!apt) return;
+    const update = { ...apt, date: newDate };
+    if (newTime) update.time = newTime;
+    updateAppointmentMutation.mutate({ id: appointmentId, data: update });
+    toast.success(`Consulta remarcada para ${newDate}${newTime ? ` às ${newTime}` : ""}`);
+  };
+
   const handleStatusChange = (appointmentId, newStatus) => {
     const apt = appointments.find(a => a.id === appointmentId);
     if (apt) {
