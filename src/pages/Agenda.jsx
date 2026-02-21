@@ -253,49 +253,53 @@ export default function Agenda() {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <Tabs value={view} onValueChange={setView}>
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
                 <TabsList>
-                  <TabsTrigger value="day" className="flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4" />
-                    Dia
+                  <TabsTrigger value="day" className="flex items-center gap-1.5">
+                    <CalendarDays className="w-4 h-4" />Dia
                   </TabsTrigger>
-                  <TabsTrigger value="week" className="flex items-center gap-2">
-                    <CalendarRange className="w-4 h-4" />
-                    Semana
+                  <TabsTrigger value="week" className="flex items-center gap-1.5">
+                    <CalendarRange className="w-4 h-4" />Semana
                   </TabsTrigger>
-                  <TabsTrigger value="month" className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    Mês
+                  <TabsTrigger value="month" className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4" />Mês
+                  </TabsTrigger>
+                  <TabsTrigger value="summary_day" className="flex items-center gap-1.5">
+                    <ListOrdered className="w-4 h-4" />Resumo Dia
+                  </TabsTrigger>
+                  <TabsTrigger value="summary_week" className="flex items-center gap-1.5">
+                    <ListOrdered className="w-4 h-4" />Resumo Semana
                   </TabsTrigger>
                 </TabsList>
 
                 <div className="flex items-center gap-2">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="icon"
                     onClick={() => {
                       if (view === "month") setCurrentMonth(addMonths(currentMonth, -1));
-                      else setCurrentWeek(addWeeks(currentWeek, -1));
+                      else if (view === "week" || view === "summary_week") setCurrentWeek(addWeeks(currentWeek, -1));
+                      else setSelectedDate(d => { const nd = new Date(d); nd.setDate(nd.getDate() - 1); return nd; });
                     }}
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </Button>
-                  
-                  <span className="text-lg font-semibold min-w-[200px] text-center">
-                    {view === "month" 
+
+                  <span className="text-base font-semibold min-w-[180px] text-center capitalize">
+                    {view === "month"
                       ? format(currentMonth, "MMMM yyyy", { locale: ptBR })
-                      : view === "week"
-                      ? format(currentWeek, "MMMM yyyy", { locale: ptBR })
-                      : format(selectedDate, "d 'de' MMMM yyyy", { locale: ptBR })
-                    }
+                      : view === "week" || view === "summary_week"
+                      ? format(currentWeek, "'Sem. de' d 'de' MMMM", { locale: ptBR })
+                      : format(selectedDate, "d 'de' MMMM yyyy", { locale: ptBR })}
                   </span>
-                  
-                  <Button 
-                    variant="ghost" 
+
+                  <Button
+                    variant="ghost"
                     size="icon"
                     onClick={() => {
                       if (view === "month") setCurrentMonth(addMonths(currentMonth, 1));
-                      else setCurrentWeek(addWeeks(currentWeek, 1));
+                      else if (view === "week" || view === "summary_week") setCurrentWeek(addWeeks(currentWeek, 1));
+                      else setSelectedDate(d => { const nd = new Date(d); nd.setDate(nd.getDate() + 1); return nd; });
                     }}
                   >
                     <ChevronRight className="w-5 h-5" />
@@ -311,6 +315,7 @@ export default function Agenda() {
                   onEditAppointment={handleEditAppointment}
                   onStatusChange={handleStatusChange}
                   onCancel={handleCancelAppointment}
+                  onReschedule={handleReschedule}
                   onAddPatient={(date) => {
                     setEditingAppointment(null);
                     setInitialDate(date);
@@ -328,6 +333,7 @@ export default function Agenda() {
                   onEditAppointment={handleEditAppointment}
                   onStatusChange={handleStatusChange}
                   onCancel={handleCancelAppointment}
+                  onReschedule={handleReschedule}
                 />
               </TabsContent>
 
@@ -336,6 +342,25 @@ export default function Agenda() {
                   currentMonth={currentMonth}
                   appointments={appointments}
                   onDayClick={handleDayClick}
+                  onReschedule={handleReschedule}
+                />
+              </TabsContent>
+
+              <TabsContent value="summary_day" className="mt-0">
+                <AgendaSummary
+                  mode="day"
+                  selectedDate={selectedDate}
+                  appointments={appointments}
+                  onEdit={handleEditAppointment}
+                />
+              </TabsContent>
+
+              <TabsContent value="summary_week" className="mt-0">
+                <AgendaSummary
+                  mode="week"
+                  weekStart={currentWeek}
+                  appointments={appointments}
+                  onEdit={handleEditAppointment}
                 />
               </TabsContent>
             </Tabs>
