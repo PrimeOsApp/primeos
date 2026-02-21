@@ -164,6 +164,9 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
 export default function CRM() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [tagFilter, setTagFilter] = useState("");
+  const [activeSegmentId, setActiveSegmentId] = useState(null);
+  const [segmentCustomers, setSegmentCustomers] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showInteraction, setShowInteraction] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
