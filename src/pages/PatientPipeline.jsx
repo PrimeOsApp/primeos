@@ -233,6 +233,46 @@ Keep it friendly, professional, and concise for WhatsApp.`,
           </div>
         </div>
 
+        {/* Selected Patient Context Bar */}
+        {selectedPatient && (
+          <div className="bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-5 flex items-center gap-4 shadow-sm flex-wrap">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+              {selectedPatient.name?.charAt(0)?.toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-slate-900 truncate">{selectedPatient.name}</p>
+              <p className="text-xs text-slate-500">{selectedPatient.phone || selectedPatient.email || "Sem contato"}</p>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge className="bg-indigo-100 text-indigo-700 border-0">{selectedPatient.segment || "individual"}</Badge>
+              <Badge className="bg-emerald-100 text-emerald-700 border-0">{selectedPatient.status}</Badge>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("crm")}>
+                <Users className="w-3 h-3" />CRM
+              </Button>
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("script")}>
+                <FileText className="w-3 h-3" />Script
+              </Button>
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("appointment")}>
+                <Calendar className="w-3 h-3" />Agenda
+              </Button>
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("clinical")}>
+                <Stethoscope className="w-3 h-3" />Clínico
+              </Button>
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("followup")}>
+                <Heart className="w-3 h-3" />Follow-up
+              </Button>
+              <Button size="sm" variant="outline" className="gap-1.5 h-8 text-xs" onClick={() => setActiveStage("retention")}>
+                <RefreshCcw className="w-3 h-3" />Retenção
+              </Button>
+              <Button size="sm" variant="ghost" className="h-8 text-xs text-slate-400 hover:text-rose-500" onClick={() => { setSelectedPatient(null); setActiveStage("whatsapp"); }}>
+                <ChevronRight className="w-3 h-3 rotate-180" />Trocar
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Stage Content */}
         <AnimatePresence mode="wait">
           {/* Stage 1: WhatsApp */}
