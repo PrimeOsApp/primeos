@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain,
-  Users, MonitorCheck, BellRing, DollarSign
+  Users, MonitorCheck, BellRing, DollarSign, AlertTriangle
 } from "lucide-react";
 import AIReturnSuggestions from "../components/agenda/AIReturnSuggestions";
 import { toast } from "sonner";
@@ -187,6 +187,9 @@ export default function Agenda() {
             </TabsTrigger>
             <TabsTrigger value="recursos" className="flex items-center gap-1.5 flex-1">
               <MonitorCheck className="w-4 h-4" />Recursos
+            </TabsTrigger>
+            <TabsTrigger value="cobrancas" className="flex items-center gap-1.5 flex-1">
+              <AlertTriangle className="w-4 h-4" />Cobranças
             </TabsTrigger>
           </TabsList>
 
