@@ -148,7 +148,7 @@ export default function LeadsPipeline() {
                         {lead.valor_estimado > 0 && (
                           <p className="text-xs text-emerald-600 font-medium mb-2">R$ {lead.valor_estimado.toLocaleString()}</p>
                         )}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                           {lead.phone && (
                             <Button size="sm" variant="ghost" className="h-7 px-2" onClick={() => openWhatsApp(lead.phone, lead.name)}>
                               <MessageCircle className="w-3 h-3 text-green-600" />
@@ -162,6 +162,9 @@ export default function LeadsPipeline() {
                               <ArrowRight className="w-3 h-3" />
                             </Button>
                           )}
+                          <Button size="sm" variant="ghost" className="h-7 px-2 ml-auto" onClick={() => openLeadDetail(lead)}>
+                            <Pencil className="w-3 h-3 text-slate-400" />
+                          </Button>
                         </div>
                       </motion.div>
                     );
