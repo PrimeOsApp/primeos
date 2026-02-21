@@ -32,6 +32,8 @@ const interesseColors = { invisalign: "bg-purple-100 text-purple-700", ortodonti
 
 export default function LeadsPipeline() {
   const [showForm, setShowForm] = useState(false);
+  const [selectedLead, setSelectedLead] = useState(null);
+  const [editForm, setEditForm] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: leads = [] } = useQuery({
