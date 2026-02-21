@@ -442,6 +442,7 @@ export default function CRM() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* Drawers / Dialogs */}
       <PatientProfileDrawer
