@@ -13,10 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PatientProfileDrawer from "@/components/crm/PatientProfileDrawer";
 import CustomerForm from "@/components/crm/CustomerForm";
 import InteractionForm from "@/components/crm/InteractionForm";
+import SegmentationPanel from "@/components/crm/SegmentationPanel";
 import {
   Users, Search, UserPlus, TrendingUp, Calendar, DollarSign,
   Phone, Mail, MessageCircle, ChevronRight, Star, Clock,
-  UserCheck, AlertCircle, Filter, MoreVertical
+  UserCheck, AlertCircle, Filter, MoreVertical, Tag, X, BookmarkCheck
 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
