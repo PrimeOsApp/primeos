@@ -99,14 +99,12 @@ export default function PatientDetails({ patient: initialPatient, onBack, onEdit
                 <Tabs defaultValue="appointments" className="w-full">
                   <TabsList className="flex flex-wrap gap-1 h-auto w-full mb-2">
                     <TabsTrigger value="appointments" className="text-xs">Consultas</TabsTrigger>
+                    <TabsTrigger value="historico" className="text-xs">Histórico Médico</TabsTrigger>
+                    <TabsTrigger value="documentos" className="text-xs">Documentos</TabsTrigger>
                     <TabsTrigger value="prescriptions" className="text-xs">Prescrições</TabsTrigger>
                     <TabsTrigger value="checkup" className="text-xs">Check-up</TabsTrigger>
                     <TabsTrigger value="images" className="text-xs">Imagens</TabsTrigger>
                     <TabsTrigger value="family" className="text-xs">Família</TabsTrigger>
-                    <TabsTrigger value="allergies" className="text-xs">Alergias</TabsTrigger>
-                    <TabsTrigger value="medications" className="text-xs">Medicamentos</TabsTrigger>
-                    <TabsTrigger value="conditions" className="text-xs">Condições</TabsTrigger>
-                    <TabsTrigger value="treatments" className="text-xs">Tratamentos</TabsTrigger>
                     <TabsTrigger value="ai" className="text-xs flex items-center gap-1">
                       <Brain className="w-3 h-3 text-indigo-600" />IA
                     </TabsTrigger>
