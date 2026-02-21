@@ -277,6 +277,12 @@ export default function Agenda() {
                   onEditAppointment={handleEditAppointment}
                   onStatusChange={handleStatusChange}
                   onCancel={handleCancelAppointment}
+                  onAddPatient={(date) => {
+                    setEditingAppointment(null);
+                    setInitialDate(date);
+                    setInitialTime("");
+                    setShowForm(true);
+                  }}
                 />
               </TabsContent>
 
