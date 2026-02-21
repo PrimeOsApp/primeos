@@ -133,6 +133,22 @@ export default function AppointmentCard({
         <p className="text-sm text-slate-600 mb-3 italic">{appointment.notes}</p>
       )}
 
+      {/* Payment badge */}
+      {appointment.price > 0 && (
+        <div className="flex items-center gap-2 mb-3">
+          <Badge className={`text-xs ${paymentColors[appointment.payment_status || "pending"]}`}>
+            {appointment.payment_status === "paid" ? "✓ Pago" : appointment.payment_status === "waived" ? "Isento" : appointment.payment_status === "partial" ? "Parcial" : "Pendente"}
+          </Badge>
+          <span className="text-xs text-slate-500">{fmtBRL(appointment.price)}</span>
+        </div>
+      )}
+
+      {showPayment && (
+        <div className="mb-3">
+          <AppointmentPaymentPanel appointment={appointment} onUpdated={() => setShowPayment(false)} />
+        </div>
+      )}
+
       <AIReschedulePanel appointment={appointment} onSelectSlot={(date, time) => onEdit({ ...appointment, date, time })} />
 
       <div className="flex items-center gap-2 pt-3 border-t">
