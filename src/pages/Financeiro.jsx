@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
   Search, PieChart, BarChart3, Wallet,
-  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange
+  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange, Zap
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
@@ -328,6 +328,11 @@ export default function Financeiro() {
           {/* ORÇAMENTO */}
           <TabsContent value="orcamento">
             <BudgetPlanner transactions={transactions} />
+          </TabsContent>
+
+          {/* AUTOMAÇÕES */}
+          <TabsContent value="automacoes">
+            <FinancialAutomationsPanel transactions={transactions} />
           </TabsContent>
 
           {/* BANCO */}
