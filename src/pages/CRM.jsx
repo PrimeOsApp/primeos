@@ -398,6 +398,23 @@ export default function CRM() {
           </div>
         )}
 
+        <Tabs defaultValue="patients" className="space-y-5">
+          <TabsList>
+            <TabsTrigger value="patients" className="gap-2"><Users className="w-4 h-4" />Pacientes</TabsTrigger>
+            <TabsTrigger value="ai" className="gap-2"><Brain className="w-4 h-4" />Análise IA</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="ai">
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
+              <AIPatientAnalysis
+                customers={allPatients}
+                appointments={appointments}
+                transactions={transactions}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="patients">
         <div className="grid xl:grid-cols-4 gap-6 items-start">
           <div className="xl:col-span-3">
         {/* Patient Grid */}
