@@ -107,7 +107,13 @@ export default function AppointmentForm({
   };
 
   const handleServiceTypeChange = (serviceType) => {
-    setForm(prev => ({ ...prev, service_type: serviceType, duration_minutes: serviceTypes[serviceType]?.duration || 30 }));
+    const prices = getServicePrices();
+    setForm(prev => ({ 
+      ...prev, 
+      service_type: serviceType, 
+      duration_minutes: serviceTypes[serviceType]?.duration || 30,
+      price: prev.price ?? prices[serviceType] ?? ""
+    }));
   };
 
   const handleAddTag = (e) => {
