@@ -220,17 +220,13 @@ export default function AppointmentCard({
         )}
       </div>
 
-      <Dialog open={showMedicalRecord} onOpenChange={setShowMedicalRecord}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Prontuário Eletrônico - {appointment.patient_name}</DialogTitle>
-          </DialogHeader>
-          <PatientMedicalSummary 
-            patientId={appointment.patient_id} 
-            appointmentId={appointment.id}
-          />
-        </DialogContent>
-      </Dialog>
+      <EHRModal
+        open={showEHR}
+        onClose={() => setShowEHR(false)}
+        appointment={appointment}
+        patientId={appointment.patient_id}
+        patientName={appointment.patient_name}
+      />
     </div>
   );
 }
