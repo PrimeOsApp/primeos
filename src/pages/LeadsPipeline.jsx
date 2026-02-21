@@ -118,6 +118,26 @@ export default function LeadsPipeline() {
               <p className="text-xs text-slate-500">Valor Fechado</p>
               <p className="text-xl font-bold text-emerald-600">R$ {totalValor.toLocaleString()}</p>
             </div>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                setScoringAll(true);
+                try {
+                  await base44.functions.invoke("scoreLeadAI", { score_all: true });
+                  queryClient.invalidateQueries({ queryKey: ["leads"] });
+                  toast.success("Todos os leads pontuados com IA!");
+                } catch (e) {
+                  toast.error("Erro ao pontuar leads");
+                } finally {
+                  setScoringAll(false);
+                }
+              }}
+              disabled={scoringAll}
+              className="gap-2"
+            >
+              {scoringAll ? <Loader2 className="w-4 h-4 animate-spin" /> : <BarChart2 className="w-4 h-4" />}
+              Score Todos
+            </Button>
             <Button onClick={() => { setForm({ name: "", phone: "", email: "", origem_canal_id: "", campanha_id: "", interesse: "invisalign", status: "novo", data_entrada: format(new Date(), "yyyy-MM-dd"), canal_conversao: "whatsapp", valor_estimado: 0, temperatura: "morno", notas: "" }); setShowForm(true); }} className="bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 mr-2" />Novo Lead
             </Button>
