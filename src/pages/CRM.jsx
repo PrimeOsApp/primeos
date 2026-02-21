@@ -341,11 +341,11 @@ export default function CRM() {
         )}
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex flex-wrap gap-3 mb-4">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
-              placeholder="Buscar paciente por nome, email ou telefone..."
+              placeholder="Buscar por nome, email, telefone ou tag..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10"
@@ -363,9 +363,41 @@ export default function CRM() {
               <SelectItem value="inactive">Inativos</SelectItem>
             </SelectContent>
           </Select>
-          <span className="text-sm text-slate-400 self-center">{filtered.length} paciente(s)</span>
+          <span className="text-sm text-slate-400 self-center">{filtered.length} cliente(s)</span>
         </div>
 
+        {/* Tag Quick Filters */}
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {allTags.slice(0, 15).map(tag => (
+              <button key={tag} onClick={() => setTagFilter(tagFilter === tag ? "" : tag)}
+                className={cn("text-xs px-2.5 py-1 rounded-full border transition-all",
+                  tagFilter === tag ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
+                )}>
+                #{tag}
+              </button>
+            ))}
+            {tagFilter && (
+              <button onClick={() => setTagFilter("")} className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1">
+                <X className="w-3 h-3" />limpar
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Active Segment Banner */}
+        {activeSegmentId && (
+          <div className="mb-4 flex items-center gap-2 p-2.5 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700">
+            <BookmarkCheck className="w-4 h-4" />
+            <span>Segmentação ativa: <strong>{activeSegmentId}</strong> — {filtered.length} clientes</span>
+            <button onClick={() => { setActiveSegmentId(null); setSegmentCustomers(null); }} className="ml-auto hover:text-red-500">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        <div className="grid xl:grid-cols-4 gap-6 items-start">
+          <div className="xl:col-span-3">
         {/* Patient Grid */}
         {filtered.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
