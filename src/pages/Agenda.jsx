@@ -22,6 +22,7 @@ import AppointmentForm from "../components/agenda/AppointmentForm";
 import DentistAvailability from "../components/agenda/DentistAvailability";
 import ResourceManager from "../components/agenda/ResourceManager";
 import ReminderPanel from "../components/agenda/ReminderPanel";
+import ReminderScheduleManager from "../components/agenda/ReminderScheduleManager";
 
 export default function Agenda() {
   const [view, setView] = useState("day");
