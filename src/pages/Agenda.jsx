@@ -189,6 +189,12 @@ export default function Agenda() {
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="financeiro">
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
+              <RevenuePanel />
+            </div>
+          </TabsContent>
+
           <TabsContent value="lembretes">
             <ReminderPanel />
           </TabsContent>
