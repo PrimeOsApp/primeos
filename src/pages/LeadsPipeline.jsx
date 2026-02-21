@@ -196,11 +196,12 @@ export default function LeadsPipeline() {
                 </SheetHeader>
 
                 <Tabs defaultValue="info" className="w-full">
-                  <TabsList className="w-full grid grid-cols-4 mb-4">
+                  <TabsList className="w-full grid grid-cols-5 mb-4">
                     <TabsTrigger value="info" className="text-xs"><Users className="w-3 h-3 mr-1" />Info</TabsTrigger>
                     <TabsTrigger value="comercial" className="text-xs"><TrendingUp className="w-3 h-3 mr-1" />Comercial</TabsTrigger>
                     <TabsTrigger value="status" className="text-xs"><Zap className="w-3 h-3 mr-1" />Status</TabsTrigger>
                     <TabsTrigger value="notas" className="text-xs"><FileText className="w-3 h-3 mr-1" />Notas</TabsTrigger>
+                    <TabsTrigger value="score" className="text-xs"><Sparkles className="w-3 h-3 mr-1" />Score</TabsTrigger>
                   </TabsList>
 
                   {/* Tab: Info */}
