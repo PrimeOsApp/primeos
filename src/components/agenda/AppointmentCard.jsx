@@ -5,9 +5,8 @@ import { MessageCircle, CheckCircle, X, Edit, Clock, User, Phone, Database, Doll
 import SmartReminderButton from "./SmartReminderButton";
 import AIReschedulePanel from "./AIReschedulePanel";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import PatientMedicalSummary from "./PatientMedicalSummary";
 import AppointmentPaymentPanel from "./AppointmentPaymentPanel";
+import EHRModal from "./EHRModal";
 
 const serviceTypes = {
   consultation: { label: "Consulta", color: "bg-blue-500" },
