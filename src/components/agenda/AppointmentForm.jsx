@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Loader2, Search, UserPlus, X, Tag } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { base44 } from "@/api/base44Client";
 import PatientQuickCreate from "./PatientQuickCreate";
 import PatientHistoryPanel from "./PatientHistoryPanel";
 
