@@ -108,7 +108,21 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
             <span className="truncate">{patient.email || patient.patient_email}</span>
           </div>
         )}
+        {patient.profession && (
+          <div className="flex items-center gap-2">
+            <Star className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-500">{patient.profession}</span>
+          </div>
+        )}
       </div>
+      {patient.tags?.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-3">
+          {patient.tags.slice(0, 3).map(tag => (
+            <Badge key={tag} className="bg-indigo-50 text-indigo-600 border-0 text-xs">#{tag}</Badge>
+          ))}
+          {patient.tags.length > 3 && <Badge className="bg-slate-50 text-slate-500 border-0 text-xs">+{patient.tags.length - 3}</Badge>}
+        </div>
+      )}
 
       <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 text-center">
         <div>
