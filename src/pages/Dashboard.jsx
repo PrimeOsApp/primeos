@@ -275,6 +275,29 @@ export default function Dashboard() {
           </Card>
         </div>
 
+        {/* ── Clinic Operations Dashboard ── */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Stethoscope className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-lg font-bold text-slate-800">Operações da Clínica</h2>
+          </div>
+
+          {/* Row 1: Volume + Revenue */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <AppointmentVolumeChart appointments={appointments} />
+            <div>
+              <RevenueTrackingChart appointments={appointments} />
+            </div>
+          </div>
+
+          {/* Row 2: Patients + Status + Delinquency */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <PatientStatsWidget appointments={appointments} />
+            <AppointmentStatusWidget appointments={appointments} />
+            <PaymentDelinquencyWidget appointments={appointments} />
+          </div>
+        </div>
+
         {/* Recent Activity */}
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
