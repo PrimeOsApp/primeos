@@ -114,6 +114,14 @@ export default function PatientDetails({ patient: initialPatient, onBack, onEdit
                     <PatientAppointmentHistory patient={patient} />
                   </TabsContent>
 
+                  <TabsContent value="historico" className="pt-4">
+                    <MedicalHistoryEditor patient={patient} onUpdate={setPatient} />
+                  </TabsContent>
+
+                  <TabsContent value="documentos" className="pt-4">
+                    <PatientDocumentVault patient={patient} />
+                  </TabsContent>
+
                   <TabsContent value="prescriptions" className="pt-4">
                     <PatientPrescriptions patient={patient} onUpdate={setPatient} />
                   </TabsContent>
