@@ -151,7 +151,7 @@ export default function AppointmentCard({
 
       <AIReschedulePanel appointment={appointment} onSelectSlot={(date, time) => onEdit({ ...appointment, date, time })} />
 
-      <div className="flex items-center gap-2 pt-3 border-t">
+      <div className="flex items-center gap-2 pt-3 border-t flex-wrap">
         {appointment.patient_id && (
           <Button 
             size="sm" 
@@ -163,6 +163,15 @@ export default function AppointmentCard({
             EHR
           </Button>
         )}
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setShowPayment(p => !p)}
+          className="text-green-600 hover:text-green-700 hover:bg-green-50"
+        >
+          <DollarSign className="w-4 h-4 mr-1" />
+          Pagto
+        </Button>
         
         <Button 
           size="sm" 
