@@ -69,6 +69,11 @@ export default function Dashboard() {
     queryFn: () => base44.entities.Task.list()
   });
 
+  const { data: appointments = [] } = useQuery({
+    queryKey: ["appointments-dashboard"],
+    queryFn: () => base44.entities.Appointment.list()
+  });
+
   const totalRevenue = sales.reduce((sum, s) => sum + (s.total_amount || 0), 0);
   const totalExpenses = expenses.filter(e => e.status === "paid").reduce((sum, e) => sum + (e.amount || 0), 0);
   const activeCustomers = customers.filter(c => c.status === "active").length;
