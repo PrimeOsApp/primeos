@@ -189,6 +189,12 @@ export default function Agenda() {
             <ReminderPanel />
           </TabsContent>
 
+          <TabsContent value="config_lembretes">
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
+              <ReminderScheduleManager />
+            </div>
+          </TabsContent>
+
           <TabsContent value="profissionais">
             <DentistAvailability />
           </TabsContent>
