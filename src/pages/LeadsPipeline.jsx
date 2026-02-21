@@ -62,8 +62,22 @@ export default function LeadsPipeline() {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Lead.update(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["leads"] })
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["leads"] });
+      if (selectedLead?.id === updated.id) setSelectedLead(updated);
+    }
   });
+
+  const openLeadDetail = (lead) => {
+    setSelectedLead(lead);
+    setEditForm({ ...lead });
+  };
+
+  const saveEdit = () => {
+    updateMutation.mutate({ id: editForm.id, data: editForm }, {
+      onSuccess: () => toast.success("Lead atualizado!")
+    });
+  };
 
   const [form, setForm] = useState({
     name: "", phone: "", email: "", origem_canal_id: "",
