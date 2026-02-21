@@ -304,6 +304,14 @@ export default function LeadsPipeline() {
                       <Textarea value={editForm.notas || ""} onChange={(e) => setEditForm({...editForm, notas: e.target.value})} rows={8} placeholder="Adicione notas sobre este lead..." />
                     </div>
                   </TabsContent>
+
+                  {/* Tab: Score IA */}
+                  <TabsContent value="score">
+                    <LeadScoreCard
+                      lead={selectedLead}
+                      onScored={() => queryClient.invalidateQueries({ queryKey: ["leads"] })}
+                    />
+                  </TabsContent>
                 </Tabs>
 
                 <div className="flex gap-3 mt-6">
