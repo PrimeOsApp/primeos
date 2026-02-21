@@ -156,14 +156,24 @@ export default function ReminderPanel() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h3 className="font-semibold text-slate-800">Lembretes de Consulta</h3>
-          <p className="text-xs text-slate-500 mt-0.5">Envie lembretes e gerencie confirmações via WhatsApp</p>
+          <p className="text-xs text-slate-500 mt-0.5">Gerencie confirmações e envie lembretes por e-mail ou WhatsApp</p>
         </div>
-        <Button onClick={sendBulkReminders} className="bg-green-600 hover:bg-green-700">
-          <Send className="w-4 h-4 mr-2" />Enviar Todos Lembretes
-        </Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button onClick={() => sendBulkEmailReminders('tomorrow')} disabled={sendingBulk} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
+            {sendingBulk ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
+            E-mail: Amanhã
+          </Button>
+          <Button onClick={sendBulkReminders} variant="outline" className="border-green-300 text-green-700 hover:bg-green-50 gap-2">
+            <MessageCircle className="w-4 h-4" />WhatsApp
+          </Button>
+          <div className="flex items-center gap-1.5 text-xs text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2.5 py-1.5">
+            <Zap className="w-3.5 h-3.5" />
+            Auto: 18h diariamente
+          </div>
+        </div>
       </div>
 
       {upcomingApts.filter(a => !a.reminder_sent).length > 0 && (
