@@ -170,6 +170,20 @@ export default function LeadsPipeline() {
                         {lead.valor_estimado > 0 && (
                           <p className="text-xs text-emerald-600 font-medium mb-2">R$ {lead.valor_estimado.toLocaleString()}</p>
                         )}
+                        {lead.ai_score != null && (
+                          <div className="flex items-center gap-1 mb-1">
+                            <Sparkles className="w-3 h-3 text-indigo-500" />
+                            <span className={cn("text-xs font-bold",
+                              lead.ai_score >= 75 ? "text-red-600" :
+                              lead.ai_score >= 55 ? "text-orange-500" :
+                              lead.ai_score >= 35 ? "text-amber-500" : "text-blue-400"
+                            )}>{lead.ai_score}</span>
+                            <span className="text-xs text-slate-400">/ 100</span>
+                            {lead.ai_conversion_probability != null && (
+                              <span className="text-xs text-slate-400 ml-1">• {lead.ai_conversion_probability}% conv.</span>
+                            )}
+                          </div>
+                        )}
                         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                           {lead.phone && (
                             <Button size="sm" variant="ghost" className="h-7 px-2" onClick={() => openWhatsApp(lead.phone, lead.name)}>
