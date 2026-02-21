@@ -24,6 +24,7 @@ import ResourceManager from "../components/agenda/ResourceManager";
 import ReminderPanel from "../components/agenda/ReminderPanel";
 import ReminderScheduleManager from "../components/agenda/ReminderScheduleManager";
 import RevenuePanel from "../components/agenda/RevenuePanel";
+import PaymentDelinquencyReport from "../components/agenda/PaymentDelinquencyReport";
 
 export default function Agenda() {
   const [view, setView] = useState("day");
