@@ -13,7 +13,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  MessageCircle,
   Heart,
   ClipboardList,
   Calendar,
@@ -37,7 +36,17 @@ import {
   Settings,
   Shield,
   Stethoscope,
-  Bell
+  Bell,
+  Globe,
+  Map,
+  Star,
+  Package,
+  Key,
+  Smartphone,
+  Gamepad2,
+  UserCheck,
+  Route,
+  Layers
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
