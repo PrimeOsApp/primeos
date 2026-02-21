@@ -15,7 +15,8 @@ export default function DayView({
   onSlotClick,
   onEditAppointment,
   onStatusChange,
-  onCancel
+  onCancel,
+  onAddPatient
 }) {
   const getAppointmentsForTime = (time) => {
     return appointments.filter(apt => 
