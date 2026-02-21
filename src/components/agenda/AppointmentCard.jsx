@@ -155,11 +155,11 @@ export default function AppointmentCard({
           <Button 
             size="sm" 
             variant="outline"
-            onClick={() => setShowMedicalRecord(true)}
+            onClick={() => setShowEHR(true)}
             className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
           >
             <Database className="w-4 h-4 mr-1" />
-            EHR
+            Prontuário
           </Button>
         )}
         <Button
