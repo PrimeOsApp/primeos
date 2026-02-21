@@ -19,6 +19,7 @@ import {
   User, Activity, ClipboardList, UserPlus, ExternalLink
 } from "lucide-react";
 import PatientOnboardingWizard from "../components/onboarding/PatientOnboardingWizard";
+import PatientTimeline from "../components/pipeline/PatientTimeline";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { cn } from "@/lib/utils";
