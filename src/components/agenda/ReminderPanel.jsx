@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   Bell, MessageCircle, CheckCircle, Clock, RefreshCw, 
-  XCircle, Loader2, Send, AlertTriangle, Phone
+  XCircle, Loader2, Send, AlertTriangle, Phone, Mail, Zap
 } from "lucide-react";
 import { toast } from "sonner";
-import { format, addDays, parseISO } from "date-fns";
+import { format, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 
