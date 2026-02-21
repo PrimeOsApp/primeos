@@ -58,6 +58,25 @@ export default function ReminderPanel() {
     toast.success("Abrindo WhatsApp para envio do lembrete!");
   };
 
+  const [sendingBulk, setSendingBulk] = useState(false);
+
+  const sendBulkEmailReminders = async (day = 'tomorrow') => {
+    setSendingBulk(true);
+    try {
+      const res = await base44.functions.invoke('sendAppointmentReminder', { day });
+      const d = res.data;
+      if (d.success) {
+        toast.success(`✅ Lembretes enviados: ${d.summary.sent} e-mails, ${d.summary.skipped} ignorados`);
+        queryClient.invalidateQueries({ queryKey: ["upcomingApts"] });
+      } else {
+        toast.error("Erro ao enviar lembretes");
+      }
+    } catch {
+      toast.error("Erro ao enviar lembretes");
+    }
+    setSendingBulk(false);
+  };
+
   const sendBulkReminders = async () => {
     const toRemind = upcomingApts.filter(a => !a.reminder_sent && a.patient_phone);
     if (toRemind.length === 0) { toast.info("Nenhum lembrete pendente."); return; }
