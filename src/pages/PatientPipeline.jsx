@@ -274,6 +274,26 @@ Keep it friendly, professional, and concise for WhatsApp.`,
           </div>
         )}
 
+        {/* Main layout: timeline sidebar + stage content */}
+        <div className={cn("flex gap-6", selectedPatient ? "lg:flex-row flex-col" : "")}>
+
+        {/* Timeline Sidebar — only when patient selected */}
+        {selectedPatient && (
+          <div className="lg:w-80 flex-shrink-0">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sticky top-4 max-h-[85vh] overflow-y-auto">
+              <PatientTimeline
+                patient={selectedPatient}
+                appointments={appointments}
+                clinicalNotes={clinicalNotes}
+                followUps={followUps}
+                onGoToStage={setActiveStage}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="flex-1 min-w-0">
+
         {/* Stage Content */}
         <AnimatePresence mode="wait">
           {/* Stage 1: WhatsApp */}
