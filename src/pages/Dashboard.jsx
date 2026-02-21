@@ -19,6 +19,12 @@ import LeadConversionChart from "@/components/dashboard/LeadConversionChart";
 import CustomerLTVChart from "@/components/dashboard/CustomerLTVChart";
 import TaskCompletionChart from "@/components/dashboard/TaskCompletionChart";
 import { subMonths } from "date-fns";
+import AppointmentVolumeChart from "@/components/dashboard/clinic/AppointmentVolumeChart";
+import RevenueTrackingChart from "@/components/dashboard/clinic/RevenueTrackingChart";
+import PatientStatsWidget from "@/components/dashboard/clinic/PatientStatsWidget";
+import AppointmentStatusWidget from "@/components/dashboard/clinic/AppointmentStatusWidget";
+import PaymentDelinquencyWidget from "@/components/dashboard/clinic/PaymentDelinquencyWidget";
+import { Stethoscope } from "lucide-react";
 
 const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#06b6d4"];
 
