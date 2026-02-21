@@ -266,15 +266,21 @@ export default function CRM() {
     }
   };
 
-  const filtered = allPatients.filter(p => {
+  const baseList = segmentCustomers !== null ? segmentCustomers : allPatients;
+  const filtered = baseList.filter(p => {
     const q = search.toLowerCase();
     const matchSearch = !q ||
       p.name?.toLowerCase().includes(q) ||
       p.email?.toLowerCase().includes(q) ||
-      p.phone?.includes(q);
+      p.phone?.includes(q) ||
+      p.tags?.some(t => t.toLowerCase().includes(q));
     const matchStatus = statusFilter === "all" || p.status === statusFilter;
-    return matchSearch && matchStatus;
+    const matchTag = !tagFilter || p.tags?.some(t => t.toLowerCase().includes(tagFilter.toLowerCase()));
+    return matchSearch && matchStatus && matchTag;
   });
+
+  // All unique tags
+  const allTags = [...new Set(allPatients.flatMap(p => p.tags || []))].sort();
 
   // Stats
   const activeCount = allPatients.filter(p => p.status === "active" || p.status === "ativo").length;
