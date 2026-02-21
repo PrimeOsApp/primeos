@@ -193,6 +193,16 @@ export default function Agenda() {
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="cobrancas">
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
+              <div className="flex items-center gap-2 mb-6">
+                <AlertTriangle className="w-5 h-5 text-red-500" />
+                <h2 className="text-lg font-bold text-slate-900">Gestão de Cobranças e Inadimplência</h2>
+              </div>
+              <PaymentDelinquencyReport />
+            </div>
+          </TabsContent>
+
           <TabsContent value="financeiro">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
               <RevenuePanel />
