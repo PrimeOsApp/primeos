@@ -400,7 +400,7 @@ export default function CRM() {
           <div className="xl:col-span-3">
         {/* Patient Grid */}
         {filtered.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence>
               {filtered.map((patient) => (
                 <PatientCard
@@ -419,12 +419,28 @@ export default function CRM() {
         ) : (
           <div className="text-center py-16 text-slate-400">
             <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">Nenhum paciente encontrado</p>
+            <p className="font-medium">Nenhum cliente encontrado</p>
             <Button onClick={() => setShowForm(true)} className="mt-4 gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <UserPlus className="w-4 h-4" /> Adicionar Paciente
+              <UserPlus className="w-4 h-4" /> Adicionar Cliente
             </Button>
           </div>
         )}
+          </div>
+
+          {/* Segmentation Sidebar */}
+          <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
+            <SegmentationPanel
+              customers={allPatients}
+              transactions={transactions}
+              activeSegmentId={activeSegmentId}
+              onFilter={() => {}}
+              onSegmentSelect={(id, list) => {
+                setActiveSegmentId(id);
+                setSegmentCustomers(list);
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Drawers / Dialogs */}
