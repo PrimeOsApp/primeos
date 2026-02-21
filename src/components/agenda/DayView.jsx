@@ -26,13 +26,20 @@ export default function DayView({
 
   return (
     <div>
-      <div className="mb-4">
-        <h3 className="text-xl font-semibold text-slate-900">
-          {format(selectedDate, "EEEE, d 'de' MMMM 'de' yyyy", { locale: ptBR })}
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-base font-semibold text-slate-900">
+          {format(selectedDate, "EEEE, d 'de' MMMM", { locale: ptBR })}
         </h3>
+        <button
+          onClick={() => onAddPatient?.(format(selectedDate, "yyyy-MM-dd"))}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          Adicionar Paciente
+        </button>
       </div>
       
-      <ScrollArea className="h-[600px] pr-4">
+      <ScrollArea className="h-[520px] pr-4">
         <div className="space-y-2">
           {timeSlots.map((time) => {
             const slotAppointments = getAppointmentsForTime(time);
