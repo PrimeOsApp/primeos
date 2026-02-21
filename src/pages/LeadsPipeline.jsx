@@ -13,10 +13,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Users, Plus, Loader2, MessageCircle, Phone, Mail, DollarSign, ArrowRight, Flame, Pencil, Save, X, Calendar, Tag, TrendingUp, FileText, Zap } from "lucide-react";
+import { Users, Plus, Loader2, MessageCircle, DollarSign, ArrowRight, Flame, Pencil, Save, X, TrendingUp, FileText, Zap, Sparkles, BarChart2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import LeadScoreCard from "@/components/leads/LeadScoreCard";
 
 const statusStages = [
   { id: "novo", label: "Novo", color: "bg-blue-500" },
