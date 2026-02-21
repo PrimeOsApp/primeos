@@ -325,6 +325,24 @@ Keep it friendly, professional, and concise for WhatsApp.`,
             </motion.div>
           )}
 
+          {/* No patient selected fallback for stages 2-7 */}
+          {activeStage !== "whatsapp" && !selectedPatient && (
+            <motion.div key="no-patient" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <Card className="border-0 shadow-sm">
+                <CardContent className="py-16 text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                    <User className="w-8 h-8 text-slate-400" />
+                  </div>
+                  <p className="font-semibold text-slate-700 mb-1">Nenhum paciente selecionado</p>
+                  <p className="text-sm text-slate-400 mb-5">Selecione um paciente na etapa WhatsApp para continuar</p>
+                  <Button onClick={() => setActiveStage("whatsapp")} className="bg-indigo-600 hover:bg-indigo-700">
+                    <ArrowRight className="w-4 h-4 mr-2 rotate-180" />Voltar para WhatsApp
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
           {/* Stage 2: CRM */}
           {activeStage === "crm" && selectedPatient && (
             <motion.div key="crm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
