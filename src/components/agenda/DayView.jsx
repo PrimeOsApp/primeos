@@ -44,14 +44,14 @@ export default function DayView({
           {timeSlots.map((time) => {
             const slotAppointments = getAppointmentsForTime(time);
             return (
-              <div key={time} className="flex items-start gap-4">
-                <div className="w-20 py-4 text-sm font-medium text-slate-500 flex-shrink-0">
+              <div key={time} className="flex items-start gap-3">
+                <div className="w-14 pt-2 text-xs font-medium text-slate-400 flex-shrink-0 text-right">
                   {time}
                 </div>
                 
-                <div className="flex-1 min-h-[80px] border-l-2 border-slate-200 pl-4">
+                <div className="flex-1 min-h-[56px] border-l-2 border-slate-100 pl-3 pb-1">
                   {slotAppointments.length > 0 ? (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {slotAppointments.map((apt) => (
                         <AppointmentCard
                           key={apt.id}
@@ -65,10 +65,10 @@ export default function DayView({
                   ) : (
                     <button
                       onClick={() => onSlotClick(format(selectedDate, "yyyy-MM-dd"), time)}
-                      className="w-full h-full min-h-[70px] border-2 border-dashed border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/50 transition-all flex items-center justify-center text-slate-400 hover:text-blue-500 group"
+                      className="w-full min-h-[48px] border border-dashed border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/50 transition-all flex items-center justify-center text-slate-300 hover:text-blue-400 group"
                     >
-                      <Plus className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm font-medium">Agendar consulta</span>
+                      <Plus className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform" />
+                      <span className="text-xs">Agendar</span>
                     </button>
                   )}
                 </div>
