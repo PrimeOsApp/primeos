@@ -7,21 +7,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import PatientProfileDrawer from "@/components/crm/PatientProfileDrawer";
 import CustomerForm from "@/components/crm/CustomerForm";
 import InteractionForm from "@/components/crm/InteractionForm";
 import SegmentationPanel from "@/components/crm/SegmentationPanel";
 import AIPatientAnalysis from "@/components/crm/AIPatientAnalysis";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Users, Search, UserPlus, TrendingUp, Calendar, DollarSign,
+  Users, Search, UserPlus, Calendar, DollarSign,
   Phone, Mail, MessageCircle, Star, Brain,
-  UserCheck, AlertCircle, Filter, MoreVertical, X, BookmarkCheck
+  UserCheck, AlertCircle, MoreVertical, X, BookmarkCheck
 } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { format, parseISO, isAfter, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -37,13 +36,8 @@ const statusColors = {
 };
 
 const statusLabel = {
-  lead: "Lead",
-  prospect: "Prospect",
-  active: "Ativo",
-  inactive: "Inativo",
-  churned: "Perdido",
-  ativo: "Ativo",
-  inativo: "Inativo",
+  lead: "Lead", prospect: "Prospect", active: "Ativo",
+  inactive: "Inativo", churned: "Perdido", ativo: "Ativo", inativo: "Inativo",
 };
 
 function PatientCard({ patient, appointments, transactions, onView, onEdit, onInteraction, onDelete }) {
@@ -59,8 +53,6 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
   const pending = transactions
     .filter(t => (t.patient_id === patient.id || t.patient_name === patient.name) && t.status === "pendente")
     .reduce((sum, t) => sum + (t.amount || 0), 0);
-
-  const isRecent = lastAppointment && isAfter(parseISO(lastAppointment.date), subDays(new Date(), 90));
 
   return (
     <motion.div
@@ -101,13 +93,13 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
         {patient.phone && (
           <div className="flex items-center gap-2">
             <Phone className="w-3.5 h-3.5 text-slate-400" />
-            <span>{patient.phone || patient.patient_phone}</span>
+            <span>{patient.phone}</span>
           </div>
         )}
         {patient.email && (
           <div className="flex items-center gap-2">
             <Mail className="w-3.5 h-3.5 text-slate-400" />
-            <span className="truncate">{patient.email || patient.patient_email}</span>
+            <span className="truncate">{patient.email}</span>
           </div>
         )}
         {patient.profession && (
@@ -117,6 +109,7 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
           </div>
         )}
       </div>
+
       {patient.tags?.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-3">
           {patient.tags.slice(0, 3).map(tag => (
@@ -155,8 +148,7 @@ function PatientCard({ patient, appointments, transactions, onView, onEdit, onIn
           onClick={e => e.stopPropagation()}
           className="mt-3 flex items-center gap-1.5 text-xs text-emerald-600 hover:text-emerald-700 font-medium"
         >
-          <MessageCircle className="w-3.5 h-3.5" />
-          WhatsApp
+          <MessageCircle className="w-3.5 h-3.5" />WhatsApp
         </a>
       )}
     </motion.div>
@@ -177,8 +169,7 @@ export default function CRM() {
 
   const queryClient = useQueryClient();
 
-  // Load all related data in parallel
-  const { data: customers = [], isLoading: loadingCustomers } = useQuery({
+  const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
     queryFn: () => base44.entities.Customer.list("-created_date")
   });
@@ -198,12 +189,6 @@ export default function CRM() {
     queryFn: () => base44.entities.FinancialTransaction.list("-date")
   });
 
-  const { data: leads = [] } = useQuery({
-    queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list()
-  });
-
-  // Merge customers + patientRecords into unified list
   const allPatients = [
     ...customers.map(c => ({ ...c, _source: "customer" })),
     ...patientRecords
@@ -220,26 +205,17 @@ export default function CRM() {
         email: pr.patient_email,
         status: pr.status === "ativo" ? "active" : pr.status,
         _source: "patientRecord",
-        _pr: pr
       }))
   ];
 
   const createMutation = useMutation({
     mutationFn: (data) => base44.entities.Customer.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      setShowForm(false);
-      setEditingCustomer(null);
-    }
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["customers"] }); setShowForm(false); setEditingCustomer(null); }
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Customer.update(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      setShowForm(false);
-      setEditingCustomer(null);
-    }
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["customers"] }); setShowForm(false); setEditingCustomer(null); }
   });
 
   const deleteMutation = useMutation({
@@ -254,10 +230,7 @@ export default function CRM() {
 
   const interactionMutation = useMutation({
     mutationFn: (data) => base44.entities.Interaction.create(data),
-    onSuccess: () => {
-      setShowInteraction(false);
-      setSelectedCustomer(null);
-    }
+    onSuccess: () => { setShowInteraction(false); setSelectedCustomer(null); }
   });
 
   const handleSave = (data) => {
@@ -271,32 +244,25 @@ export default function CRM() {
   const baseList = segmentCustomers !== null ? segmentCustomers : allPatients;
   const filtered = baseList.filter(p => {
     const q = search.toLowerCase();
-    const matchSearch = !q ||
-      p.name?.toLowerCase().includes(q) ||
-      p.email?.toLowerCase().includes(q) ||
-      p.phone?.includes(q) ||
-      p.tags?.some(t => t.toLowerCase().includes(q));
+    const matchSearch = !q || p.name?.toLowerCase().includes(q) || p.email?.toLowerCase().includes(q) || p.phone?.includes(q) || p.tags?.some(t => t.toLowerCase().includes(q));
     const matchStatus = statusFilter === "all" || p.status === statusFilter;
     const matchTag = !tagFilter || p.tags?.some(t => t.toLowerCase().includes(tagFilter.toLowerCase()));
     return matchSearch && matchStatus && matchTag;
   });
 
-  // All unique tags
   const allTags = [...new Set(allPatients.flatMap(p => p.tags || []))].sort();
-
-  // Stats
   const activeCount = allPatients.filter(p => p.status === "active" || p.status === "ativo").length;
   const totalRevenue = transactions.filter(t => t.type === "receita" && t.status === "pago").reduce((s, t) => s + (t.amount || 0), 0);
   const pendingRevenue = transactions.filter(t => t.type === "receita" && t.status === "pendente").reduce((s, t) => s + (t.amount || 0), 0);
   const thisMonth = appointments.filter(a => {
-    const d = new Date(a.date);
-    const now = new Date();
+    const d = new Date(a.date); const now = new Date();
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   }).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
+
         {/* Header */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
           <div>
@@ -304,8 +270,7 @@ export default function CRM() {
             <p className="text-sm text-slate-500 mt-0.5">Dados unificados: prontuários, agendamentos e financeiro</p>
           </div>
           <Button onClick={() => setShowForm(true)} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-            <UserPlus className="w-4 h-4" />
-            Novo Paciente
+            <UserPlus className="w-4 h-4" />Novo Paciente
           </Button>
         </div>
 
@@ -331,79 +296,25 @@ export default function CRM() {
           ))}
         </div>
 
-        {/* Alerts */}
+        {/* Pending alert */}
         {pendingRevenue > 0 && (
           <div className="mb-5 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center gap-2 text-sm text-amber-800">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>
-              <strong>R$ {pendingRevenue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</strong> em cobranças pendentes de pacientes.
-              {" "}<Link to={createPageUrl("Financeiro")} className="underline font-medium">Ver no Financeiro →</Link>
+              <strong>R$ {pendingRevenue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</strong> em cobranças pendentes.{" "}
+              <Link to={createPageUrl("Financeiro")} className="underline font-medium">Ver no Financeiro →</Link>
             </span>
           </div>
         )}
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-3 mb-4">
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <Input
-              placeholder="Buscar por nome, email, telefone ou tag..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="active">Ativos</SelectItem>
-              <SelectItem value="lead">Leads</SelectItem>
-              <SelectItem value="prospect">Prospect</SelectItem>
-              <SelectItem value="inactive">Inativos</SelectItem>
-            </SelectContent>
-          </Select>
-          <span className="text-sm text-slate-400 self-center">{filtered.length} cliente(s)</span>
-        </div>
-
-        {/* Tag Quick Filters */}
-        {allTags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {allTags.slice(0, 15).map(tag => (
-              <button key={tag} onClick={() => setTagFilter(tagFilter === tag ? "" : tag)}
-                className={cn("text-xs px-2.5 py-1 rounded-full border transition-all",
-                  tagFilter === tag ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
-                )}>
-                #{tag}
-              </button>
-            ))}
-            {tagFilter && (
-              <button onClick={() => setTagFilter("")} className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1">
-                <X className="w-3 h-3" />limpar
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Active Segment Banner */}
-        {activeSegmentId && (
-          <div className="mb-4 flex items-center gap-2 p-2.5 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700">
-            <BookmarkCheck className="w-4 h-4" />
-            <span>Segmentação ativa: <strong>{activeSegmentId}</strong> — {filtered.length} clientes</span>
-            <button onClick={() => { setActiveSegmentId(null); setSegmentCustomers(null); }} className="ml-auto hover:text-red-500">
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
+        {/* Main tabs */}
         <Tabs defaultValue="patients" className="space-y-5">
           <TabsList>
             <TabsTrigger value="patients" className="gap-2"><Users className="w-4 h-4" />Pacientes</TabsTrigger>
             <TabsTrigger value="ai" className="gap-2"><Brain className="w-4 h-4" />Análise IA</TabsTrigger>
           </TabsList>
 
+          {/* AI Analysis Tab */}
           <TabsContent value="ai">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
               <AIPatientAnalysis
@@ -414,55 +325,106 @@ export default function CRM() {
             </div>
           </TabsContent>
 
-          <TabsContent value="patients">
-        <div className="grid xl:grid-cols-4 gap-6 items-start">
-          <div className="xl:col-span-3">
-        {/* Patient Grid */}
-        {filtered.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <AnimatePresence>
-              {filtered.map((patient) => (
-                <PatientCard
-                  key={patient.id}
-                  patient={patient}
-                  appointments={appointments}
-                  transactions={transactions}
-                  onView={setViewingPatient}
-                  onEdit={(p) => { setEditingCustomer(p); setShowForm(true); }}
-                  onInteraction={(p) => { setSelectedCustomer(p); setShowInteraction(true); }}
-                  onDelete={(p) => deleteMutation.mutate(p)}
+          {/* Patients Tab */}
+          <TabsContent value="patients" className="space-y-4">
+            {/* Filters */}
+            <div className="flex flex-wrap gap-3">
+              <div className="relative flex-1 min-w-[200px]">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  placeholder="Buscar por nome, email, telefone ou tag..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10"
                 />
-              ))}
-            </AnimatePresence>
-          </div>
-        ) : (
-          <div className="text-center py-16 text-slate-400">
-            <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">Nenhum cliente encontrado</p>
-            <Button onClick={() => setShowForm(true)} className="mt-4 gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <UserPlus className="w-4 h-4" /> Adicionar Cliente
-            </Button>
-          </div>
-        )}
-          </div>
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-40"><SelectValue placeholder="Status" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos</SelectItem>
+                  <SelectItem value="active">Ativos</SelectItem>
+                  <SelectItem value="lead">Leads</SelectItem>
+                  <SelectItem value="prospect">Prospect</SelectItem>
+                  <SelectItem value="inactive">Inativos</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="text-sm text-slate-400 self-center">{filtered.length} cliente(s)</span>
+            </div>
 
-          {/* Segmentation Sidebar */}
-          <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
-            <SegmentationPanel
-              customers={allPatients}
-              transactions={transactions}
-              activeSegmentId={activeSegmentId}
-              onFilter={() => {}}
-              onSegmentSelect={(id, list) => {
-                setActiveSegmentId(id);
-                setSegmentCustomers(list);
-              }}
-            />
-          </div>
-        </div>
+            {/* Tag Quick Filters */}
+            {allTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {allTags.slice(0, 15).map(tag => (
+                  <button key={tag} onClick={() => setTagFilter(tagFilter === tag ? "" : tag)}
+                    className={cn("text-xs px-2.5 py-1 rounded-full border transition-all",
+                      tagFilter === tag ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
+                    )}>#{tag}</button>
+                ))}
+                {tagFilter && (
+                  <button onClick={() => setTagFilter("")} className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center gap-1">
+                    <X className="w-3 h-3" />limpar
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Active Segment Banner */}
+            {activeSegmentId && (
+              <div className="flex items-center gap-2 p-2.5 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700">
+                <BookmarkCheck className="w-4 h-4" />
+                <span>Segmentação ativa: <strong>{activeSegmentId}</strong> — {filtered.length} clientes</span>
+                <button onClick={() => { setActiveSegmentId(null); setSegmentCustomers(null); }} className="ml-auto hover:text-red-500">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Grid + Sidebar */}
+            <div className="grid xl:grid-cols-4 gap-6 items-start">
+              <div className="xl:col-span-3">
+                {filtered.length > 0 ? (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <AnimatePresence>
+                      {filtered.map((patient) => (
+                        <PatientCard
+                          key={patient.id}
+                          patient={patient}
+                          appointments={appointments}
+                          transactions={transactions}
+                          onView={setViewingPatient}
+                          onEdit={(p) => { setEditingCustomer(p); setShowForm(true); }}
+                          onInteraction={(p) => { setSelectedCustomer(p); setShowInteraction(true); }}
+                          onDelete={(p) => deleteMutation.mutate(p)}
+                        />
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <div className="text-center py-16 text-slate-400">
+                    <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                    <p className="font-medium">Nenhum cliente encontrado</p>
+                    <Button onClick={() => setShowForm(true)} className="mt-4 gap-2 bg-indigo-600 hover:bg-indigo-700">
+                      <UserPlus className="w-4 h-4" />Adicionar Cliente
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Segmentation Sidebar */}
+              <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
+                <SegmentationPanel
+                  customers={allPatients}
+                  transactions={transactions}
+                  activeSegmentId={activeSegmentId}
+                  onFilter={() => {}}
+                  onSegmentSelect={(id, list) => { setActiveSegmentId(id); setSegmentCustomers(list); }}
+                />
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
+
       {/* Drawers / Dialogs */}
       <PatientProfileDrawer
         patient={viewingPatient}
@@ -470,7 +432,7 @@ export default function CRM() {
         transactions={transactions}
         onClose={() => setViewingPatient(null)}
         onEdit={(p) => { setViewingPatient(null); setEditingCustomer(p); setShowForm(true); }}
-        onSchedule={(p) => window.location.href = createPageUrl("Agenda")}
+        onSchedule={() => window.location.href = createPageUrl("Agenda")}
       />
 
       <CustomerForm
