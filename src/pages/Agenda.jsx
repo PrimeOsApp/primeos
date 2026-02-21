@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain,
-  Users, MonitorCheck, BellRing
+  Users, MonitorCheck, BellRing, DollarSign
 } from "lucide-react";
 import AIReturnSuggestions from "../components/agenda/AIReturnSuggestions";
 import { toast } from "sonner";
@@ -23,6 +23,7 @@ import DentistAvailability from "../components/agenda/DentistAvailability";
 import ResourceManager from "../components/agenda/ResourceManager";
 import ReminderPanel from "../components/agenda/ReminderPanel";
 import ReminderScheduleManager from "../components/agenda/ReminderScheduleManager";
+import RevenuePanel from "../components/agenda/RevenuePanel";
 
 export default function Agenda() {
   const [view, setView] = useState("day");
