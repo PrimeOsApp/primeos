@@ -136,7 +136,7 @@ export default function LeadsPipeline() {
                     const campaign = campaigns.find(c => c.id === lead.campanha_id);
                     const channel = channels.find(c => c.id === lead.origem_canal_id);
                     return (
-                      <motion.div key={lead.id} whileHover={{ scale: 1.02 }} className="bg-white p-3 rounded-lg shadow-sm">
+                      <motion.div key={lead.id} whileHover={{ scale: 1.02 }} className="bg-white p-3 rounded-lg shadow-sm cursor-pointer" onClick={() => openLeadDetail(lead)}>
                         <div className="flex items-center justify-between mb-2">
                           <p className="font-medium text-sm">{lead.name}</p>
                           <Flame className={cn("w-4 h-4", tempColors[lead.temperatura])} />
