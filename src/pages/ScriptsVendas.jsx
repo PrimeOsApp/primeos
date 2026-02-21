@@ -223,6 +223,177 @@ Tratamento moderno, discreto e personalizado.
       }
     ]
   },
+  limpeza: {
+    title: "Limpeza Bucal Script",
+    icon: Heart,
+    color: "bg-teal-500",
+    scripts: [
+      {
+        id: "limpeza_discovery",
+        name: "🔹 Discovery",
+        content: `Quando foi a última vez que você fez uma limpeza profissional nos seus dentes?`,
+        quando: "Abertura da conversa"
+      },
+      {
+        id: "limpeza_education",
+        name: "🔹 Education",
+        content: `A limpeza bucal profissional remove tártaro e placa bacteriana que o dia a dia não consegue eliminar, mesmo com escovação regular.
+
+Aqui na Prime fazemos de forma gentil, sem dor, com instrumentos modernos.`,
+        quando: "Explicar o tratamento"
+      },
+      {
+        id: "limpeza_value",
+        name: "🔹 Value Anchor",
+        content: `Uma limpeza regular previne cáries, gengivite e até problemas mais sérios como periodontite.
+É o menor investimento com o maior retorno para sua saúde bucal.`,
+        quando: "Reforçar benefícios"
+      },
+      {
+        id: "limpeza_cta",
+        name: "🔹 Call to Action",
+        content: `O ideal é fazer a limpeza a cada 6 meses.
+Posso verificar um horário próximo para você?`,
+        quando: "Fechamento"
+      },
+      {
+        id: "limpeza_full",
+        name: "📋 Script Completo",
+        content: `"A limpeza bucal profissional é o pilar da saúde bucal. Remove tártaro, previne cáries, gengivite e cuida do seu sorriso a longo prazo. Aqui na Prime fazemos de forma gentil, rápida e sem dor."`,
+        quando: "Pitch resumido"
+      },
+      {
+        id: "limpeza_objecao",
+        name: "💬 Objeção: \"Não sinto nada, para quê?\"",
+        content: `"Exatamente por isso! A prevenção evita que problemas silenciosos se tornem grandes e caros. É muito melhor e mais barato prevenir do que tratar."`,
+        quando: "Paciente assintomático"
+      }
+    ]
+  },
+  siso: {
+    title: "Cirurgia do Siso Script",
+    icon: AlertCircle,
+    color: "bg-rose-600",
+    scripts: [
+      {
+        id: "siso_empathy",
+        name: "🔹 Empathy",
+        content: `Entendo que a palavra "cirurgia" pode assustar. É muito normal sentir esse receio.`,
+        quando: "Conexão inicial"
+      },
+      {
+        id: "siso_education",
+        name: "🔹 Education",
+        content: `A cirurgia do siso é um procedimento muito comum, rápido e seguro quando feito com planejamento adequado.
+
+Aqui na Prime utilizamos:
+✔ Radiografia panorâmica para avaliação completa
+✔ Anestesia local eficiente
+✔ Técnica minimamente invasiva
+✔ Acompanhamento pós-operatório`,
+        quando: "Explicar o procedimento"
+      },
+      {
+        id: "siso_quando",
+        name: "🔹 Quando Indicar",
+        content: `A extração do siso é recomendada quando:
+• Ele está impactado (preso no osso)
+• Causa dor ou inflamação recorrente
+• Está posicionado de forma errada e prejudica outros dentes
+• Há risco de cárie ou pericoronarite`,
+        quando: "Indicações clínicas"
+      },
+      {
+        id: "siso_authority",
+        name: "🔹 Authority",
+        content: `Nosso protocolo inclui avaliação completa antes, durante e após a cirurgia.
+Você terá orientações claras de cuidados pós-operatórios e nosso suporte em todo o processo.`,
+        quando: "Gerar confiança"
+      },
+      {
+        id: "siso_cta",
+        name: "🔹 Call to Action",
+        content: `O primeiro passo é uma avaliação com radiografia para analisarmos a posição do seu siso.
+Posso agendar para você?`,
+        quando: "Fechamento"
+      },
+      {
+        id: "siso_full",
+        name: "📋 Script Completo",
+        content: `"A cirurgia do siso, quando indicada, é um procedimento seguro e rápido. Aqui na Prime fazemos uma avaliação completa antes, utilizamos técnica minimamente invasiva e damos todo o suporte pós-operatório. Você estará em boas mãos do começo ao fim."`,
+        quando: "Pitch resumido"
+      },
+      {
+        id: "siso_medo",
+        name: "💬 Objeção: \"Tenho medo da cirurgia\"",
+        content: `"Esse medo é muito natural e a gente respeita muito isso. Nosso atendimento é pensado para que você se sinta tranquilo e seguro em cada etapa. Muitos pacientes nos contam que foi muito mais tranquilo do que imaginavam."`,
+        quando: "Objeção de medo"
+      }
+    ]
+  },
+  botox: {
+    title: "Botox para ATM Script",
+    icon: Sparkles,
+    color: "bg-violet-500",
+    scripts: [
+      {
+        id: "botox_discovery",
+        name: "🔹 Discovery",
+        content: `Você sente dor na mandíbula, dor de cabeça frequente ou range os dentes?`,
+        quando: "Identificação da dor"
+      },
+      {
+        id: "botox_education",
+        name: "🔹 Education",
+        content: `O Botox terapêutico para ATM (articulação temporomandibular) é uma solução moderna e eficaz para:
+
+✔ Bruxismo (ranger e apertar os dentes)
+✔ Dor na mandíbula e articulação
+✔ Dores de cabeça tensionais
+✔ Hipertrofia do músculo masseter (mandíbula "quadrada")
+
+A aplicação é rápida, segura e minimamente invasiva.`,
+        quando: "Explicar o tratamento"
+      },
+      {
+        id: "botox_value",
+        name: "🔹 Value Anchor",
+        content: `Além do alívio da dor e da melhora funcional, muitos pacientes relatam:
+• Redução significativa das dores de cabeça
+• Melhor qualidade do sono
+• Contorno facial mais harmonioso (nos casos de masseter)
+• Proteção dos dentes contra o desgaste do bruxismo`,
+        quando: "Reforçar benefícios"
+      },
+      {
+        id: "botox_diferencial",
+        name: "🔹 Diferencial Prime",
+        content: `Na Prime Odontologia, o Botox para ATM é aplicado por dentista especializado, com indicação precisa, avaliação completa e protocolo de segurança.
+
+Não é só estética — é saúde e qualidade de vida.`,
+        quando: "Posicionamento"
+      },
+      {
+        id: "botox_cta",
+        name: "🔹 Call to Action",
+        content: `O primeiro passo é uma avaliação para entender o seu caso e indicar o protocolo correto.
+Posso agendar para você?`,
+        quando: "Fechamento"
+      },
+      {
+        id: "botox_full",
+        name: "📋 Script Completo",
+        content: `"O Botox terapêutico para ATM é uma solução eficaz para bruxismo, dores de mandíbula e dores de cabeça tensionais. A aplicação é rápida, segura e feita por dentista especializado. Os resultados aparecem em dias e mudam a qualidade de vida dos nossos pacientes."`,
+        quando: "Pitch resumido"
+      },
+      {
+        id: "botox_objecao",
+        name: "💬 Objeção: \"Botox é só para estética\"",
+        content: `"Na verdade, o Botox tem uso terapêutico muito consolidado na Odontologia. É amplamente utilizado para tratar dor e disfunção da ATM, sendo uma alternativa eficaz e segura. Aqui na Prime trabalhamos com indicação precisa e protocolo clínico adequado."`,
+        quando: "Desinformação do paciente"
+      }
+    ]
+  },
   objecoes: {
     title: "Tratamento de Objeções",
     icon: AlertCircle,
