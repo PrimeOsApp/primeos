@@ -521,9 +521,9 @@ const filosofia = {
     "Educação"
   ],
   escadaValor: [
-    { ticket: "Low Ticket", desc: "Entrada & Confiança", ex: "consulta, limpeza, plano preventivo", color: "bg-green-500" },
-    { ticket: "Mid Ticket", desc: "Conversão", ex: "clareamento, facetas em resina, ortodontia tradicional", color: "bg-amber-500" },
-    { ticket: "High Ticket", desc: "Transformação", ex: "Invisalign, lentes de porcelana, implantes", color: "bg-blue-500" }
+  { ticket: "Low Ticket", desc: "Entrada & Confiança", ex: "consulta, limpeza bucal, plano preventivo", color: "bg-green-500" },
+  { ticket: "Mid Ticket", desc: "Conversão", ex: "clareamento, cirurgia do siso, botox ATM, ortodontia", color: "bg-amber-500" },
+  { ticket: "High Ticket", desc: "Transformação", ex: "Invisalign, lentes de porcelana, implantes", color: "bg-blue-500" }
   ],
   regrasOuro: [
     "Valor antes de preço",
