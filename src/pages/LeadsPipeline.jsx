@@ -35,6 +35,7 @@ export default function LeadsPipeline() {
   const [showForm, setShowForm] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [editForm, setEditForm] = useState(null);
+  const [scoringAll, setScoringAll] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: leads = [] } = useQuery({
