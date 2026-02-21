@@ -28,6 +28,9 @@ import PatientImageExams from "@/components/patients/PatientImageExams";
 import PatientFamilyHistory from "@/components/patients/PatientFamilyHistory";
 import PatientPrescriptions from "@/components/patients/PatientPrescriptions";
 import PatientCheckup from "@/components/patients/PatientCheckup";
+import MedicalHistoryEditor from "@/components/patients/MedicalHistoryEditor";
+import PatientDocumentVault from "@/components/patients/PatientDocumentVault";
+import PatientProfileCard from "@/components/patients/PatientProfileCard";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
