@@ -44,7 +44,7 @@ export default function AppointmentCard({
   onCancel,
   compact = false 
 }) {
-  const [showMedicalRecord, setShowMedicalRecord] = useState(false);
+  const [showEHR, setShowEHR] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const fmtBRL = (v) => `R$ ${Number(v || 0).toFixed(2).replace(".", ",")}`;
   const paymentColors = { paid: "bg-green-100 text-green-700", pending: "bg-amber-100 text-amber-700", waived: "bg-slate-100 text-slate-600", partial: "bg-blue-100 text-blue-700" };
