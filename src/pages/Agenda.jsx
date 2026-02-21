@@ -174,6 +174,9 @@ export default function Agenda() {
             <TabsTrigger value="lembretes" className="flex items-center gap-1.5 flex-1">
               <BellRing className="w-4 h-4" />Lembretes
             </TabsTrigger>
+            <TabsTrigger value="config_lembretes" className="flex items-center gap-1.5 flex-1">
+              <Bell className="w-4 h-4" />Configurar
+            </TabsTrigger>
             <TabsTrigger value="profissionais" className="flex items-center gap-1.5 flex-1">
               <Users className="w-4 h-4" />Profissionais
             </TabsTrigger>
