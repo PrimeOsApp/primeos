@@ -39,11 +39,13 @@ export default function AppointmentForm({
   initialTime = ""
 }) {
   const queryClient = useQueryClient();
+  const prices = getServicePrices();
   const [form, setForm] = useState({
     patient_id: "", patient_name: "", patient_phone: "",
     service_type: "consultation", date: initialDate, time: initialTime,
     duration_minutes: 30, provider: "", notes: "", status: "scheduled",
-    follow_up_required: false, follow_up_days: 7, follow_up_notes: ""
+    follow_up_required: false, follow_up_days: 7, follow_up_notes: "",
+    price: prices["consultation"] ?? "", payment_status: "pending", payment_method: ""
   });
   const [patientSearch, setPatientSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
