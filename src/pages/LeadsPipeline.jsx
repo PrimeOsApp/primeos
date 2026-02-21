@@ -175,6 +175,149 @@ export default function LeadsPipeline() {
           ))}
         </div>
 
+        {/* Lead Detail Sheet */}
+        <Sheet open={!!selectedLead} onOpenChange={(open) => !open && setSelectedLead(null)}>
+          <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+            {selectedLead && editForm && (
+              <>
+                <SheetHeader className="mb-4">
+                  <SheetTitle className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                      {selectedLead.name?.charAt(0)?.toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-base font-bold leading-tight">{selectedLead.name}</p>
+                      <Badge className={cn("text-xs mt-0.5", statusStages.find(s => s.id === selectedLead.status)?.color?.replace("bg-", "bg-") + " text-white")}>
+                        {statusStages.find(s => s.id === selectedLead.status)?.label}
+                      </Badge>
+                    </div>
+                  </SheetTitle>
+                </SheetHeader>
+
+                <Tabs defaultValue="info" className="w-full">
+                  <TabsList className="w-full grid grid-cols-4 mb-4">
+                    <TabsTrigger value="info" className="text-xs"><Users className="w-3 h-3 mr-1" />Info</TabsTrigger>
+                    <TabsTrigger value="comercial" className="text-xs"><TrendingUp className="w-3 h-3 mr-1" />Comercial</TabsTrigger>
+                    <TabsTrigger value="status" className="text-xs"><Zap className="w-3 h-3 mr-1" />Status</TabsTrigger>
+                    <TabsTrigger value="notas" className="text-xs"><FileText className="w-3 h-3 mr-1" />Notas</TabsTrigger>
+                  </TabsList>
+
+                  {/* Tab: Info */}
+                  <TabsContent value="info" className="space-y-4">
+                    <div><Label>Nome</Label><Input value={editForm.name || ""} onChange={(e) => setEditForm({...editForm, name: e.target.value})} /></div>
+                    <div><Label>Telefone / WhatsApp</Label><Input value={editForm.phone || ""} onChange={(e) => setEditForm({...editForm, phone: e.target.value})} /></div>
+                    <div><Label>Email</Label><Input type="email" value={editForm.email || ""} onChange={(e) => setEditForm({...editForm, email: e.target.value})} /></div>
+                    <div><Label>Data de Entrada</Label><Input type="date" value={editForm.data_entrada || ""} onChange={(e) => setEditForm({...editForm, data_entrada: e.target.value})} /></div>
+                    {editForm.phone && (
+                      <Button variant="outline" className="w-full text-green-700 border-green-200 hover:bg-green-50"
+                        onClick={() => openWhatsApp(editForm.phone, editForm.name)}>
+                        <MessageCircle className="w-4 h-4 mr-2" />Abrir WhatsApp
+                      </Button>
+                    )}
+                  </TabsContent>
+
+                  {/* Tab: Comercial */}
+                  <TabsContent value="comercial" className="space-y-4">
+                    <div>
+                      <Label>Interesse</Label>
+                      <Select value={editForm.interesse || ""} onValueChange={(v) => setEditForm({...editForm, interesse: v})}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {["invisalign","ortodontia","limpeza","clareamento","implante","protese","estetica","checkup","outro"].map(i => (
+                            <SelectItem key={i} value={i}>{i.charAt(0).toUpperCase() + i.slice(1)}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Temperatura</Label>
+                      <Select value={editForm.temperatura || "morno"} onValueChange={(v) => setEditForm({...editForm, temperatura: v})}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="frio">❄️ Frio</SelectItem>
+                          <SelectItem value="morno">🌤️ Morno</SelectItem>
+                          <SelectItem value="quente">🔥 Quente</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div><Label>Valor Estimado (R$)</Label><Input type="number" value={editForm.valor_estimado || 0} onChange={(e) => setEditForm({...editForm, valor_estimado: parseFloat(e.target.value) || 0})} /></div>
+                    <div>
+                      <Label>Canal de Conversão</Label>
+                      <Select value={editForm.canal_conversao || "whatsapp"} onValueChange={(v) => setEditForm({...editForm, canal_conversao: v})}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {["whatsapp","instagram","facebook","google","indicacao","telefone","site","outro"].map(c => (
+                            <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TabsContent>
+
+                  {/* Tab: Status */}
+                  <TabsContent value="status" className="space-y-4">
+                    <div>
+                      <Label>Etapa do Pipeline</Label>
+                      <div className="grid grid-cols-2 gap-2 mt-2">
+                        {statusStages.map((stage) => (
+                          <button
+                            key={stage.id}
+                            onClick={() => setEditForm({...editForm, status: stage.id})}
+                            className={cn(
+                              "p-3 rounded-xl border-2 text-sm font-medium transition-all",
+                              editForm.status === stage.id
+                                ? stage.color + " text-white border-transparent shadow"
+                                : "border-slate-200 text-slate-600 hover:border-slate-300"
+                            )}
+                          >
+                            {stage.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Campanha</Label>
+                      <Select value={editForm.campanha_id || ""} onValueChange={(v) => setEditForm({...editForm, campanha_id: v})}>
+                        <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                        <SelectContent>
+                          {campaigns.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Canal de Origem</Label>
+                      <Select value={editForm.origem_canal_id || ""} onValueChange={(v) => setEditForm({...editForm, origem_canal_id: v})}>
+                        <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                        <SelectContent>
+                          {channels.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TabsContent>
+
+                  {/* Tab: Notas */}
+                  <TabsContent value="notas" className="space-y-4">
+                    <div>
+                      <Label>Notas & Observações</Label>
+                      <Textarea value={editForm.notas || ""} onChange={(e) => setEditForm({...editForm, notas: e.target.value})} rows={8} placeholder="Adicione notas sobre este lead..." />
+                    </div>
+                  </TabsContent>
+                </Tabs>
+
+                <div className="flex gap-3 mt-6">
+                  <Button onClick={saveEdit} disabled={updateMutation.isPending} className="flex-1 bg-blue-600 hover:bg-blue-700">
+                    {updateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                    Salvar
+                  </Button>
+                  <Button variant="outline" onClick={() => setSelectedLead(null)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </>
+            )}
+          </SheetContent>
+        </Sheet>
+
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="sm:max-w-xl">
             <DialogHeader>
