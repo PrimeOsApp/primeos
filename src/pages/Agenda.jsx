@@ -168,9 +168,12 @@ export default function Agenda() {
         </motion.div>
 
         <Tabs value={mainTab} onValueChange={setMainTab} className="space-y-5">
-          <TabsList className="flex w-full max-w-xl h-auto gap-1">
+          <TabsList className="flex w-full max-w-2xl h-auto gap-1 flex-wrap">
             <TabsTrigger value="calendar" className="flex items-center gap-1.5 flex-1">
               <Calendar className="w-4 h-4" />Agenda
+            </TabsTrigger>
+            <TabsTrigger value="financeiro" className="flex items-center gap-1.5 flex-1">
+              <DollarSign className="w-4 h-4" />Financeiro
             </TabsTrigger>
             <TabsTrigger value="lembretes" className="flex items-center gap-1.5 flex-1">
               <BellRing className="w-4 h-4" />Lembretes
