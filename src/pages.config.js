@@ -77,6 +77,7 @@ import EHRIntegration from './pages/EHRIntegration';
 import EmailAutomation from './pages/EmailAutomation';
 import Estrategias from './pages/Estrategias';
 import Financeiro from './pages/Financeiro';
+import FollowUpAutomation from './pages/FollowUpAutomation';
 import Gamification from './pages/Gamification';
 import JornadaCliente from './pages/JornadaCliente';
 import JourneyMapping from './pages/JourneyMapping';
@@ -87,6 +88,7 @@ import LeadsPipeline from './pages/LeadsPipeline';
 import MarketingAutomation from './pages/MarketingAutomation';
 import MarketingOS from './pages/MarketingOS';
 import Metricas from './pages/Metricas';
+import MeuAgendamento from './pages/MeuAgendamento';
 import OnlineBooking from './pages/OnlineBooking';
 import POPs from './pages/POPs';
 import PatientPipeline from './pages/PatientPipeline';
@@ -103,8 +105,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import FollowUpAutomation from './pages/FollowUpAutomation';
-import MeuAgendamento from './pages/MeuAgendamento';
 import __Layout from './Layout.jsx';
 
 
@@ -139,6 +139,7 @@ export const PAGES = {
     "EmailAutomation": EmailAutomation,
     "Estrategias": Estrategias,
     "Financeiro": Financeiro,
+    "FollowUpAutomation": FollowUpAutomation,
     "Gamification": Gamification,
     "JornadaCliente": JornadaCliente,
     "JourneyMapping": JourneyMapping,
@@ -149,6 +150,7 @@ export const PAGES = {
     "MarketingAutomation": MarketingAutomation,
     "MarketingOS": MarketingOS,
     "Metricas": Metricas,
+    "MeuAgendamento": MeuAgendamento,
     "OnlineBooking": OnlineBooking,
     "POPs": POPs,
     "PatientPipeline": PatientPipeline,
@@ -165,8 +167,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "FollowUpAutomation": FollowUpAutomation,
-    "MeuAgendamento": MeuAgendamento,
 }
 
 export const pagesConfig = {

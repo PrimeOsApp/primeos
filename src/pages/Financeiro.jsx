@@ -30,6 +30,7 @@ import ConciliacaoBancaria from "../components/financeiro/ConciliacaoBancaria";
 import PaymentLink from "../components/financeiro/PaymentLink";
 import ProjectedCashFlow from "../components/financeiro/ProjectedCashFlow";
 import CategoryManager from "../components/financeiro/CategoryManager";
+import FinancialAutomationsPanel from "../components/financeiro/FinancialAutomationsPanel";
 
 const COLORS = ["#10b981", "#6366f1", "#f59e0b", "#f43f5e", "#3b82f6", "#8b5cf6", "#ec4899"];
 
@@ -220,6 +221,9 @@ export default function Financeiro() {
             </TabsTrigger>
             <TabsTrigger value="orcamento" className="flex items-center gap-1.5 text-xs">
               <Target className="w-3.5 h-3.5" />Orçamento
+            </TabsTrigger>
+            <TabsTrigger value="automacoes" className="flex items-center gap-1.5 text-xs">
+              <Zap className="w-3.5 h-3.5" />Automações
             </TabsTrigger>
             <TabsTrigger value="banco" className="flex items-center gap-1.5 text-xs">
               <Building2 className="w-3.5 h-3.5" />Banco
