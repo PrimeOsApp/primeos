@@ -52,6 +52,7 @@ const navigation = [
   { name: "Tarefas", href: "Tasks", icon: ListChecks },
   { name: "Calendário de Tarefas", href: "TaskCalendar", icon: Calendar },
   { name: "POPs", href: "POPs", icon: FileText },
+  { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Follow-up Automático", href: "FollowUpAutomation", icon: Bell },
   { name: "Canais Atendimento", href: "Canais", icon: Inbox },
   { name: "Suporte ao Cliente", href: "CustomerSupport", icon: HeadphonesIcon },
