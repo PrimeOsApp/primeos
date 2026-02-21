@@ -315,6 +315,43 @@ export default function AppointmentForm({
         <Textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="Informações sobre esta consulta" rows={2} />
       </div>
 
+      {/* Payment */}
+      <div className="border border-green-100 bg-green-50/50 rounded-xl p-3 space-y-3">
+        <p className="text-xs font-semibold text-green-700">Pagamento</p>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label className="text-xs">Valor (R$)</Label>
+            <Input type="number" className="h-8 text-sm" placeholder="0,00" value={form.price ?? ""} onChange={e => setForm({ ...form, price: e.target.value })} />
+          </div>
+          <div>
+            <Label className="text-xs">Status</Label>
+            <Select value={form.payment_status || "pending"} onValueChange={v => setForm({ ...form, payment_status: v })}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pending">Pendente</SelectItem>
+                <SelectItem value="paid">Pago</SelectItem>
+                <SelectItem value="partial">Parcial</SelectItem>
+                <SelectItem value="waived">Isento</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="col-span-2">
+            <Label className="text-xs">Forma de Pagamento</Label>
+            <Select value={form.payment_method || ""} onValueChange={v => setForm({ ...form, payment_method: v })}>
+              <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pix">PIX</SelectItem>
+                <SelectItem value="dinheiro">Dinheiro</SelectItem>
+                <SelectItem value="cartao_credito">Cartão de Crédito</SelectItem>
+                <SelectItem value="cartao_debito">Cartão de Débito</SelectItem>
+                <SelectItem value="convenio">Convênio</SelectItem>
+                <SelectItem value="outro">Outro</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
       {/* Follow-up */}
       <div className="border-t pt-4 space-y-3">
         <div className="flex items-center space-x-2">
