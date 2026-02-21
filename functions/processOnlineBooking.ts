@@ -105,6 +105,37 @@ Deno.serve(async (req) => {
 
     console.log(`Appointment created: ${appointment.id} | ${data.patient_name} | ${data.date} ${data.time} | dentist: ${assignedProvider}`);
 
+    // Notify admin by email
+    try {
+      const adminUsers = await db.entities.User.filter({ role: 'admin' });
+      for (const admin of adminUsers) {
+        if (admin.email) {
+          await db.integrations.Core.SendEmail({
+            to: admin.email,
+            from_name: 'Prime Odontologia - Sistema',
+            subject: `📅 Novo Agendamento: ${data.patient_name} - ${formatDate(data.date)} às ${data.time}`,
+            body: `
+              <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px">
+                <h2 style="color:#4f46e5;margin-top:0">Novo Agendamento Recebido 📅</h2>
+                <table style="width:100%;border-collapse:collapse;margin:16px 0">
+                  <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Paciente</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.patient_name}</td></tr>
+                  <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Telefone</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.patient_phone}</td></tr>
+                  ${data.patient_email ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Email</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.patient_email}</td></tr>` : ''}
+                  <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Data</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${formatDate(data.date)}</td></tr>
+                  <tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Horário</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.time} (${data.duration_minutes || 30} min)</td></tr>
+                  ${data.reason ? `<tr><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#64748b;font-size:13px">Motivo</td><td style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-weight:600">${data.reason}</td></tr>` : ''}
+                  ${assignedProvider ? `<tr><td style="padding:8px 0;color:#64748b;font-size:13px">Profissional</td><td style="padding:8px 0;font-weight:600">${assignedProvider}</td></tr>` : ''}
+                </table>
+              </div>
+            `
+          });
+        }
+      }
+      console.log(`Admin notifications sent to ${adminUsers.length} admin(s)`);
+    } catch (adminEmailErr) {
+      console.error('Admin notification error:', adminEmailErr.message);
+    }
+
     // Build patient self-service token
     const phone = (data.patient_phone || '').replace(/\D/g, '');
     const last4 = phone.slice(-4) || '0000';
