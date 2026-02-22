@@ -67,6 +67,7 @@ const navigation = [
   { name: "POPs", href: "POPs", icon: FileText },
   { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Follow-up Automático", href: "FollowUpAutomation", icon: Bell },
+  { name: "Catálogo Prime", href: "Catalogo", icon: BookOpen },
   { name: "Estoque", href: "Inventory", icon: Package },
   { name: "Relatórios Estoque", href: "InventoryReports", icon: BarChart3 },
   { name: "Canais Atendimento", href: "Canais", icon: Inbox },
