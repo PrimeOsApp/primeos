@@ -804,6 +804,14 @@ export default function DatabaseMap() {
             </div>
           </div>
 
+          {/* Export button */}
+          <div className="mt-3">
+            <Button onClick={handleExport} disabled={exporting} className="bg-slate-800 hover:bg-slate-900">
+              {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
+              {exporting ? "Exportando..." : "Exportar tudo (.json)"}
+            </Button>
+          </div>
+
           {/* Summary */}
           <div className="flex gap-4 mt-4 flex-wrap">
             {[
