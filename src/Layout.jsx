@@ -99,6 +99,7 @@ const navigation = [
   { name: "Canais Marketing", href: "Channels", icon: Megaphone },
 
   { section: "Finanças" },
+  { name: "Dashboard Financeiro", href: "DashboardFinanceiro", icon: BarChart3 },
   { name: "Financeiro", href: "Financeiro", icon: DollarSign },
   { name: "Custo & Estrutura", href: "CostStructure", icon: Package },
   { name: "Relatórios Consultas", href: "AppointmentReports", icon: BarChart3 },
