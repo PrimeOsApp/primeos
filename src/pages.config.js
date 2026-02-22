@@ -73,6 +73,7 @@ import CustomerRelationships from './pages/CustomerRelationships';
 import CustomerSegments from './pages/CustomerSegments';
 import CustomerSupport from './pages/CustomerSupport';
 import Dashboard from './pages/Dashboard';
+import DashboardFinanceiro from './pages/DashboardFinanceiro';
 import EHR from './pages/EHR';
 import EHRIntegration from './pages/EHRIntegration';
 import EmailAutomation from './pages/EmailAutomation';
@@ -96,6 +97,7 @@ import OnlineBooking from './pages/OnlineBooking';
 import POPs from './pages/POPs';
 import PatientPipeline from './pages/PatientPipeline';
 import Patients from './pages/Patients';
+import PrimeOS from './pages/PrimeOS';
 import Prontuarios from './pages/Prontuarios';
 import Revenue from './pages/Revenue';
 import RevenueStreams from './pages/RevenueStreams';
@@ -108,8 +110,7 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import PrimeOS from './pages/PrimeOS';
-import DashboardFinanceiro from './pages/DashboardFinanceiro';
+import DatabaseMap from './pages/DatabaseMap';
 import __Layout from './Layout.jsx';
 
 
@@ -140,6 +141,7 @@ export const PAGES = {
     "CustomerSegments": CustomerSegments,
     "CustomerSupport": CustomerSupport,
     "Dashboard": Dashboard,
+    "DashboardFinanceiro": DashboardFinanceiro,
     "EHR": EHR,
     "EHRIntegration": EHRIntegration,
     "EmailAutomation": EmailAutomation,
@@ -163,6 +165,7 @@ export const PAGES = {
     "POPs": POPs,
     "PatientPipeline": PatientPipeline,
     "Patients": Patients,
+    "PrimeOS": PrimeOS,
     "Prontuarios": Prontuarios,
     "Revenue": Revenue,
     "RevenueStreams": RevenueStreams,
@@ -175,8 +178,7 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "PrimeOS": PrimeOS,
-    "DashboardFinanceiro": DashboardFinanceiro,
+    "DatabaseMap": DatabaseMap,
 }
 
 export const pagesConfig = {
