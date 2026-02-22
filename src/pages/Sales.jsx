@@ -247,6 +247,15 @@ Estamos te aguardando 💙`
     }
   ];
 
+  const topServices = [
+    { name: "Invisalign", revenue: 48000, units: 12, tier: "High Ticket", color: "#6366f1", growth: "+18%" },
+    { name: "Implante", revenue: 35000, units: 7, tier: "High Ticket", color: "#8b5cf6", growth: "+12%" },
+    { name: "Lentes de Porcelana", revenue: 28000, units: 14, tier: "High Ticket", color: "#a78bfa", growth: "+24%" },
+    { name: "Clareamento", revenue: 15000, units: 50, tier: "Mid Ticket", color: "#f59e0b", growth: "+8%" },
+    { name: "Ortodontia", revenue: 12000, units: 8, tier: "Mid Ticket", color: "#f97316", growth: "+5%" },
+    { name: "Consulta/Limpeza", revenue: 9000, units: 90, tier: "Low Ticket", color: "#22c55e", growth: "+3%" },
+  ];
+
   const goldenRules = [
     "Valor antes de preço",
     "Pessoas antes de procedimentos",
