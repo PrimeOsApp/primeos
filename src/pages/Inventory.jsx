@@ -9,37 +9,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Package, Plus, Search, AlertTriangle, Edit2, Trash2,
-  PackagePlus, ArrowUpDown, Filter, RefreshCw, CheckCircle2,
-  CalendarX2, MapPin, Building2, DollarSign
+  PackagePlus, Filter, RefreshCw, CalendarX2, MapPin, DollarSign, BarChart3
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { createPageUrl } from "@/utils";
 import InventoryForm from "@/components/inventory/InventoryForm";
 import InventoryStockAdjust from "@/components/inventory/InventoryStockAdjust";
-
-const CATEGORY_LABELS = {
-  consumivel: "Consumível",
-  instrumental: "Instrumental",
-  medicamento: "Medicamento",
-  protecao_epi: "Proteção / EPI",
-  radiologia: "Radiologia",
-  laboratorio: "Laboratório",
-  limpeza: "Limpeza",
-  outros: "Outros",
-};
-
-const CATEGORY_COLORS = {
-  consumivel: "bg-blue-100 text-blue-700",
-  instrumental: "bg-indigo-100 text-indigo-700",
-  medicamento: "bg-purple-100 text-purple-700",
-  protecao_epi: "bg-teal-100 text-teal-700",
-  radiologia: "bg-orange-100 text-orange-700",
-  laboratorio: "bg-pink-100 text-pink-700",
-  limpeza: "bg-cyan-100 text-cyan-700",
-  outros: "bg-slate-100 text-slate-600",
-};
+import { CATEGORY_LABELS, CATEGORY_COLORS, getStockStatus } from "@/components/inventory/inventoryConstants";
 
 export default function Inventory() {
   const qc = useQueryClient();
@@ -110,11 +89,7 @@ export default function Inventory() {
     }
   };
 
-  const getStockStatus = (item) => {
-    if (item.quantity_on_hand === 0) return { label: "Sem estoque", color: "bg-red-100 text-red-700 border-red-200", dot: "bg-red-500" };
-    if (item.quantity_on_hand <= item.reorder_point) return { label: "Repor", color: "bg-orange-100 text-orange-700 border-orange-200", dot: "bg-orange-500" };
-    return { label: "OK", color: "bg-green-100 text-green-700 border-green-200", dot: "bg-green-500" };
-  };
+
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
@@ -128,9 +103,16 @@ export default function Inventory() {
             </h1>
             <p className="text-sm text-slate-500 mt-0.5">Gerencie os materiais odontológicos do consultório</p>
           </div>
-          <Button onClick={() => setModal({ type: "add" })} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-            <Plus className="w-4 h-4" /> Novo Item
-          </Button>
+          <div className="flex gap-2">
+            <Link to={createPageUrl("InventoryReports")}>
+              <Button variant="outline" className="gap-2">
+                <BarChart3 className="w-4 h-4" /> Relatórios
+              </Button>
+            </Link>
+            <Button onClick={() => setModal({ type: "add" })} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
+              <Plus className="w-4 h-4" /> Novo Item
+            </Button>
+          </div>
         </div>
 
         {/* Alert banners */}
