@@ -110,6 +110,7 @@ const navigation = [
   { name: "Analytics", href: "Analytics", icon: BarChart3 },
   { name: "Receita", href: "Revenue", icon: DollarSign },
 
+  { name: "PRIME OS", href: "PrimeOS", icon: Brain },
   { section: "Estratégia & IA" },
   { name: "AI Insights", href: "AIInsights", icon: Brain },
   { name: "Assistente IA", href: "AIAssistant", icon: Brain },
