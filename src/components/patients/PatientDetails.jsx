@@ -102,6 +102,7 @@ export default function PatientDetails({ patient: initialPatient, onBack, onEdit
                     <TabsTrigger value="appointments" className="text-xs">Consultas</TabsTrigger>
                     <TabsTrigger value="historico" className="text-xs">Histórico Médico</TabsTrigger>
                     <TabsTrigger value="documentos" className="text-xs">Documentos</TabsTrigger>
+                    <TabsTrigger value="arquivos" className="text-xs">Arquivos</TabsTrigger>
                     <TabsTrigger value="prescriptions" className="text-xs">Prescrições</TabsTrigger>
                     <TabsTrigger value="checkup" className="text-xs">Check-up</TabsTrigger>
                     <TabsTrigger value="images" className="text-xs">Imagens</TabsTrigger>
@@ -121,6 +122,10 @@ export default function PatientDetails({ patient: initialPatient, onBack, onEdit
 
                   <TabsContent value="documentos" className="pt-4">
                     <PatientDocumentVault patient={patient} />
+                  </TabsContent>
+
+                  <TabsContent value="arquivos" className="pt-4">
+                    <PatientRecordDocuments patient={patient} onUpdate={setPatient} />
                   </TabsContent>
 
                   <TabsContent value="prescriptions" className="pt-4">

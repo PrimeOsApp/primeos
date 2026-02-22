@@ -55,10 +55,13 @@ export default function MedicalHistoryEditor({ patient, onUpdate }) {
   const updateMed = (i, field, value) => setMedications(prev => prev.map((m, idx) => idx === i ? { ...m, [field]: value } : m));
   const removeMed = (i) => setMedications(prev => prev.filter((_, idx) => idx !== i));
 
+  const CONDITION_PRESETS = ["Diabetes", "Hipertensão", "Cardiopatia", "Idoso", "Gestante", "Fumante", "Coagulação alterada", "HIV/AIDS", "Hepatite", "Asma", "Osteoporose"];
+
   // --- Conditions ---
-  const addCondition = () => {
-    if (!newCondition.trim()) return;
-    setConditions(prev => [...prev, newCondition.trim()]);
+  const addCondition = (val) => {
+    const c = val || newCondition.trim();
+    if (!c || conditions.includes(c)) return;
+    setConditions(prev => [...prev, c]);
     setNewCondition("");
   };
   const removeCondition = (i) => setConditions(prev => prev.filter((_, idx) => idx !== i));
@@ -172,9 +175,18 @@ export default function MedicalHistoryEditor({ patient, onUpdate }) {
               placeholder="Ex: Diabetes, Hipertensão..."
               onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addCondition())}
             />
-            <Button onClick={addCondition} className="bg-amber-600 hover:bg-amber-700">
+            <Button onClick={() => addCondition()} className="bg-amber-600 hover:bg-amber-700">
               <Plus className="w-4 h-4" />
             </Button>
+          </div>
+          <div className="flex flex-wrap gap-1.5 pb-1">
+            <span className="text-xs text-slate-400 w-full">Clique para adicionar rapidamente:</span>
+            {CONDITION_PRESETS.filter(p => !conditions.includes(p)).map(p => (
+              <button key={p} onClick={() => addCondition(p)}
+                className="text-xs px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 transition-colors">
+                + {p}
+              </button>
+            ))}
           </div>
           <div className="flex flex-wrap gap-2">
             {conditions.map((c, i) => (
