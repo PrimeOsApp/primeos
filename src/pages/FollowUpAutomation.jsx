@@ -22,6 +22,16 @@ import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 
 const TRIGGER_CONFIG = {
+  checkup_reminder: {
+    label: "Retorno Preventivo (Checkup)",
+    icon: Heart,
+    color: "bg-teal-50 text-teal-700 border-teal-200",
+    iconColor: "text-teal-600",
+    defaultOffset: 30,
+    offsetLabel: "dias ANTES do retorno programado",
+    defaultSubject: "Hora do seu retorno preventivo!",
+    defaultMessage: "Olá {nome}! 🦷\n\nSua revisão preventiva está próxima — prevista para {data}.\n\nServiço: {servico}\nProfissional: {profissional}\n\nEntrar em contato para agendar é simples e rápido. Não deixe para depois!\n\nAté breve!\nPrime Odontologia",
+  },
   appointment_reminder: {
     label: "Lembrete de Consulta",
     icon: Calendar,
