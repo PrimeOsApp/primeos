@@ -15,7 +15,7 @@ import {
   MessageCircle, Users, FileText, Package, ArrowRight,
   Phone, Mail, Building2, Plus, Send, Copy,
   ChevronRight, Sparkles, Loader2, CheckCircle, Clock,
-  Pencil, Trash2, ShoppingCart, X, DollarSign, Star
+  Pencil, Trash2, ShoppingCart, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

@@ -2,16 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
-  User, Phone, Heart, Calendar, FileText, CheckCircle,
+  User, Heart, Calendar, FileText, CheckCircle,
   ArrowRight, ArrowLeft, Sparkles, Loader2, ExternalLink,
   Shield, AlertCircle, Clock, Stethoscope
 } from "lucide-react";

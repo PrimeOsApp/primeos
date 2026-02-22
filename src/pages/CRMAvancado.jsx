@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -15,10 +15,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import {
-  Users, Target, Zap, TrendingUp, MessageCircle, Instagram, Facebook,
-  Phone, Mail, Star, Clock, Calendar, DollarSign, Filter, Search,
-  ArrowRight, Play, Pause, Plus, Settings, BarChart3, Flame, Sparkles,
-  CheckCircle, AlertCircle, RefreshCcw, Eye, Send, UserCheck, Loader2, Brain
+  Users, Target, Zap, MessageCircle, Instagram, Facebook,
+  Phone, Mail, Star, Calendar, DollarSign, Filter, Plus, BarChart3, Flame, Sparkles,
+  CheckCircle, RefreshCcw, Eye, Send, Loader2, Brain
 } from "lucide-react";
 import AILeadScoring from "@/components/crm/AILeadScoring";
 import SalesForecast from "@/components/crm/SalesForecast";
@@ -28,7 +27,7 @@ import LeadRoutingRecommendations from "@/components/crm/LeadRoutingRecommendati
 import ConversionPrediction from "@/components/crm/ConversionPrediction";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { format, differenceInDays, differenceInHours } from "date-fns";
+import { format, differenceInDays } from "date-fns";
 
 // Lead Scoring Configuration
 const SCORE_RULES = {

@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { format, addDays, isSameDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { getServiceColor, statusColors } from "./calendarColors";
-import { Plus } from "lucide-react";
 
 const timeSlots = [
   "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",

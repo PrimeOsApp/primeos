@@ -3,12 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-  X, Plus, Trash2, Mail, MessageCircle, Phone, Star,
+import { Plus, Trash2, Mail, MessageCircle, Phone, Star,
   Calendar, DollarSign, Tag, Clock, Activity, CheckCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";

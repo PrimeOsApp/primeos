@@ -14,8 +14,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   Activity, CheckCircle2, XCircle, RefreshCw, Settings, 
-  Link2, AlertCircle, Stethoscope, ClipboardList, Zap,
-  ChevronRight, Clock, FileText
+  Link2, AlertCircle, Stethoscope, ClipboardList, Zap, Clock, FileText
 } from "lucide-react";
 
 export default function EHRIntegration() {

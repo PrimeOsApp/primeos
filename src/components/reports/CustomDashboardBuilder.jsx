@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LayoutGrid, Plus, Trash2, Save } from "lucide-react";
+import { LayoutGrid, Trash2, Save } from "lucide-react";
 import { toast } from "sonner";
 
 const AVAILABLE_WIDGETS = [

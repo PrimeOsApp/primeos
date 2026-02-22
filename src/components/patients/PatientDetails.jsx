@@ -4,22 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
-  User,
-  Mail,
-  Phone,
-  Calendar,
-  Heart,
-  Pill,
-  AlertTriangle,
-  FileText,
-  Shield,
-  Users,
   Pencil,
-  Activity,
   Brain,
-  MapPin,
-  CreditCard,
-  Briefcase,
 } from "lucide-react";
 import { useState } from "react";
 import PatientAIInsights from "@/components/patients/PatientAIInsights";
@@ -32,8 +18,6 @@ import MedicalHistoryEditor from "@/components/patients/MedicalHistoryEditor";
 import PatientDocumentVault from "@/components/patients/PatientDocumentVault";
 import PatientRecordDocuments from "@/components/patients/PatientRecordDocuments";
 import PatientProfileCard from "@/components/patients/PatientProfileCard";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 export default function PatientDetails({ patient: initialPatient, onBack, onEdit }) {
   const [patient, setPatient] = useState(initialPatient);

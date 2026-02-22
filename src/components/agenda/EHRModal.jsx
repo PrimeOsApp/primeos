@@ -1,22 +1,19 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   FileText, ClipboardList, Calendar, DollarSign, Plus, Save, Loader2,
-  AlertCircle, Pill, Activity, Clock, CheckCircle2, X, ChevronRight,
-  User, Phone, Mail, Stethoscope, History, AlertTriangle
+  AlertCircle, Pill, Activity, Clock,
+  User, Phone, Mail, Stethoscope, History
 } from "lucide-react";
 import { toast } from "sonner";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 const serviceLabels = {
   consultation: "Consulta", follow_up: "Retorno", procedure: "Procedimento",

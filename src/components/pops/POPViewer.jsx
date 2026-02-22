@@ -2,7 +2,6 @@ import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { 
   Download, 
   FileText, 
@@ -10,7 +9,6 @@ import {
   Calendar,
   CheckCircle2,
   AlertCircle,
-  History,
   ExternalLink
 } from "lucide-react";
 import { format } from "date-fns";

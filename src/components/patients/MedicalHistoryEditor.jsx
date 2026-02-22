@@ -4,13 +4,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, Pill, Activity, Stethoscope, Plus, Trash2, Save } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 const emptyAllergy = { allergen: "", severity: "leve", reaction: "" };
 const emptyMed = { name: "", dosage: "", frequency: "", start_date: "", prescribing_doctor: "" };

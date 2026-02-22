@@ -2,9 +2,8 @@ import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { MessageCircle, Brain, Copy, Loader2, Send, Zap } from "lucide-react";
+import { MessageCircle, Brain, Copy, Loader2, Zap } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 export default function SmartReminderButton({ appointment }) {
   const [open, setOpen] = useState(false);

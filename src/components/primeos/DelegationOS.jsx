@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle, CheckCircle2, FileText, UserCheck, Plus, Bell,
-  Flame, AlertCircle, X, ChevronRight, BarChart3, Mail
+  Flame, X, ChevronRight, BarChart3, Mail
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

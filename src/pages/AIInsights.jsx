@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, TrendingUp, TrendingDown, AlertCircle, Target, Lightbulb, BarChart3, DollarSign, Users, Zap } from "lucide-react";
+import { Brain, TrendingUp, AlertCircle, Target, Lightbulb, BarChart3, DollarSign, Users, Zap } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export default function AIInsights() {

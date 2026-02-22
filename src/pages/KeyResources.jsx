@@ -1,9 +1,8 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Server, Users, Briefcase, Brain, Wrench, Building } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Server, Users, Brain, Building } from "lucide-react";
 
 export default function KeyResources() {
   const { data: assets = [] } = useQuery({

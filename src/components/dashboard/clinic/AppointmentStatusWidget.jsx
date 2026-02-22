@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { CheckCircle2, XCircle, AlertCircle, Clock, PlayCircle, Calendar } from "lucide-react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { CheckCircle2, XCircle, AlertCircle, PlayCircle, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STATUS_CONFIG = {

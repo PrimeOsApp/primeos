@@ -1,9 +1,8 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Activity, Stethoscope, Megaphone, Users, Settings, TrendingUp, Target } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Stethoscope, Megaphone, Users, Settings, TrendingUp } from "lucide-react";
 
 export default function KeyActivities() {
   const { data: activities = [] } = useQuery({

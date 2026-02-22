@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, DollarSign, Users, TrendingDown } from "lucide-react";
-import { format, subDays } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const fmtBRL = (v) => `R$ ${Number(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;

@@ -8,7 +8,7 @@ import ABTestResults from "@/components/marketing/ABTestResults";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Beaker } from "lucide-react";
+import { Zap } from "lucide-react";
 
 export default function MarketingAutomation() {
   const [refreshWorkflows, setRefreshWorkflows] = useState(0);

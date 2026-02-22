@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Bell, Plus, Play, Trash2, CheckCircle2, XCircle,
   Mail, MessageCircle, Clock, Calendar, DollarSign,
-  UserX, RefreshCw, Edit2, Zap, Info, Heart, Users
+  UserX, RefreshCw, Edit2, Zap, Info, Heart
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";

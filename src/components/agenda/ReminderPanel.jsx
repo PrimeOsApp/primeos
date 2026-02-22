@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   Bell, MessageCircle, CheckCircle, Clock, RefreshCw, 
-  XCircle, Loader2, Send, AlertTriangle, Phone, Mail, Zap
+  XCircle, Loader2, AlertTriangle, Phone, Mail, Zap
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, addDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 
 const STATUS_CONFIG = {

@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, User, Clock, X, CalendarOff } from "lucide-react";
+import { Plus, Pencil, Trash2, User, X, CalendarOff } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

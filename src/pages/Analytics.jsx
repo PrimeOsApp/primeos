@@ -3,7 +3,6 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -14,9 +13,6 @@ import {
   DollarSign,
   Users,
   Calendar,
-  Filter,
-  Download,
-  Eye,
   Target,
   Activity
 } from "lucide-react";
@@ -38,7 +34,6 @@ import {
   AreaChart
 } from "recharts";
 import { format, parseISO, isWithinInterval, subDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import ExportButton from "@/components/shared/ExportButton";
 

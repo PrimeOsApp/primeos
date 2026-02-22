@@ -7,18 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Sparkles, 
   Copy, 
   Loader2, 
   CheckCircle2,
-  TrendingUp,
-  Mail,
-  MessageSquare,
-  Target
+  TrendingUp
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function AIContentGenerator({ performanceData }) {

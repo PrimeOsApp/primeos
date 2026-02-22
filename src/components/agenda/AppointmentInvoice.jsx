@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Printer, Download } from "lucide-react";
+import { Printer } from "lucide-react";
 import { SERVICE_LABELS } from "./ServicePriceConfig";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";

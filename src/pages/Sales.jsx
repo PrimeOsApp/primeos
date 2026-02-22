@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Target, Heart, TrendingUp, MessageCircle, Phone, Copy, 
-  CheckCircle, XCircle, AlertTriangle, Sparkles, BookOpen,
-  Users, DollarSign, Zap, ArrowRight, Clock, Star, Trophy, BarChart2, Medal
+  CheckCircle, XCircle, AlertTriangle, BookOpen,
+  Users, DollarSign, Zap, ArrowRight, Star, Trophy, BarChart2, Medal
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { cn } from "@/lib/utils";

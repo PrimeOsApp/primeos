@@ -4,10 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  BookOpen, Search, Copy, CheckCircle, DollarSign, ChevronDown, ChevronUp,
-  MessageCircle, Star, Zap, Shield, Heart, Sparkles
+  BookOpen, Search, Copy, CheckCircle,
+  MessageCircle, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

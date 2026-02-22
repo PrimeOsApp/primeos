@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Lightbulb, CheckCircle2, Calendar, ListChecks, Activity, BarChart3, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 

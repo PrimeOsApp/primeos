@@ -1,15 +1,14 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MessageCircle, Mail, AlertTriangle, CheckCircle2, Clock, Search, RefreshCw, TrendingDown, DollarSign, Users, FileText } from "lucide-react";
+import { MessageCircle, AlertTriangle, CheckCircle2, Search, RefreshCw, TrendingDown, DollarSign, Users, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { format, differenceInDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 const serviceLabels = {
   consultation: "Consulta", follow_up: "Retorno", procedure: "Procedimento",

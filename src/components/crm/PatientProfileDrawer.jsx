@@ -1,14 +1,11 @@
-import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
-  Phone, Mail, MessageCircle, Calendar, DollarSign,
-  Edit2, ExternalLink, CheckCircle, Clock, AlertCircle,
-  TrendingUp, FileText, User, ArrowRight
+  Phone, MessageCircle, Calendar, DollarSign,
+  Edit2, FileText, User, ArrowRight
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";

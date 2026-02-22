@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth, startOfWeek, endOfWeek } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { getServiceColor } from "./calendarColors";
 
 export default function MonthView({ currentMonth, appointments, onDayClick, onReschedule }) {

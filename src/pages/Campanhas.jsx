@@ -11,10 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Megaphone, Plus, Loader2, Target, DollarSign, Calendar, Users, TrendingUp } from "lucide-react";
+import { Megaphone, Plus, Loader2, Target, DollarSign, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { format } from "date-fns";
 
 const statusColors = {
   planejamento: "bg-slate-100 text-slate-700",

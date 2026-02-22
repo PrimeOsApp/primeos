@@ -1,4 +1,4 @@
-import { Activity, BarChart3, ListChecks, Calendar, TrendingUp, Users, Zap } from "lucide-react";
+import { Activity, BarChart3, ListChecks, Calendar, TrendingUp, Zap } from "lucide-react";
 
 export const metricsTour = {
   id: 'metrics-tour',

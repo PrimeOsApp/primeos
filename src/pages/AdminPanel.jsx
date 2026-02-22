@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Users, Database, Activity, Settings, BarChart3, AlertTriangle, RefreshCw, SlidersHorizontal } from "lucide-react";
-import { toast } from "sonner";
+import { Shield, Users, Database, Activity, Settings, BarChart3, RefreshCw, SlidersHorizontal } from "lucide-react";
 import AdminUsersTab from "@/components/admin/AdminUsersTab";
 import AdminDataTab from "@/components/admin/AdminDataTab";
 import AdminSystemTab from "@/components/admin/AdminSystemTab";

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,9 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
-  Brain, Globe, BarChart3, Users, FileText, Link, TrendingUp,
-  Plus, Search, ChevronRight, Target, Zap, CheckCircle,
-  Clock, AlertCircle, Star, ArrowUp, DollarSign, Layers
+  Brain, Globe, Users, FileText, Link, TrendingUp,
+  Plus, Search, Zap, CheckCircle, DollarSign, Layers
 } from "lucide-react";
 import PrimeFunnel from "@/components/primeos/PrimeFunnel";
 import DelegationOS from "@/components/primeos/DelegationOS";
@@ -69,18 +68,18 @@ export default function PrimeOS() {
   const { data: funnelLeads = [] } = useQuery({ queryKey: ["PrimeFunnelLead"], queryFn: () => base44.entities.PrimeFunnelLead.list() });
   const { data: delegationTasks = [] } = useQuery({ queryKey: ["PrimeDelegationTask"], queryFn: () => base44.entities.PrimeDelegationTask.list() });
 
-  const createMutation = (entityName) => useMutation({
+  const useCreateMutation = (entityName) => useMutation({
     mutationFn: (data) => base44.entities[entityName].create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: [entityName] }); setShowForm(null); setFormData({}); toast.success("Criado com sucesso!"); },
   });
 
-  const createProjeto = createMutation("ProjetoSEO");
-  const createTarefa = createMutation("TarefaSEO");
-  const createKeyword = createMutation("PalavraChave");
-  const createConteudo = createMutation("ConteudoSEO");
-  const createBacklink = createMutation("Backlink");
-  const createLead = createMutation("PrimeFunnelLead");
-  const createDelegation = createMutation("PrimeDelegationTask");
+  const createProjeto = useCreateMutation("ProjetoSEO");
+  const createTarefa = useCreateMutation("TarefaSEO");
+  const createKeyword = useCreateMutation("PalavraChave");
+  const createConteudo = useCreateMutation("ConteudoSEO");
+  const createBacklink = useCreateMutation("Backlink");
+  const createLead = useCreateMutation("PrimeFunnelLead");
+  const createDelegation = useCreateMutation("PrimeDelegationTask");
 
   // Seed growth stages on first load
   const seedStages = useMutation({

@@ -12,7 +12,6 @@ import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, MonitorCheck, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { useQuery as useQ } from "@tanstack/react-query";
 
 const TYPE_ICONS = { cadeira: "🦷", sala: "🏥", equipamento: "⚙️", instrumento: "🔧" };
 const TYPE_LABELS = { cadeira: "Cadeira Odontológica", sala: "Sala / Consultório", equipamento: "Equipamento", instrumento: "Instrumento" };

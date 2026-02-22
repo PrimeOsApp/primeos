@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format, isToday, isTomorrow, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Calendar, Clock, User, CheckCircle } from "lucide-react";
+import { Calendar, User, CheckCircle } from "lucide-react";
 
 export default function UpcomingAppointments({ appointments, onEdit, onStatusChange }) {
   const upcomingAppointments = appointments

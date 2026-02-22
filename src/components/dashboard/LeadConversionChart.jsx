@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { TrendingUp } from "lucide-react";
-import { format, startOfWeek, endOfWeek, eachWeekOfInterval, isWithinInterval } from "date-fns";
+import { format, endOfWeek, eachWeekOfInterval, isWithinInterval } from "date-fns";
 
 export default function LeadConversionChart({ leads, dateRange }) {
   const getChartData = () => {

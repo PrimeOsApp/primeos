@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  CheckCircle, XCircle, AlertCircle, Upload, Search, RefreshCw,
-  Building2, TrendingUp, TrendingDown, Scale, FileText
+  CheckCircle, AlertCircle, Search, RefreshCw, TrendingUp, TrendingDown, Scale
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";

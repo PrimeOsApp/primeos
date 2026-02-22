@@ -11,8 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Building2, Clock, User, Phone, Mail, MapPin, Save,
-  Stethoscope, Plus, Trash2, RefreshCw, Palette, Globe, Bell
+  Building2, Clock, Save,
+  Stethoscope, Plus, RefreshCw, Bell
 } from "lucide-react";
 import { toast } from "sonner";
 

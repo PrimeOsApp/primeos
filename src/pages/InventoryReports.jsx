@@ -16,7 +16,6 @@ import {
   Download, Filter, RefreshCw, Package, Truck, Search, ArrowLeft
 } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { createPageUrl } from "@/utils";
 import { Link } from "react-router-dom";

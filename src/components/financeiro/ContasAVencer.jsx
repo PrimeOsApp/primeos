@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { AlertTriangle, Clock, Calendar, TrendingDown, TrendingUp, Bell } from "lucide-react";
 import { format, differenceInDays, parseISO, isToday, isPast } from "date-fns";
 import { ptBR } from "date-fns/locale";

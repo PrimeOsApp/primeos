@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
-  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell, Brain,
+  Calendar, Plus, ChevronLeft, ChevronRight, CalendarDays, CalendarRange, Bell,
   Users, MonitorCheck, BellRing, DollarSign, AlertTriangle, ListOrdered
 } from "lucide-react";
 import AIReturnSuggestions from "../components/agenda/AIReturnSuggestions";

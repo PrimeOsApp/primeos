@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   FileText, Copy, ExternalLink, CheckCircle, Loader2,
-  Bell, Download, CreditCard, AlertTriangle, BarChart
+  Bell, CreditCard, AlertTriangle
 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";

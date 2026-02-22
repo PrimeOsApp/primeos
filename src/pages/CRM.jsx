@@ -22,7 +22,7 @@ import {
   UserCheck, AlertCircle, MoreVertical, X, BookmarkCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format, parseISO, isAfter, subDays } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 const statusColors = {

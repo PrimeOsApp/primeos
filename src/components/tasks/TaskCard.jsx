@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { 
-  Clock, 
-  CheckCircle2, 
   AlertCircle, 
   Calendar,
   User,

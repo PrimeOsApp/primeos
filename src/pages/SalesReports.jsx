@@ -4,12 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  BarChart,
-  Bar,
   LineChart,
   Line,
   PieChart,
@@ -27,7 +23,7 @@ import {
   Funnel,
   LabelList,
 } from "recharts";
-import { TrendingUp, Users, DollarSign, Target, Award, TrendingDown, AlertCircle } from "lucide-react";
+import { TrendingUp, DollarSign, Target, Award, TrendingDown, AlertCircle } from "lucide-react";
 
 const COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#3b82f6"];
 

@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   FileText, Plus, Search, Target, Users, Bot, TrendingUp, 
-  Calendar, CheckCircle, Edit, Trash2, Loader2, BookOpen
+  Calendar, Edit, Trash2, Loader2, BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

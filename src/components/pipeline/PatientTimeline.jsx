@@ -3,10 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   MessageCircle, Users, FileText, Calendar, Stethoscope,
-  Heart, RefreshCcw, CheckCircle, Clock, Circle, ArrowRight,
-  Phone, Mail, ClipboardList, DollarSign, AlertCircle, Zap
+  Heart, RefreshCcw, CheckCircle, Clock, ArrowRight, AlertCircle, Zap
 } from "lucide-react";
-import { format, formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 const STAGES = [

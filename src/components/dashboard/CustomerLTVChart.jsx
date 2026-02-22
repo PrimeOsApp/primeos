@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { DollarSign } from "lucide-react";
-import { format, startOfMonth, eachMonthOfInterval, isWithinInterval, endOfMonth } from "date-fns";
+import { format, eachMonthOfInterval, isWithinInterval, endOfMonth } from "date-fns";
 
 export default function CustomerLTVChart({ customers, dateRange }) {
   const getChartData = () => {

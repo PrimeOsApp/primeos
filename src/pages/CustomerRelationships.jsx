@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, Users, Zap, CheckCircle, Clock, TrendingUp } from "lucide-react";
+import { Heart, MessageCircle, Users, Zap, CheckCircle, TrendingUp } from "lucide-react";
 
 export default function CustomerRelationships() {
   const { data: workflows = [] } = useQuery({

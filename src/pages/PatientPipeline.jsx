@@ -11,11 +11,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MessageCircle, Users, FileText, Calendar, Stethoscope, 
-  Heart, RefreshCcw, ArrowRight, Phone, Plus, Send, Copy,
-  ChevronRight, Sparkles, Loader2, CheckCircle, Clock, AlertCircle,
+  Heart, RefreshCcw, ArrowRight, Plus, Send, Copy,
+  ChevronRight, Sparkles, Loader2, CheckCircle,
   User, Activity, ClipboardList, UserPlus, ExternalLink
 } from "lucide-react";
 import PatientOnboardingWizard from "../components/onboarding/PatientOnboardingWizard";

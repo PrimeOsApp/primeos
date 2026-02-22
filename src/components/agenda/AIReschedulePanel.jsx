@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Brain, Calendar, Clock, Copy, Loader2, CheckCircle, Info } from "lucide-react";
+import { Brain, Calendar, Clock, Loader2, CheckCircle, Info } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

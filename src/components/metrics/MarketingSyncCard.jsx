@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { base44 } from "@/api/base44Client";
-import { RefreshCw, Check, X, Settings, Cloud, Wrench, CheckCircle2 } from "lucide-react";
+import { RefreshCw, Settings, Cloud, Wrench, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import SetupWizard from "./SetupWizard";

@@ -12,10 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  FileText, Upload, Plus, Search, User, Calendar, Download,
-  ClipboardList, FileSignature, Loader2, Eye, Send, CheckCircle,
-  AlertCircle, MessageCircle
+import { Plus, Search, User, Download,
+  ClipboardList, FileSignature, Loader2, Eye, CheckCircle, MessageCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

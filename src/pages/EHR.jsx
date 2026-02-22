@@ -20,7 +20,7 @@ import {
   Search, User, UserPlus, FileText, ClipboardList, Stethoscope,
   AlertTriangle, Pill, Activity, Plus, Edit, Lock, ShieldCheck,
   Phone, Mail, MapPin, Heart, Calendar, Loader2, CheckCircle,
-  Download, Upload, Trash2, Eye, Users, RefreshCw, ChevronRight
+  Download, Trash2, Users, RefreshCw, ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

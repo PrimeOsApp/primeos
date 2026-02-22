@@ -6,7 +6,7 @@ import {
   CartesianGrid, Tooltip, Legend, ReferenceLine
 } from "recharts";
 import { TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
-import { format, addMonths, startOfMonth, endOfMonth, parseISO, isWithinInterval, subMonths } from "date-fns";
+import { format, addMonths, startOfMonth, endOfMonth, parseISO, isWithinInterval } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 function buildMonthData(transactions, monthDate) {

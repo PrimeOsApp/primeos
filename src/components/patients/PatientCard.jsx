@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { User, Mail, Phone, Calendar, Pencil, Trash2, Eye, AlertCircle } from "lucide-react";
+import { Mail, Phone, Calendar, Pencil, Trash2, Eye, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 

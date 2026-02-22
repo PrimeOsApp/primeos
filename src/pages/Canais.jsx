@@ -9,10 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   MessageCircle, Instagram, Facebook, Globe, Phone, 
-  Send, Plus, Filter, Clock, CheckCircle, User, Search
+  Send, Clock, CheckCircle, Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

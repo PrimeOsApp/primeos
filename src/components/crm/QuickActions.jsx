@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { TrendingUp, Mail, BarChart3, Calendar, Target, Zap } from "lucide-react";
+import { TrendingUp, Mail, BarChart3, Calendar, Zap } from "lucide-react";
 
 export default function QuickActions() {
   const navigate = useNavigate();

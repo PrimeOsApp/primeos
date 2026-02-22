@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, CheckCircle, AlertCircle, Phone, Mail, MapPin, Tag } from "lucide-react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Calendar, Clock, Phone, Mail, MapPin, Tag } from "lucide-react";
 
 const serviceLabels = {
   consultation: "Consulta", follow_up: "Retorno", procedure: "Procedimento",

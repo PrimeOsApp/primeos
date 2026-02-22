@@ -11,11 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
   Search, PieChart, BarChart3, Wallet,
-  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange, Zap, Clock, Receipt
+  Target, Building2, FileSpreadsheet, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange, Zap, Clock, Receipt
 } from "lucide-react";
 import { toast } from "sonner";
-import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
-import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
+import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { loadCategories } from "../components/financeiro/CategoryManager";
 import TransactionForm from "../components/financeiro/TransactionForm";
 import TransactionList from "../components/financeiro/TransactionList";

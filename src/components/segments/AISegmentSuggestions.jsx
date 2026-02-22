@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Brain, Sparkles, Loader2, Plus, ChevronDown, ChevronUp,
-  Bot, Zap, Users, DollarSign, Clock, AlertCircle, CheckCircle, RefreshCw
+  Bot, DollarSign, AlertCircle, RefreshCw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

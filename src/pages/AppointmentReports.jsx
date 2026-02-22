@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, TrendingUp, Users, DollarSign, CheckCircle, XCircle } from "lucide-react";
+import { Calendar, TrendingUp, CheckCircle, XCircle } from "lucide-react";
 import AppointmentsByPeriod from "@/components/reports/AppointmentsByPeriod";
 import AttendanceRate from "@/components/reports/AttendanceRate";
 import AppointmentsByService from "@/components/reports/AppointmentsByService";

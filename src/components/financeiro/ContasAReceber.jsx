@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertTriangle, CheckCircle, Clock, TrendingUp, Search,
-  Bell, Plus, RefreshCw, CreditCard, FileText, SendHorizonal
+  Bell, Plus, RefreshCw, CreditCard, FileText
 } from "lucide-react";
 import { format, isPast, isToday, differenceInDays, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";

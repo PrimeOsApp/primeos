@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Brain, Calendar, AlertTriangle, DollarSign, Stethoscope,
   Loader2, RefreshCw, MessageCircle, Copy, CheckCircle, TrendingUp,
-  Clock, Star, ShieldAlert, Heart, Pill, Activity, Info, Zap
+  Clock, Star, ShieldAlert, Heart, Pill, Info, Zap
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { format, isSameDay, startOfMonth, endOfMonth } from "date-fns";
+import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Clock, MapPin, User, Pencil, Trash2, ExternalLink } from "lucide-react";
 

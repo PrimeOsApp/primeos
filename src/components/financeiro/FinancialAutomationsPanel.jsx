@@ -5,10 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { base44 } from "@/api/base44Client";
 import {
   Bell, RefreshCw, CheckCircle2, AlertTriangle, TrendingDown,
-  TrendingUp, Repeat, Mail, Zap, ChevronRight, Play
+  TrendingUp, Repeat, Mail, Zap, Play
 } from "lucide-react";
-import { format, parseISO, differenceInDays, isPast, isToday, addDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { parseISO, differenceInDays, isPast, isToday, addDays } from "date-fns";
 import { toast } from "sonner";
 
 const fmtBRL = (v) => `R$ ${(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;

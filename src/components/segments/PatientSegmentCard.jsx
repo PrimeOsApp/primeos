@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Edit2, Trash2, ChevronDown, ChevronUp, Users, Mail, MessageCircle,
-  Phone, Star, DollarSign, Calendar, Tag, Clock, Zap, Bot, Target
+  Phone, Star, DollarSign, Zap, Bot, Target
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

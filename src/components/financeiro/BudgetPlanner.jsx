@@ -13,12 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Plus, Target, TrendingUp, TrendingDown, Pencil, Trash2,
   AlertTriangle, CheckCircle2, Trophy, Flame, PiggyBank,
-  CreditCard, BarChart3, Calendar, ChevronRight
+  CreditCard, BarChart3, Calendar
 } from "lucide-react";
 import { toast } from "sonner";
-import { parseISO, getYear, getMonth, format, differenceInDays, isPast } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip } from "recharts";
+import { parseISO, getYear, getMonth, format, differenceInDays } from "date-fns";
+import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 
 const fmtBRL = (v) => `R$ ${(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
