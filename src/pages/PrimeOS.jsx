@@ -17,6 +17,7 @@ import {
   Clock, AlertCircle, Star, ArrowUp, DollarSign, Layers
 } from "lucide-react";
 import PrimeFunnel from "@/components/primeos/PrimeFunnel";
+import DelegationOS from "@/components/primeos/DelegationOS";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
