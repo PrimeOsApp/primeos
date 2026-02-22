@@ -33,10 +33,8 @@ Deno.serve(async (req) => {
       try {
         const records = await base44.asServiceRole.entities[entity].list();
         result[entity] = records;
-        console.log(`OK ${entity}: ${records.length} records`);
       } catch (e) {
         errors[entity] = e.message;
-        console.warn(`SKIP ${entity}: ${e.message}`);
         result[entity] = [];
       }
     }
@@ -47,22 +45,18 @@ Deno.serve(async (req) => {
       app: "Prime Odontologia",
       total_entities: ENTITIES.length,
       entities_with_errors: Object.keys(errors),
+      _errors: Object.keys(errors).length > 0 ? errors : undefined,
       data: result,
     };
-
-    if (Object.keys(errors).length > 0) {
-      exportData._errors = errors;
-    }
 
     return new Response(JSON.stringify(exportData, null, 2), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Content-Disposition': `attachment; filename="prime_backup_${new Date().toISOString().slice(0,10)}.json"`,
+        'Content-Disposition': `attachment; filename="prime_backup_${new Date().toISOString().slice(0, 10)}.json"`,
       },
     });
   } catch (error) {
-    console.error('Export failed:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
