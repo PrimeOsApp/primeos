@@ -301,6 +301,10 @@ Estamos te aguardando 💙`
               <AlertTriangle className="w-4 h-4" />
               Objeções
             </TabsTrigger>
+            <TabsTrigger value="top-services" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Mais Vendidos
+            </TabsTrigger>
             <TabsTrigger value="rules" className="flex items-center gap-2">
               <Star className="w-4 h-4" />
               Regras
