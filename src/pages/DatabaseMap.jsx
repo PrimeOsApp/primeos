@@ -757,6 +757,22 @@ function EntityCard({ entity, color }) {
 export default function DatabaseMap() {
   const [search, setSearch] = useState("");
   const [expandAll, setExpandAll] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExport = async () => {
+    setExporting(true);
+    const response = await base44.functions.invoke('exportAllData');
+    const blob = new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `prime_backup_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+    a.remove();
+    setExporting(false);
+  };
 
   const totalEntities = ALL_ENTITIES.reduce((s, g) => s + g.entities.length, 0);
   const totalFields = ALL_ENTITIES.reduce((s, g) => s + g.entities.reduce((ss, e) => ss + e.fields.length, 0), 0);
