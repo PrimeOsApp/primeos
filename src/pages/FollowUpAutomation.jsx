@@ -281,7 +281,7 @@ export default function FollowUpAutomation() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           {[
             { label: "Regras Ativas", value: activeRules, icon: Zap, color: "text-indigo-600", bg: "bg-indigo-50" },
             { label: "Total de Regras", value: rules.length, icon: Bell, color: "text-slate-600", bg: "bg-slate-50" },
