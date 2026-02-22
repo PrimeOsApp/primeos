@@ -306,7 +306,7 @@ export default function FollowUpAutomation() {
         {/* Info banner */}
         <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-xl flex gap-2 text-sm text-blue-700">
           <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <span>O sistema executa automaticamente <strong>todos os dias às 8h</strong>. Use "Executar Agora" para testes imediatos. Emails são enviados via sistema integrado; WhatsApp gera link de envio manual.</span>
+          <span>O sistema executa automaticamente <strong>todos os dias às 8h</strong>. Retornos preventivos baseados em <code className="bg-blue-100 px-1 rounded text-xs">checkup_schedule</code> do paciente são enviados por email e uma notificação interna é enviada para administradores. WhatsApp gera link manual.</span>
         </div>
 
         <Tabs defaultValue="rules">
