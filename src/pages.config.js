@@ -106,6 +106,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import Inventory from './pages/Inventory';
+import InventoryReports from './pages/InventoryReports';
 import __Layout from './Layout.jsx';
 
 
@@ -169,6 +170,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "Inventory": Inventory,
+    "InventoryReports": InventoryReports,
 }
 
 export const pagesConfig = {
