@@ -662,6 +662,95 @@ Estamos te aguardando 💙`
             </Card>
           </TabsContent>
 
+          {/* MAIS VENDIDOS */}
+          <TabsContent value="top-services" className="space-y-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <div className="grid md:grid-cols-3 gap-4 mb-6">
+                {[
+                  { label: "Receita Total", value: "R$ 147.000", icon: DollarSign, color: "indigo" },
+                  { label: "Tratamentos Vendidos", value: "181 unid.", icon: BarChart2, color: "green" },
+                  { label: "Ticket Médio", value: "R$ 812", icon: TrendingUp, color: "amber" },
+                ].map((stat, i) => {
+                  const Icon = stat.icon;
+                  return (
+                    <Card key={i} className="border-0 shadow-md">
+                      <CardContent className="p-5 flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-xl bg-${stat.color}-100 flex items-center justify-center`}>
+                          <Icon className={`w-6 h-6 text-${stat.color}-600`} />
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-500">{stat.label}</p>
+                          <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}>
+                <Card className="border-0 shadow-lg h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart2 className="w-5 h-5 text-indigo-600" />
+                      Receita por Tratamento (R$)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={260}>
+                      <BarChart data={topServices} layout="vertical" margin={{ left: 80, right: 20 }}>
+                        <XAxis type="number" tick={{ fontSize: 11 }} tickFormatter={v => `R$${(v/1000).toFixed(0)}k`} />
+                        <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={80} />
+                        <Tooltip formatter={v => [`R$ ${v.toLocaleString("pt-BR")}`, "Receita"]} />
+                        <Bar dataKey="revenue" radius={[0, 6, 6, 0]}>
+                          {topServices.map((s, i) => <Cell key={i} fill={s.color} />)}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
+                <Card className="border-0 shadow-lg h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-amber-500" />
+                      Ranking de Produtos/Serviços
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {topServices.map((s, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ${i === 0 ? "bg-amber-400" : i === 1 ? "bg-slate-400" : i === 2 ? "bg-orange-400" : "bg-slate-200 text-slate-600"}`}>
+                          {i < 3 ? <Medal className="w-4 h-4" /> : i + 1}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-semibold text-slate-800 text-sm truncate">{s.name}</span>
+                            <span className="text-xs font-bold text-emerald-600 ml-2 flex-shrink-0">{s.growth}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 bg-slate-100 rounded-full h-1.5">
+                              <div className="h-1.5 rounded-full" style={{ width: `${(s.revenue / 48000) * 100}%`, backgroundColor: s.color }} />
+                            </div>
+                            <span className="text-xs text-slate-500 flex-shrink-0">{s.units} und.</span>
+                          </div>
+                        </div>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-sm font-bold text-slate-900">R$ {(s.revenue / 1000).toFixed(0)}k</p>
+                          <Badge className="text-xs" style={{ backgroundColor: s.color + "20", color: s.color }}>{s.tier}</Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          </TabsContent>
+
           {/* REGRAS DE OURO */}
           <TabsContent value="rules" className="space-y-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
