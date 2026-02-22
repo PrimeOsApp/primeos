@@ -33,10 +33,10 @@ Deno.serve(async (req) => {
       try {
         const records = await base44.asServiceRole.entities[entity].list();
         result[entity] = records;
-        console.log(`✅ ${entity}: ${records.length} records`);
+        console.log(`OK ${entity}: ${records.length} records`);
       } catch (e) {
         errors[entity] = e.message;
-        console.warn(`⚠️ ${entity}: ${e.message}`);
+        console.warn(`SKIP ${entity}: ${e.message}`);
         result[entity] = [];
       }
     }
@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
       headers: {
         'Content-Type': 'application/json',
         'Content-Disposition': `attachment; filename="prime_backup_${new Date().toISOString().slice(0,10)}.json"`,
-      }
+      },
     });
   } catch (error) {
     console.error('Export failed:', error.message);
