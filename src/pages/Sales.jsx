@@ -280,7 +280,7 @@ Estamos te aguardando 💙`
         </motion.div>
 
         <Tabs defaultValue="philosophy" className="space-y-6">
-          <TabsList className="grid grid-cols-2 lg:grid-cols-6 h-auto gap-2">
+          <TabsList className="grid grid-cols-2 lg:grid-cols-7 h-auto gap-2">
             <TabsTrigger value="philosophy" className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
               Filosofia
