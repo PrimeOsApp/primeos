@@ -79,6 +79,8 @@ import Estrategias from './pages/Estrategias';
 import Financeiro from './pages/Financeiro';
 import FollowUpAutomation from './pages/FollowUpAutomation';
 import Gamification from './pages/Gamification';
+import Inventory from './pages/Inventory';
+import InventoryReports from './pages/InventoryReports';
 import JornadaCliente from './pages/JornadaCliente';
 import JourneyMapping from './pages/JourneyMapping';
 import KeyActivities from './pages/KeyActivities';
@@ -105,8 +107,6 @@ import Strategy from './pages/Strategy';
 import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
-import Inventory from './pages/Inventory';
-import InventoryReports from './pages/InventoryReports';
 import __Layout from './Layout.jsx';
 
 
@@ -143,6 +143,8 @@ export const PAGES = {
     "Financeiro": Financeiro,
     "FollowUpAutomation": FollowUpAutomation,
     "Gamification": Gamification,
+    "Inventory": Inventory,
+    "InventoryReports": InventoryReports,
     "JornadaCliente": JornadaCliente,
     "JourneyMapping": JourneyMapping,
     "KeyActivities": KeyActivities,
@@ -169,8 +171,6 @@ export const PAGES = {
     "TaskCalendar": TaskCalendar,
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
-    "Inventory": Inventory,
-    "InventoryReports": InventoryReports,
 }
 
 export const pagesConfig = {
