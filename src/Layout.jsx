@@ -68,6 +68,7 @@ const navigation = [
   { name: "SOPs", href: "SOPs", icon: FileText },
   { name: "Follow-up Automático", href: "FollowUpAutomation", icon: Bell },
   { name: "Estoque", href: "Inventory", icon: Package },
+  { name: "Relatórios Estoque", href: "InventoryReports", icon: BarChart3 },
   { name: "Canais Atendimento", href: "Canais", icon: Inbox },
   { name: "Suporte ao Cliente", href: "CustomerSupport", icon: HeadphonesIcon },
 
