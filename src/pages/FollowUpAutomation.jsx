@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Bell, Plus, Play, Trash2, CheckCircle2, XCircle,
   Mail, MessageCircle, Clock, Calendar, DollarSign,
-  UserX, RefreshCw, Edit2, Zap, Info
+  UserX, RefreshCw, Edit2, Zap, Info, Heart, Users
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
