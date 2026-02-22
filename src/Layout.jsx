@@ -124,7 +124,7 @@ const navigation = [
   { name: "Recursos-Chave", href: "KeyResources", icon: Package },
   { name: "Relacionamentos", href: "CustomerRelationships", icon: Heart },
 
-  { name: "Database Map", href: "DatabaseMap", icon: Database },
+  { name: "Database Map", href: "DatabaseMap", icon: Layers },
   { section: "Sistema" },
   { name: "Prontuário EHR", href: "EHR", icon: Stethoscope },
   { name: "Integração EHR", href: "EHRIntegration", icon: Activity },
