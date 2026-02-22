@@ -16,6 +16,7 @@ import {
   Plus, Search, ChevronRight, Target, Zap, CheckCircle,
   Clock, AlertCircle, Star, ArrowUp, DollarSign, Layers
 } from "lucide-react";
+import PrimeFunnel from "@/components/primeos/PrimeFunnel";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
