@@ -109,6 +109,7 @@ import TaskCalendar from './pages/TaskCalendar';
 import Tasks from './pages/Tasks';
 import ValueProposition from './pages/ValueProposition';
 import PrimeOS from './pages/PrimeOS';
+import DashboardFinanceiro from './pages/DashboardFinanceiro';
 import __Layout from './Layout.jsx';
 
 
@@ -175,6 +176,7 @@ export const PAGES = {
     "Tasks": Tasks,
     "ValueProposition": ValueProposition,
     "PrimeOS": PrimeOS,
+    "DashboardFinanceiro": DashboardFinanceiro,
 }
 
 export const pagesConfig = {
