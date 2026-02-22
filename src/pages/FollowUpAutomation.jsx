@@ -109,6 +109,8 @@ function RuleForm({ rule, onClose, onSave }) {
 
   const vars = form.trigger === "overdue_payment"
     ? ["{nome}", "{valor}", "{data}", "{servico}"]
+    : form.trigger === "checkup_reminder"
+    ? ["{nome}", "{data}", "{servico}", "{profissional}", "{intervalo}"]
     : ["{nome}", "{data}", "{hora}", "{servico}"];
 
   return (
