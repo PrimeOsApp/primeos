@@ -420,38 +420,10 @@ export default function PrimeOS() {
 
           {/* DELEGATION */}
           <TabsContent value="delegation">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-slate-900">Prime Delegation OS — DPS Score</h2>
-              <Button size="sm" onClick={() => { setShowForm("delegation"); setFormData({}); }} className="bg-indigo-600 hover:bg-indigo-700">
-                <Plus className="w-4 h-4 mr-1" />Nova Tarefa
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {[...delegationTasks].sort((a, b) => (b.dps_score || 0) - (a.dps_score || 0)).map(t => (
-                <Card key={t.id} className="border-0 shadow-sm">
-                  <CardContent className="p-4 flex items-center gap-4 flex-wrap">
-                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0", (t.dps_score || 0) >= 16 ? "bg-red-500" : (t.dps_score || 0) >= 10 ? "bg-orange-500" : "bg-slate-400")}>
-                      {t.dps_score || "-"}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-slate-900 truncate">{t.tarefa}</p>
-                      <p className="text-xs text-slate-500">{t.sistema} · {t.frequencia}</p>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className={cn("px-2 py-1 rounded-full", t.documentado ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500")}>{t.documentado ? "Documentado" : "Não doc."}</span>
-                      <span className={cn("px-2 py-1 rounded-full", t.delegado ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500")}>{t.delegado ? "Delegado" : "Não del."}</span>
-                    </div>
-                    <div className="text-xs text-slate-500 text-right">
-                      <p>Atual: <span className="font-medium">{t.atual_responsavel || "-"}</span></p>
-                      <p>Ideal: <span className="font-medium text-indigo-600">{t.responsavel_ideal || "-"}</span></p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-              {delegationTasks.length === 0 && (
-                <div className="text-center py-16 text-slate-400"><Layers className="w-12 h-12 mx-auto mb-3 opacity-30" /><p>Cadastre tarefas para calcular o DPS e priorizar delegação</p></div>
-              )}
-            </div>
+            <DelegationOS
+              tasks={delegationTasks}
+              onAddTask={() => { setShowForm("delegation"); setFormData({}); }}
+            />
           </TabsContent>
         </Tabs>
 
