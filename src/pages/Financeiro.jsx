@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   DollarSign, TrendingUp, TrendingDown, Plus, Upload,
   Search, PieChart, BarChart3, Wallet,
-  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange, Zap
+  Target, Building2, FileSpreadsheet, CreditCard, ArrowDownCircle, ArrowUpCircle, Scale, Tag, CalendarRange, Zap, Clock, Receipt
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, subDays, startOfMonth, endOfMonth, parseISO } from "date-fns";
@@ -26,6 +26,8 @@ import BudgetPlanner from "../components/financeiro/BudgetPlanner";
 import BankConnect from "../components/financeiro/BankConnect";
 import ContasAPagar from "../components/financeiro/ContasAPagar";
 import ContasAReceber from "../components/financeiro/ContasAReceber";
+import ContasAVencer from "../components/financeiro/ContasAVencer";
+import DigitalInvoiceModal from "../components/financeiro/DigitalInvoiceModal";
 import ConciliacaoBancaria from "../components/financeiro/ConciliacaoBancaria";
 import PaymentLink from "../components/financeiro/PaymentLink";
 import ProjectedCashFlow from "../components/financeiro/ProjectedCashFlow";
@@ -46,6 +48,7 @@ export default function Financeiro() {
   const [showForm, setShowForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [showPaymentLink, setShowPaymentLink] = useState(false);
+  const [showDigitalInvoice, setShowDigitalInvoice] = useState(false);
   const [editing, setEditing] = useState(null);
   const [defaultFormType, setDefaultFormType] = useState(null);
   const [search, setSearch] = useState("");
@@ -150,6 +153,10 @@ export default function Financeiro() {
             <p className="text-slate-500 mt-1">Fluxo de caixa, receitas, despesas e relatórios</p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowDigitalInvoice(true)}>
+              <Receipt className="w-4 h-4 mr-2" />
+              Nota Digital
+            </Button>
             <Button variant="outline" onClick={() => setShowImport(true)}>
               <Upload className="w-4 h-4 mr-2" />
               Importar
@@ -206,6 +213,9 @@ export default function Financeiro() {
             </TabsTrigger>
             <TabsTrigger value="a-pagar" className="flex items-center gap-1.5 text-xs">
               <ArrowUpCircle className="w-3.5 h-3.5" />A Pagar
+            </TabsTrigger>
+            <TabsTrigger value="a-vencer" className="flex items-center gap-1.5 text-xs">
+              <Clock className="w-3.5 h-3.5" />A Vencer
             </TabsTrigger>
             <TabsTrigger value="conciliacao" className="flex items-center gap-1.5 text-xs">
               <Scale className="w-3.5 h-3.5" />Conciliação
@@ -308,6 +318,11 @@ export default function Financeiro() {
           {/* A PAGAR */}
           <TabsContent value="a-pagar">
             <ContasAPagar onAddNew={() => openNewForm("despesa")} />
+          </TabsContent>
+
+          {/* A VENCER */}
+          <TabsContent value="a-vencer">
+            <ContasAVencer />
           </TabsContent>
 
           {/* CONCILIAÇÃO */}
@@ -418,6 +433,11 @@ export default function Financeiro() {
         open={showImport}
         onClose={() => setShowImport(false)}
         onImported={() => queryClient.invalidateQueries({ queryKey: ["financialTransactions"] })}
+      />
+
+      <DigitalInvoiceModal
+        open={showDigitalInvoice}
+        onClose={() => setShowDigitalInvoice(false)}
       />
     </div>
   );
