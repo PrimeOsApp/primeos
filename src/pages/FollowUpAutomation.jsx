@@ -286,6 +286,7 @@ export default function FollowUpAutomation() {
             { label: "Regras Ativas", value: activeRules, icon: Zap, color: "text-indigo-600", bg: "bg-indigo-50" },
             { label: "Total de Regras", value: rules.length, icon: Bell, color: "text-slate-600", bg: "bg-slate-50" },
             { label: "Enviados Hoje", value: sentToday, icon: Mail, color: "text-emerald-600", bg: "bg-emerald-50" },
+            { label: "Retornos Notificados", value: logs.filter(l => l.trigger === "checkup_reminder" && l.status === "sent").length, icon: Heart, color: "text-teal-600", bg: "bg-teal-50" },
             { label: "Total no Histórico", value: logs.filter(l => l.status === "sent").length, icon: CheckCircle2, color: "text-purple-600", bg: "bg-purple-50" },
           ].map((s) => (
             <Card key={s.label} className="border-0 shadow-sm">
