@@ -411,37 +411,10 @@ export default function PrimeOS() {
 
           {/* FUNIL */}
           <TabsContent value="funil">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-slate-900">Prime Funnel — Rastreamento de Leads</h2>
-              <Button size="sm" onClick={() => { setShowForm("lead"); setFormData({}); }} className="bg-indigo-600 hover:bg-indigo-700">
-                <Plus className="w-4 h-4 mr-1" />Novo Lead
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-7 gap-2">
-              {funnelStages.map(status => {
-                const items = funnelLeads.filter(l => l.status === status);
-                const labels = { lead: "Lead", contato: "Contato", avaliacao_marcada: "Aval. Marcada", compareceu: "Compareceu", proposta_enviada: "Proposta", fechado: "Fechado ✓", perdido: "Perdido" };
-                const receita_stage = items.reduce((s, l) => s + (l.ticket_estimado || 0), 0);
-                return (
-                  <div key={status} className="bg-white rounded-xl border p-2 shadow-sm min-h-[150px]">
-                    <div className="mb-2">
-                      <span className={cn("text-xs font-bold px-1.5 py-0.5 rounded-full", funnelStatusColors[status])}>{labels[status]}</span>
-                      <p className="text-xs text-slate-400 mt-1">{items.length} leads</p>
-                      {receita_stage > 0 && <p className="text-xs text-green-600 font-bold">R$ {receita_stage.toLocaleString("pt-BR")}</p>}
-                    </div>
-                    <div className="space-y-1">
-                      {items.map(l => (
-                        <div key={l.id} className="bg-slate-50 rounded p-1.5 border border-slate-100">
-                          <p className="text-xs font-medium text-slate-800 truncate">{l.nome}</p>
-                          {l.procedimento && <p className="text-xs text-slate-500 truncate">{l.procedimento}</p>}
-                          {l.ticket_estimado && <p className="text-xs text-green-600">R$ {l.ticket_estimado.toLocaleString("pt-BR")}</p>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <PrimeFunnel
+              leads={funnelLeads}
+              onAddLead={() => { setShowForm("lead"); setFormData({}); }}
+            />
           </TabsContent>
 
           {/* DELEGATION */}
