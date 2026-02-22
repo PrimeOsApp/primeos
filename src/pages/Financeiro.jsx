@@ -27,7 +27,7 @@ import BankConnect from "../components/financeiro/BankConnect";
 import ContasAPagar from "../components/financeiro/ContasAPagar";
 import ContasAReceber from "../components/financeiro/ContasAReceber";
 import ContasAVencer from "../components/financeiro/ContasAVencer";
-import DigitalInvoiceModal from "../components/financeiro/DigitalInvoiceModal";
+import DigitalInvoiceModal from "@/components/financeiro/DigitalInvoiceModal";
 import ConciliacaoBancaria from "../components/financeiro/ConciliacaoBancaria";
 import PaymentLink from "../components/financeiro/PaymentLink";
 import ProjectedCashFlow from "../components/financeiro/ProjectedCashFlow";
