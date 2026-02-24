@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Authorization required"
-AuthUserFile /home/u188684587/domains/primeodontologia.com.br/public_html/primeos/.htpasswd
-Require user admin
