@@ -1,28 +1,55 @@
-name: Build and deploy to Hostinger
+name: Deploy PrimeOS to Hostinger
+
 on:
- push:
- branches: [ "main" ]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: true
 
 jobs:
- build-deploy:
- runs-on: ubuntu-latest
- steps:
- - uses: actions/checkout@v4
- - uses: actions/setup-node@v4
- with:
- node-version: 20
- cache: npm
- - run: npm ci
- - run: npm run build
- env:
- VITE_BASE_PATH: /
- VITE_BASE44_APP_ID: ${{ secrets.VITE_BASE44_APP_ID }}
- VITE_BASE44_APP_BASE_URL: ${{ secrets.VITE_BASE44_APP_BASE_URL }}
- - name: Deploy dist via FTP
- uses: SamKirkland/FTP-Deploy-Action@v4.3.5
- with:
- server: ${{ secrets.FTP_SERVER }}
- username: ${{ secrets.FTP_USERNAME }}
- password: ${{ secrets.FTP_PASSWORD }}
- local-dir: dist/
- server-dir: /domains/primeodontologia.com.br/public_html/primeos/
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for primeos.primeodontologia.com.br
+        run: npm run build:primeos
+
+      - name: Create SPA fallback rules
+        run: |
+          cat > dist/.htaccess << 'EOF'
+          RewriteEngine On
+          RewriteBase /
+          RewriteRule ^index\.html$ - [L]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule . /index.html [L]
+          EOF
+
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          port: ${{ secrets.HOSTINGER_FTP_PORT || 21 }}
+          protocol: ftp
+          local-dir: dist/
+          server-dir: ${{ secrets.HOSTINGER_REMOTE_DIR || '/public_html/' }}
+          dangerous-clean-slate: true
