@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -34,10 +34,10 @@ export default function SettingsDialog({ open, onClose, user }) {
 
     setDeleting(true);
     try {
-      await base44.auth.updateMe({ status: 'deleted' });
+      await primeos.auth.updateMe({ status: 'deleted' });
       toast.success('Conta marcada para exclusão');
       setTimeout(() => {
-        base44.auth.logout();
+        primeos.auth.logout();
       }, 2000);
     } catch (error) {
       toast.error('Erro ao excluir conta');

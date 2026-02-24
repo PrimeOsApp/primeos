@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { event, data, old_data } = await req.json();
 
     if (!data?.id) {
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     }
 
     if (shouldUpdate) {
-      await base44.asServiceRole.entities.Appointment.update(data.id, {
+      await primeos.asServiceRole.entities.Appointment.update(data.id, {
         status: newStatus
       });
 
@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
       const followUpDate = new Date(appointmentDate);
       followUpDate.setDate(followUpDate.getDate() + 7); // 7 days after
 
-      await base44.asServiceRole.entities.Task.create({
+      await primeos.asServiceRole.entities.Task.create({
         titulo: `Follow-up: ${data.patient_name}`,
         descricao: `Acompanhamento pós-consulta de ${data.service_type}`,
         categoria: 'clinico',
@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
 
     // Update customer interaction log
     if (data.patient_id && event.type === 'update') {
-      await base44.asServiceRole.entities.Interaction.create({
+      await primeos.asServiceRole.entities.Interaction.create({
         customer_id: data.patient_id,
         type: 'meeting',
         subject: `Consulta: ${data.service_type}`,

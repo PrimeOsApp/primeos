@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,22 +48,22 @@ export default function Analytics() {
 
   const { data: marketingMetrics = [] } = useQuery({
     queryKey: ["marketingMetrics"],
-    queryFn: () => base44.entities.MarketingMetric.list("-date")
+    queryFn: () => primeos.entities.MarketingMetric.list("-date")
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointments"],
-    queryFn: () => base44.entities.Appointment.list("-date")
+    queryFn: () => primeos.entities.Appointment.list("-date")
   });
 
   const { data: engagement = [] } = useQuery({
     queryKey: ["engagement"],
-    queryFn: () => base44.entities.UserEngagement.list("-created_date")
+    queryFn: () => primeos.entities.UserEngagement.list("-created_date")
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list("-created_date")
+    queryFn: () => primeos.entities.Lead.list("-created_date")
   });
 
   // Filter data by date range and source

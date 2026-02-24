@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,11 +37,11 @@ export default function Estrategias() {
 
   const { data: strategies = [] } = useQuery({
     queryKey: ["marketingStrategies"],
-    queryFn: () => base44.entities.MarketingStrategy.list("-created_date")
+    queryFn: () => primeos.entities.MarketingStrategy.list("-created_date")
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.MarketingStrategy.create(data),
+    mutationFn: (data) => primeos.entities.MarketingStrategy.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["marketingStrategies"] });
       setShowForm(false);
@@ -50,7 +50,7 @@ export default function Estrategias() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.MarketingStrategy.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.MarketingStrategy.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["marketingStrategies"] });
       setShowForm(false);
@@ -60,7 +60,7 @@ export default function Estrategias() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.MarketingStrategy.delete(id),
+    mutationFn: (id) => primeos.entities.MarketingStrategy.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["marketingStrategies"] });
       toast.success("Estratégia excluída!");

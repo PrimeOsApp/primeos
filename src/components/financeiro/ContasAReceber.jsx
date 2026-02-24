@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -46,11 +46,11 @@ export default function ContasAReceber({ onAddNew, onGeneratePaymentLink }) {
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-due_date"),
+    queryFn: () => primeos.entities.FinancialTransaction.list("-due_date"),
   });
 
   const markReceivedMutation = useMutation({
-    mutationFn: (id) => base44.entities.FinancialTransaction.update(id, { status: "pago" }),
+    mutationFn: (id) => primeos.entities.FinancialTransaction.update(id, { status: "pago" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["financialTransactions"] });
       toast.success("Marcado como recebido!");

@@ -1,13 +1,13 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const base44 = createClientFromRequest(req);
-  const user = await base44.auth.me();
+  const primeos = createClientFromRequest(req);
+  const user = await primeos.auth.me();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const [patients, appointments] = await Promise.all([
-    base44.entities.PatientRecord.list('-updated_date', 100),
-    base44.entities.Appointment.list('-date', 300)
+    primeos.entities.PatientRecord.list('-updated_date', 100),
+    primeos.entities.Appointment.list('-date', 300)
   ]);
 
   const today = new Date();
@@ -74,7 +74,7 @@ Retorne APENAS este JSON:
   "summary": "string (resumo das ações recomendadas)"
 }`;
 
-  const result = await base44.integrations.Core.InvokeLLM({
+  const result = await primeos.integrations.Core.InvokeLLM({
     prompt,
     response_json_schema: {
       type: "object",

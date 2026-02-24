@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,16 +41,16 @@ export default function Canais() {
 
   const { data: channels = [] } = useQuery({
     queryKey: ["channels"],
-    queryFn: () => base44.entities.Channel.list("-last_message_date")
+    queryFn: () => primeos.entities.Channel.list("-last_message_date")
   });
 
   const { data: patients = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+    queryFn: () => primeos.entities.Customer.list()
   });
 
   const createChannelMutation = useMutation({
-    mutationFn: (data) => base44.entities.Channel.create(data),
+    mutationFn: (data) => primeos.entities.Channel.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["channels"] });
       toast.success("Canal criado!");
@@ -58,7 +58,7 @@ export default function Canais() {
   });
 
   const updateChannelMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Channel.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Channel.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["channels"] })
   });
 

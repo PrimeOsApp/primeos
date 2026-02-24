@@ -1,15 +1,15 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const base44 = createClientFromRequest(req);
-  const user = await base44.auth.me();
+  const primeos = createClientFromRequest(req);
+  const user = await primeos.auth.me();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { patientId, appointmentId } = await req.json();
 
   const [appointments, patientRecords] = await Promise.all([
-    base44.entities.Appointment.list('-date', 200),
-    patientId ? base44.entities.PatientRecord.filter({ id: patientId }) : Promise.resolve([])
+    primeos.entities.Appointment.list('-date', 200),
+    patientId ? primeos.entities.PatientRecord.filter({ id: patientId }) : Promise.resolve([])
   ]);
 
   const patient = patientRecords[0];
@@ -67,7 +67,7 @@ Retorne APENAS este JSON:
   "risk_note": "string (se há risco de no-show, como mitigar)"
 }`;
 
-  const result = await base44.integrations.Core.InvokeLLM({
+  const result = await primeos.integrations.Core.InvokeLLM({
     prompt,
     response_json_schema: {
       type: "object",

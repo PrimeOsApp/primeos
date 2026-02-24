@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ export default function OpportunitySuggestions() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
 
   const analyzCustomer = async () => {
@@ -26,7 +26,7 @@ export default function OpportunitySuggestions() {
 
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('suggestOpportunities', {
+      const response = await primeos.functions.invoke('suggestOpportunities', {
         customerId: selectedCustomer
       });
 

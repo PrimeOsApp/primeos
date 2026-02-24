@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,14 +34,14 @@ export default function CRMSyncSettings() {
 
   const { data: user } = useQuery({
     queryKey: ["user"],
-    queryFn: () => base44.auth.me(),
+    queryFn: () => primeos.auth.me(),
   });
 
   const { data: existingSettings } = useQuery({
     queryKey: ["crm-sync-settings", user?.email],
     queryFn: async () => {
       if (!user?.email) return null;
-      const result = await base44.entities.CRMSyncSettings.filter({ user_email: user.email });
+      const result = await primeos.entities.CRMSyncSettings.filter({ user_email: user.email });
       return result[0] || null;
     },
     enabled: !!user?.email,
@@ -56,9 +56,9 @@ export default function CRMSyncSettings() {
   const saveMutation = useMutation({
     mutationFn: async (data) => {
       if (existingSettings) {
-        return base44.entities.CRMSyncSettings.update(existingSettings.id, data);
+        return primeos.entities.CRMSyncSettings.update(existingSettings.id, data);
       } else {
-        return base44.entities.CRMSyncSettings.create({ ...data, user_email: user.email });
+        return primeos.entities.CRMSyncSettings.create({ ...data, user_email: user.email });
       }
     },
     onSuccess: () => {

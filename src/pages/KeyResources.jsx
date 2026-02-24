@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Server, Users, Brain, Building } from "lucide-react";
@@ -7,7 +7,7 @@ import { Server, Users, Brain, Building } from "lucide-react";
 export default function KeyResources() {
   const { data: assets = [] } = useQuery({
     queryKey: ['assets'],
-    queryFn: () => base44.entities.Asset.list(),
+    queryFn: () => primeos.entities.Asset.list(),
   });
 
   const resourceCategories = [

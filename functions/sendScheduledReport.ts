@@ -1,11 +1,11 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     // Fetch all active schedules
-    const schedules = await base44.asServiceRole.entities.ReportSchedule.list();
+    const schedules = await primeos.asServiceRole.entities.ReportSchedule.list();
     const activeSchedules = schedules.filter(s => s.is_active);
 
     const now = new Date();
@@ -29,9 +29,9 @@ Deno.serve(async (req) => {
 
       if (shouldSend) {
         // Fetch data for report
-        const sales = await base44.asServiceRole.entities.Sale.list();
-        const leads = await base44.asServiceRole.entities.Lead.list();
-        const interactions = await base44.asServiceRole.entities.Interaction.list();
+        const sales = await primeos.asServiceRole.entities.Sale.list();
+        const leads = await primeos.asServiceRole.entities.Lead.list();
+        const interactions = await primeos.asServiceRole.entities.Interaction.list();
 
         // Filter data
         const reportData = sales.map(s => ({
@@ -54,7 +54,7 @@ Este relatório foi gerado automaticamente.
         `;
 
         for (const recipient of schedule.recipients) {
-          await base44.integrations.Core.SendEmail({
+          await primeos.integrations.Core.SendEmail({
             to: recipient,
             subject: `${schedule.report_name} - ${new Date().toLocaleDateString('pt-BR')}`,
             body: emailContent
@@ -62,7 +62,7 @@ Este relatório foi gerado automaticamente.
         }
 
         // Update schedule
-        await base44.asServiceRole.entities.ReportSchedule.update(schedule.id, {
+        await primeos.asServiceRole.entities.ReportSchedule.update(schedule.id, {
           last_sent: new Date().toISOString(),
           send_count: (schedule.send_count || 0) + 1
         });

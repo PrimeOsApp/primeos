@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,7 @@ export default function MedicalHistoryEditor({ patient, onUpdate }) {
   const [newCondition, setNewCondition] = useState("");
 
   const saveMutation = useMutation({
-    mutationFn: (data) => base44.entities.PatientRecord.update(patient.id, data),
+    mutationFn: (data) => primeos.entities.PatientRecord.update(patient.id, data),
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       onUpdate?.(updated);

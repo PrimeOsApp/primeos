@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { RefreshCw, Calendar, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -12,7 +12,7 @@ export default function GoogleCalendarSync() {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      const response = await base44.functions.invoke('syncGoogleCalendar', {});
+      const response = await primeos.functions.invoke('syncGoogleCalendar', {});
       
       if (response.data?.success) {
         toast.success(response.data.message);

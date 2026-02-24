@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -19,7 +19,7 @@ export default function RevenuePanel() {
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["allAppointments"],
-    queryFn: () => base44.entities.Appointment.list("-date")
+    queryFn: () => primeos.entities.Appointment.list("-date")
   });
 
   const { start, end, label } = useMemo(() => {

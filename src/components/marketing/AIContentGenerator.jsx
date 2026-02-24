@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ export default function AIContentGenerator({ performanceData }) {
   const generateContent = async () => {
     setLoading(true);
     try {
-      const { data } = await base44.functions.invoke('generateMarketingContent', {
+      const { data } = await primeos.functions.invoke('generateMarketingContent', {
         ...formData,
         performanceData
       });

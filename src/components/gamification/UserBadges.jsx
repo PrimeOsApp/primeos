@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Award, Lock } from "lucide-react";
 
 export default function UserBadges() {
   const { data: badges = [], isLoading } = useQuery({
     queryKey: ["userBadges"],
     queryFn: async () => {
-      const user = await base44.auth.me();
-      return base44.entities.UserBadge.filter({ user_email: user.email });
+      const user = await primeos.auth.me();
+      return primeos.entities.UserBadge.filter({ user_email: user.email });
     },
   });
 

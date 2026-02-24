@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/shared/PageHeader";
@@ -35,22 +35,22 @@ export default function Revenue() {
 
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list("-created_date")
+    queryFn: () => primeos.entities.Product.list("-created_date")
   });
 
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
-    queryFn: () => base44.entities.Sale.list("-created_date")
+    queryFn: () => primeos.entities.Sale.list("-created_date")
   });
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+    queryFn: () => primeos.entities.Customer.list()
   });
 
   // Product mutations
   const createProductMutation = useMutation({
-    mutationFn: (data) => base44.entities.Product.create(data),
+    mutationFn: (data) => primeos.entities.Product.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setShowProductForm(false);
@@ -59,7 +59,7 @@ export default function Revenue() {
   });
 
   const updateProductMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Product.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Product.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setShowProductForm(false);
@@ -68,13 +68,13 @@ export default function Revenue() {
   });
 
   const deleteProductMutation = useMutation({
-    mutationFn: (id) => base44.entities.Product.delete(id),
+    mutationFn: (id) => primeos.entities.Product.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] })
   });
 
   // Sale mutations
   const createSaleMutation = useMutation({
-    mutationFn: (data) => base44.entities.Sale.create(data),
+    mutationFn: (data) => primeos.entities.Sale.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sales"] });
       setShowSaleForm(false);
@@ -83,7 +83,7 @@ export default function Revenue() {
   });
 
   const updateSaleMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Sale.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Sale.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sales"] });
       setShowSaleForm(false);

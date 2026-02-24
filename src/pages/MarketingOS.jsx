@@ -1,4 +1,4 @@
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,27 +23,27 @@ const modules = [
 export default function MarketingOS() {
   const { data: strategies = [] } = useQuery({
     queryKey: ["marketingStrategies"],
-    queryFn: () => base44.entities.MarketingStrategy.list("-created_date")
+    queryFn: () => primeos.entities.MarketingStrategy.list("-created_date")
   });
 
   const { data: contents = [] } = useQuery({
     queryKey: ["contents"],
-    queryFn: () => base44.entities.Content.list("-created_date")
+    queryFn: () => primeos.entities.Content.list("-created_date")
   });
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ["campaigns"],
-    queryFn: () => base44.entities.Campaign.list("-created_date")
+    queryFn: () => primeos.entities.Campaign.list("-created_date")
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list("-created_date")
+    queryFn: () => primeos.entities.Lead.list("-created_date")
   });
 
   const { data: metrics = [] } = useQuery({
     queryKey: ["metrics"],
-    queryFn: () => base44.entities.MarketingMetric.list("-data")
+    queryFn: () => primeos.entities.MarketingMetric.list("-data")
   });
 
   // Calculate totals

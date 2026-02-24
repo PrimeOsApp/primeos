@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     }
 
     // Buscar dados da consulta
-    const appointment = await base44.entities.Appointment.filter({ id: appointment_id });
+    const appointment = await primeos.entities.Appointment.filter({ id: appointment_id });
     
     if (!appointment || appointment.length === 0) {
       return Response.json({ error: 'Consulta não encontrada' }, { status: 404 });
@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     const appt = appointment[0];
 
     // Buscar registro médico do paciente para obter ehr_id
-    const medicalRecords = await base44.entities.MedicalRecord.filter({
+    const medicalRecords = await primeos.entities.MedicalRecord.filter({
       patient_id: appt.patient_id
     });
 
@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
     console.log('Enviando para EHR:', ehrPayload);
 
     // Criar registro de evolução no sistema local
-    const evolutionRecord = await base44.entities.MedicalRecord.create({
+    const evolutionRecord = await primeos.entities.MedicalRecord.create({
       patient_id: appt.patient_id,
       patient_name: appt.patient_name,
       ehr_id: ehr_id,
@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
     });
 
     // Atualizar a consulta com flag de sincronização
-    await base44.entities.Appointment.update(appointment_id, {
+    await primeos.entities.Appointment.update(appointment_id, {
       notes: notes,
       ehr_synced: true
     });

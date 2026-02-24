@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { RefreshCw, Settings, Cloud, Wrench, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ export default function MarketingSyncCard() {
     setSyncing(true);
     try {
       const functionName = platform === 'google' ? 'syncGoogleAds' : 'syncFacebookAds';
-      const response = await base44.functions.invoke(functionName, {});
+      const response = await primeos.functions.invoke(functionName, {});
       
       if (response.data?.success) {
         toast.success(response.data.message);
@@ -55,7 +55,7 @@ export default function MarketingSyncCard() {
   const syncAll = async () => {
     setSyncing(true);
     try {
-      const response = await base44.functions.invoke('syncAllMarketingPlatforms', {});
+      const response = await primeos.functions.invoke('syncAllMarketingPlatforms', {});
       
       if (response.data?.success) {
         toast.success(response.data.message);

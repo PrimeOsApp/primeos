@@ -7,7 +7,7 @@ import {
   ShieldCheck, Info, Upload, Loader2, Banknote
 } from "lucide-react";
 import { toast } from "sonner";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { format } from "date-fns";
 
 const MOCK_BANKS = [
@@ -56,7 +56,7 @@ export default function BankConnect({ onImported }) {
     setSyncing(true);
     const toImport = previewTransactions.filter((_, i) => selectedToImport.includes(i));
     for (const tx of toImport) {
-      await base44.entities.FinancialTransaction.create({
+      await primeos.entities.FinancialTransaction.create({
         type: tx.type,
         category: tx.type === "receita" ? "consulta" : "outros_despesa",
         description: tx.description,

@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 const BADGES = {
   first_deal: {
@@ -75,8 +75,8 @@ const BADGES = {
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -91,7 +91,7 @@ Deno.serve(async (req) => {
     const badgeConfig = BADGES[badgeId];
 
     // Check if already earned
-    const existingBadges = await base44.entities.UserBadge.filter({
+    const existingBadges = await primeos.entities.UserBadge.filter({
       user_email: user.email,
       badge_id: badgeId
     });
@@ -104,7 +104,7 @@ Deno.serve(async (req) => {
     }
 
     // Award badge
-    await base44.entities.UserBadge.create({
+    await primeos.entities.UserBadge.create({
       user_email: user.email,
       badge_id: badgeId,
       badge_name: badgeConfig.name,
@@ -118,7 +118,7 @@ Deno.serve(async (req) => {
     });
 
     // Award bonus points
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'milestone_bonus',
       metadata: { bonus_multiplier: badgeConfig.points / 50 }
     });

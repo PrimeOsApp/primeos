@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Test ID required' }, { status: 400 });
     }
 
-    const abTest = await base44.asServiceRole.entities.ABTest.get(testId);
+    const abTest = await primeos.asServiceRole.entities.ABTest.get(testId);
 
     if (!abTest) {
       return Response.json({ error: 'Test not found' }, { status: 404 });
@@ -61,7 +61,7 @@ Fornecça:
 3. Recomendações de otimização
 4. Próximos passos para melhorar ainda mais`;
 
-    const analysis = await base44.integrations.Core.InvokeLLM({
+    const analysis = await primeos.integrations.Core.InvokeLLM({
       prompt,
       response_json_schema: {
         type: "object",

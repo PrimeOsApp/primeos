@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Loader2, CheckCircle, FileSpreadsheet, AlertCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -21,8 +21,8 @@ export default function ImportStatement({ open, onClose, onImported }) {
     if (!file) return;
     setLoading(true);
     setPreview(null);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    const result = await base44.integrations.Core.ExtractDataFromUploadedFile({
+    const { file_url } = await primeos.integrations.Core.UploadFile({ file });
+    const result = await primeos.integrations.Core.ExtractDataFromUploadedFile({
       file_url,
       json_schema: {
         type: "object",
@@ -63,7 +63,7 @@ export default function ImportStatement({ open, onClose, onImported }) {
       payment_method: "transferencia",
       bank_statement_ref: "importado",
     }));
-    await base44.entities.FinancialTransaction.bulkCreate(records);
+    await primeos.entities.FinancialTransaction.bulkCreate(records);
     setLoading(false);
     toast.success(`${records.length} transações importadas!`);
     onImported();

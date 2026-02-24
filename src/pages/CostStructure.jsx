@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,41 +35,41 @@ export default function CostStructure() {
 
   const { data: expenses = [] } = useQuery({
     queryKey: ["expenses"],
-    queryFn: () => base44.entities.Expense.list(),
+    queryFn: () => primeos.entities.Expense.list(),
   });
 
   const { data: assets = [] } = useQuery({
     queryKey: ["assets"],
-    queryFn: () => base44.entities.Asset.list(),
+    queryFn: () => primeos.entities.Asset.list(),
   });
 
   const createExpense = useMutation({
-    mutationFn: (data) => base44.entities.Expense.create(data),
+    mutationFn: (data) => primeos.entities.Expense.create(data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["expenses"] }); setExpenseDialog({ open: false, item: null }); },
   });
 
   const updateExpense = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Expense.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Expense.update(id, data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["expenses"] }); setExpenseDialog({ open: false, item: null }); },
   });
 
   const deleteExpense = useMutation({
-    mutationFn: (id) => base44.entities.Expense.delete(id),
+    mutationFn: (id) => primeos.entities.Expense.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["expenses"] }),
   });
 
   const createAsset = useMutation({
-    mutationFn: (data) => base44.entities.Asset.create(data),
+    mutationFn: (data) => primeos.entities.Asset.create(data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["assets"] }); setAssetDialog({ open: false, item: null }); },
   });
 
   const updateAsset = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Asset.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Asset.update(id, data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["assets"] }); setAssetDialog({ open: false, item: null }); },
   });
 
   const deleteAsset = useMutation({
-    mutationFn: (id) => base44.entities.Asset.delete(id),
+    mutationFn: (id) => primeos.entities.Asset.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["assets"] }),
   });
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { 
@@ -77,7 +77,7 @@ export default function GlobalSearch({ open, onClose }) {
 
       setLoading(true);
       try {
-        const { data } = await base44.functions.invoke('globalSearch', { query });
+        const { data } = await primeos.functions.invoke('globalSearch', { query });
         setResults(data.results || []);
         setSelectedIndex(0);
       } catch (error) {

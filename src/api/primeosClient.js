@@ -1,10 +1,10 @@
-import { createClient } from '@base44/sdk';
+import { createPrimeosSdkClient } from '@/lib/primeosSdk';
 import { appParams } from '@/lib/app-params';
 
 const { appId, token, functionsVersion, appBaseUrl } = appParams;
 
 //Create a client with authentication required
-export const base44 = createClient({
+export const primeos = createPrimeosSdkClient({
   appId,
   token,
   functionsVersion,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,22 +33,22 @@ export default function SalesReports() {
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list(),
+    queryFn: () => primeos.entities.Lead.list(),
   });
 
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
-    queryFn: () => base44.entities.Sale.list(),
+    queryFn: () => primeos.entities.Sale.list(),
   });
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ["campaigns"],
-    queryFn: () => base44.entities.Campaign.list(),
+    queryFn: () => primeos.entities.Campaign.list(),
   });
 
   // Conversion Rate by Stage

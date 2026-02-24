@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import PageHeader from "@/components/shared/PageHeader";
 import JourneyVisualization from "@/components/journey/JourneyVisualization";
 import JourneyStageCard from "@/components/journey/JourneyStageCard";
@@ -28,7 +28,7 @@ export default function JourneyMapping() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
 
   const analyzeJourney = async () => {
@@ -39,7 +39,7 @@ export default function JourneyMapping() {
 
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('analyzeCustomerJourney', {
+      const response = await primeos.functions.invoke('analyzeCustomerJourney', {
         customerId: selectedCustomer
       });
 

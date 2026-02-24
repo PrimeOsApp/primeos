@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,11 +28,11 @@ export default function POPsPage() {
 
   const { data: pops = [], isLoading } = useQuery({
     queryKey: ['pops'],
-    queryFn: () => base44.entities.POP.list('-codigo'),
+    queryFn: () => primeos.entities.POP.list('-codigo'),
   });
 
   const updatePOPMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.POP.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.POP.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pops'] });
     },

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -36,42 +36,42 @@ export default function Dashboard() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+    queryFn: () => primeos.entities.Customer.list()
   });
 
   const { data: activities = [] } = useQuery({
     queryKey: ["activities"],
-    queryFn: () => base44.entities.Activity.list()
+    queryFn: () => primeos.entities.Activity.list()
   });
 
   const { data: expenses = [] } = useQuery({
     queryKey: ["expenses"],
-    queryFn: () => base44.entities.Expense.list()
+    queryFn: () => primeos.entities.Expense.list()
   });
 
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list()
+    queryFn: () => primeos.entities.Product.list()
   });
 
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
-    queryFn: () => base44.entities.Sale.list()
+    queryFn: () => primeos.entities.Sale.list()
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list()
+    queryFn: () => primeos.entities.Lead.list()
   });
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["tasks"],
-    queryFn: () => base44.entities.Task.list()
+    queryFn: () => primeos.entities.Task.list()
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointments-dashboard"],
-    queryFn: () => base44.entities.Appointment.list()
+    queryFn: () => primeos.entities.Appointment.list()
   });
 
   const totalRevenue = sales.reduce((sum, s) => sum + (s.total_amount || 0), 0);

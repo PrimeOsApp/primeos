@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,11 +27,11 @@ export default function EmailAutomation() {
 
   const { data: sequences = [] } = useQuery({
     queryKey: ["email-sequences"],
-    queryFn: () => base44.entities.EmailSequence.list(),
+    queryFn: () => primeos.entities.EmailSequence.list(),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.EmailSequence.create(data),
+    mutationFn: (data) => primeos.entities.EmailSequence.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["email-sequences"] });
       setShowForm(false);
@@ -41,7 +41,7 @@ export default function EmailAutomation() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.EmailSequence.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.EmailSequence.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["email-sequences"] });
       setShowForm(false);
@@ -51,7 +51,7 @@ export default function EmailAutomation() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.EmailSequence.delete(id),
+    mutationFn: (id) => primeos.entities.EmailSequence.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["email-sequences"] });
       toast.success("Sequência excluída!");

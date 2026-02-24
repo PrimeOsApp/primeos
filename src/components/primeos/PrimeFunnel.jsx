@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -63,7 +63,7 @@ export default function PrimeFunnel({ leads, onAddLead }) {
   const [draggingId, setDraggingId] = useState(null);
 
   const updateLead = useMutation({
-    mutationFn: ({ id, status }) => base44.entities.PrimeFunnelLead.update(id, { status }),
+    mutationFn: ({ id, status }) => primeos.entities.PrimeFunnelLead.update(id, { status }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["PrimeFunnelLead"] }),
     onError: () => toast.error("Erro ao mover lead"),
   });

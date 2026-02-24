@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle, Loader2, SplitSquareHorizontal, Calendar, History } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
@@ -49,7 +49,7 @@ export default function PagamentoModal({ transaction, open, onClose }) {
   const handlePagarTotal = async () => {
     setLoading(true);
     try {
-      await base44.entities.FinancialTransaction.update(transaction.id, {
+      await primeos.entities.FinancialTransaction.update(transaction.id, {
         status: "pago",
         amount_paid: transaction.amount,
         payment_method: form.payment_method,
@@ -80,7 +80,7 @@ export default function PagamentoModal({ transaction, open, onClose }) {
       }];
       const isPaidOff = newPaid >= (transaction.amount || 0);
 
-      await base44.entities.FinancialTransaction.update(transaction.id, {
+      await primeos.entities.FinancialTransaction.update(transaction.id, {
         status: isPaidOff ? "pago" : "parcial",
         amount_paid: newPaid,
         partial_payments: newPartials
@@ -98,7 +98,7 @@ export default function PagamentoModal({ transaction, open, onClose }) {
     if (!form.scheduled_date) { toast.error("Informe a data de pagamento"); return; }
     setLoading(true);
     try {
-      await base44.entities.FinancialTransaction.update(transaction.id, {
+      await primeos.entities.FinancialTransaction.update(transaction.id, {
         scheduled_payment_date: form.scheduled_date,
         notes: form.notes ? (transaction.notes ? transaction.notes + "\n" + form.notes : form.notes) : transaction.notes
       });

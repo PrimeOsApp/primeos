@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,32 +44,32 @@ export default function DentistAvailability() {
 
   const { data: dentists = [] } = useQuery({
     queryKey: ["dentists"],
-    queryFn: () => base44.entities.Dentist.list("name"),
+    queryFn: () => primeos.entities.Dentist.list("name"),
   });
 
   const { data: blockouts = [] } = useQuery({
     queryKey: ["blockouts"],
-    queryFn: () => base44.entities.DentistBlockout.list("-date"),
+    queryFn: () => primeos.entities.DentistBlockout.list("-date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (d) => base44.entities.Dentist.create(d),
+    mutationFn: (d) => primeos.entities.Dentist.create(d),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dentists"] }); setShowForm(false); toast.success("Profissional cadastrado!"); }
   });
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Dentist.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Dentist.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dentists"] }); setShowForm(false); toast.success("Atualizado!"); }
   });
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Dentist.delete(id),
+    mutationFn: (id) => primeos.entities.Dentist.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dentists"] }); toast.success("Removido!"); }
   });
   const createBlockoutMutation = useMutation({
-    mutationFn: (d) => base44.entities.DentistBlockout.create(d),
+    mutationFn: (d) => primeos.entities.DentistBlockout.create(d),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["blockouts"] }); setShowBlockout(null); toast.success("Bloqueio criado!"); }
   });
   const deleteBlockoutMutation = useMutation({
-    mutationFn: (id) => base44.entities.DentistBlockout.delete(id),
+    mutationFn: (id) => primeos.entities.DentistBlockout.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["blockouts"] })
   });
 

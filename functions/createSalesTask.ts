@@ -1,12 +1,12 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { leadId, leadName, leadEmail, leadPhone, score, priority } = await req.json();
 
     // Check if a task already exists for this lead
-    const existingTasks = await base44.asServiceRole.entities.Task.filter({
+    const existingTasks = await primeos.asServiceRole.entities.Task.filter({
       titulo: `Follow-up: ${leadName}`
     });
 
@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     }
 
     // Get all users to assign task to sales team
-    const users = await base44.asServiceRole.entities.User.list();
+    const users = await primeos.asServiceRole.entities.User.list();
     const salesUsers = users.filter(u => u.email && !u.email.includes('admin'));
     
     const assignedTo = salesUsers.length > 0 ? [salesUsers[0].email] : [];
@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
       ]
     };
 
-    const task = await base44.asServiceRole.entities.Task.create(taskData);
+    const task = await primeos.asServiceRole.entities.Task.create(taskData);
 
     console.log(`Task created for lead ${leadName}: ${task.id}`);
 

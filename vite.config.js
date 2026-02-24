@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import base44 from '@base44/vite-plugin'
 
 const normalizeBasePath = (value) => {
   if (!value || value === '/') return '/'
@@ -13,7 +12,7 @@ const basePath = normalizeBasePath(process.env.VITE_BASE_PATH)
 
 export default defineConfig({
   base: basePath,
-  plugins: [react(), base44()],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

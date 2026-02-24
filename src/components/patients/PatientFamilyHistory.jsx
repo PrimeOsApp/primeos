@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,7 @@ export default function PatientFamilyHistory({ patient, onUpdate }) {
   const saveMutation = useMutation({
     mutationFn: async (entry) => {
       const updated = [...familyHistory, entry];
-      return base44.entities.PatientRecord.update(patient.id, { family_history: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { family_history: updated });
     },
     onSuccess: (data) => { onUpdate(data); setShowForm(false); setForm({ relation: "", condition: "", custom_condition: "", notes: "", severity: "moderada" }); queryClient.invalidateQueries({ queryKey: ["patients"] }); },
   });
@@ -33,7 +33,7 @@ export default function PatientFamilyHistory({ patient, onUpdate }) {
   const deleteMutation = useMutation({
     mutationFn: async (index) => {
       const updated = familyHistory.filter((_, i) => i !== index);
-      return base44.entities.PatientRecord.update(patient.id, { family_history: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { family_history: updated });
     },
     onSuccess: (data) => onUpdate(data),
   });

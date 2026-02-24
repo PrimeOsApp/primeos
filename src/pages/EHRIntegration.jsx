@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,13 +34,13 @@ export default function EHRIntegration() {
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["ehrAppointments"],
-    queryFn: () => base44.entities.Appointment.list("-date", 50),
+    queryFn: () => primeos.entities.Appointment.list("-date", 50),
   });
 
   const syncMutation = useMutation({
     mutationFn: async (appointment) => {
       setSyncingId(appointment.id);
-      const response = await base44.functions.invoke("syncAppointmentEHR", {
+      const response = await primeos.functions.invoke("syncAppointmentEHR", {
         appointment_id: appointment.id,
         notes: appointment.notes || "",
       });
@@ -64,7 +64,7 @@ export default function EHRIntegration() {
         (a) => !a.ehr_synced && (a.status === "completed" || a.status === "in_progress")
       );
       for (const appt of pending) {
-        await base44.functions.invoke("syncAppointmentEHR", {
+        await primeos.functions.invoke("syncAppointmentEHR", {
           appointment_id: appt.id,
           notes: appt.notes || "",
         });

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import PageHeader from "@/components/shared/PageHeader";
 import ReportFilters from "@/components/reports/ReportFilters";
 import KPICards from "@/components/reports/KPICards";
@@ -25,22 +25,22 @@ export default function AdvancedReports() {
   // Fetch data
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
-    queryFn: () => base44.entities.Sale.list(),
+    queryFn: () => primeos.entities.Sale.list(),
   });
 
   const { data: interactions = [] } = useQuery({
     queryKey: ["interactions"],
-    queryFn: () => base44.entities.Interaction.list(),
+    queryFn: () => primeos.entities.Interaction.list(),
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list(),
+    queryFn: () => primeos.entities.Lead.list(),
   });
 
   const { data: expenses = [] } = useQuery({
     queryKey: ["expenses"],
-    queryFn: () => base44.entities.Expense.list(),
+    queryFn: () => primeos.entities.Expense.list(),
   });
 
   // Process data based on filters

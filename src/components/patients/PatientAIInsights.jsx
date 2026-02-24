@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -193,7 +193,7 @@ export default function PatientAIInsights({ patient }) {
   const run = async () => {
     setLoading(true);
     try {
-      const res = await base44.functions.invoke('analyzePatient', { patientId: patient.id });
+      const res = await primeos.functions.invoke('analyzePatient', { patientId: patient.id });
       setAnalysis(res.data.analysis);
       toast.success("Análise de IA concluída!");
     } catch (e) {

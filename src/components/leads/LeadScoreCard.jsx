@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -20,7 +20,7 @@ export default function LeadScoreCard({ lead, onScored }) {
   const handleScore = async () => {
     setLoading(true);
     try {
-      await base44.functions.invoke("scoreLeadAI", { lead_id: lead.id });
+      await primeos.functions.invoke("scoreLeadAI", { lead_id: lead.id });
       toast.success("Score atualizado com IA!");
       onScored?.();
     } catch (e) {

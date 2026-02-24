@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
     }
 
     // Get access token
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('googlecalendar');
+    const accessToken = await primeos.asServiceRole.connectors.getAccessToken('googlecalendar');
 
     if (!accessToken) {
       return Response.json({ 

@@ -1,16 +1,16 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get access token from app connector
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('googlecalendar');
+    const accessToken = await primeos.asServiceRole.connectors.getAccessToken('googlecalendar');
 
     if (!accessToken) {
       return Response.json({ 
@@ -61,14 +61,14 @@ Deno.serve(async (req) => {
         const startDate = new Date(event.start.dateTime);
         
         // Check if appointment already exists (by google event id or matching date/time)
-        const existingAppointments = await base44.asServiceRole.entities.Appointment.filter({
+        const existingAppointments = await primeos.asServiceRole.entities.Appointment.filter({
           date: startDate.toISOString().split('T')[0],
           time: startDate.toTimeString().slice(0, 5)
         });
 
         if (existingAppointments.length === 0) {
           // Create new appointment
-          await base44.asServiceRole.entities.Appointment.create({
+          await primeos.asServiceRole.entities.Appointment.create({
             patient_name: event.summary || 'Sem título',
             date: startDate.toISOString().split('T')[0],
             time: startDate.toTimeString().slice(0, 5),

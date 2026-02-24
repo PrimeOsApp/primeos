@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 // Cancel/reschedule policy: minimum hours before appointment
 const CANCEL_MIN_HOURS = 24;

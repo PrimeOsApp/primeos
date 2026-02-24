@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import {
   Bell, RefreshCw, CheckCircle2, AlertTriangle, TrendingDown,
   TrendingUp, Repeat, Mail, Zap, Play
@@ -54,7 +54,7 @@ export default function FinancialAutomationsPanel({ transactions }) {
   const runAutomation = async (preview = false) => {
     setRunning(true);
     try {
-      const res = await base44.functions.invoke("financialAutomations", preview ? { mode: "preview" } : {});
+      const res = await primeos.functions.invoke("financialAutomations", preview ? { mode: "preview" } : {});
       setLastResult(res.data);
       if (!preview) toast.success("Automações executadas com sucesso!");
       else toast.success("Preview concluído — nenhum email enviado");

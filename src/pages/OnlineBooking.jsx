@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,18 +39,18 @@ export default function OnlineBooking() {
 
   const { data: dentists = [] } = useQuery({
     queryKey: ["dentists_active"],
-    queryFn: () => base44.entities.Dentist.filter({ is_active: true }),
+    queryFn: () => primeos.entities.Dentist.filter({ is_active: true }),
   });
 
   const { data: resources = [] } = useQuery({
     queryKey: ["resources_active"],
-    queryFn: () => base44.entities.Resource.filter({ is_active: true }),
+    queryFn: () => primeos.entities.Resource.filter({ is_active: true }),
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointments_date", booking.date],
     queryFn: () => booking.date
-      ? base44.entities.Appointment.filter({ date: booking.date })
+      ? primeos.entities.Appointment.filter({ date: booking.date })
       : [],
     enabled: !!booking.date,
   });
@@ -58,7 +58,7 @@ export default function OnlineBooking() {
   const { data: blockouts = [] } = useQuery({
     queryKey: ["blockouts_date", booking.date],
     queryFn: () => booking.date
-      ? base44.entities.DentistBlockout.filter({ date: booking.date })
+      ? primeos.entities.DentistBlockout.filter({ date: booking.date })
       : [],
     enabled: !!booking.date,
   });
@@ -97,7 +97,7 @@ export default function OnlineBooking() {
       return;
     }
     setSubmitting(true);
-    const res = await base44.functions.invoke("processOnlineBooking", booking);
+    const res = await primeos.functions.invoke("processOnlineBooking", booking);
     if (res.data?.success) {
       setConfirmedId(res.data.appointment_id);
       setSuccess(true);

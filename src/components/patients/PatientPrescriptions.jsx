@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +24,7 @@ export default function PatientPrescriptions({ patient, onUpdate }) {
   const saveMutation = useMutation({
     mutationFn: async (newPrescription) => {
       const updated = [newPrescription, ...prescriptions];
-      return base44.entities.PatientRecord.update(patient.id, { prescriptions: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { prescriptions: updated });
     },
     onSuccess: (data) => {
       onUpdate(data);
@@ -39,7 +39,7 @@ export default function PatientPrescriptions({ patient, onUpdate }) {
   const deleteMutation = useMutation({
     mutationFn: async (index) => {
       const updated = prescriptions.filter((_, i) => i !== index);
-      return base44.entities.PatientRecord.update(patient.id, { prescriptions: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { prescriptions: updated });
     },
     onSuccess: (data) => onUpdate(data),
   });

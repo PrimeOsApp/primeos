@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     }
 
     // Create AB test
-    const abTest = await base44.entities.ABTest.create({
+    const abTest = await primeos.entities.ABTest.create({
       test_name: testData.test_name,
       campaign_type: testData.campaign_type,
       variant_a: testData.variant_a,
@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
     });
 
     // Award points
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'test_created',
       metadata: { bonus_multiplier: 1.5 }
     });

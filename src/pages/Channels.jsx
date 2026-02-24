@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,12 +8,12 @@ import { MessageCircle, Instagram, Facebook, Search, Youtube, TrendingUp } from 
 export default function Channels() {
   const { data: channels = [] } = useQuery({
     queryKey: ['marketingChannels'],
-    queryFn: () => base44.entities.MarketingChannel.list(),
+    queryFn: () => primeos.entities.MarketingChannel.list(),
   });
 
   const { data: metrics = [] } = useQuery({
     queryKey: ['marketingMetrics'],
-    queryFn: () => base44.entities.MarketingMetric.list(),
+    queryFn: () => primeos.entities.MarketingMetric.list(),
   });
 
   const channelIcons = {

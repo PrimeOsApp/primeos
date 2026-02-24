@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Calendar, FileText, ClipboardList, Heart, Brain } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
@@ -22,12 +22,12 @@ const MetricCard = ({ title, value, sub, icon: Icon, color }) => (
 );
 
 export default function AdminMetricsTab() {
-  const { data: patients = [] } = useQuery({ queryKey: ["patients-admin"], queryFn: () => base44.entities.PatientRecord.list() });
-  const { data: appointments = [] } = useQuery({ queryKey: ["appts-admin"], queryFn: () => base44.entities.Appointment.list() });
-  const { data: leads = [] } = useQuery({ queryKey: ["leads-admin"], queryFn: () => base44.entities.Lead.list() });
-  const { data: tasks = [] } = useQuery({ queryKey: ["tasks-admin"], queryFn: () => base44.entities.Task.list() });
-  const { data: records = [] } = useQuery({ queryKey: ["records-admin"], queryFn: () => base44.entities.MedicalRecord.list() });
-  const { data: pops = [] } = useQuery({ queryKey: ["pops-admin"], queryFn: () => base44.entities.POP.list() });
+  const { data: patients = [] } = useQuery({ queryKey: ["patients-admin"], queryFn: () => primeos.entities.PatientRecord.list() });
+  const { data: appointments = [] } = useQuery({ queryKey: ["appts-admin"], queryFn: () => primeos.entities.Appointment.list() });
+  const { data: leads = [] } = useQuery({ queryKey: ["leads-admin"], queryFn: () => primeos.entities.Lead.list() });
+  const { data: tasks = [] } = useQuery({ queryKey: ["tasks-admin"], queryFn: () => primeos.entities.Task.list() });
+  const { data: records = [] } = useQuery({ queryKey: ["records-admin"], queryFn: () => primeos.entities.MedicalRecord.list() });
+  const { data: pops = [] } = useQuery({ queryKey: ["pops-admin"], queryFn: () => primeos.entities.POP.list() });
 
   const apptByStatus = appointments.reduce((acc, a) => {
     acc[a.status] = (acc[a.status] || 0) + 1;

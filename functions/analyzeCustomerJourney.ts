@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,10 +16,10 @@ Deno.serve(async (req) => {
     }
 
     // Fetch customer and their interactions
-    const customer = await base44.asServiceRole.entities.Customer.get(customerId);
-    const interactions = await base44.entities.Interaction.filter({ customer_id: customerId });
-    const appointments = await base44.entities.CRMAppointment.filter({ customer_id: customerId });
-    const sales = await base44.entities.Sale.filter({ customer_id: customerId });
+    const customer = await primeos.asServiceRole.entities.Customer.get(customerId);
+    const interactions = await primeos.entities.Interaction.filter({ customer_id: customerId });
+    const appointments = await primeos.entities.CRMAppointment.filter({ customer_id: customerId });
+    const sales = await primeos.entities.Sale.filter({ customer_id: customerId });
 
     // Build journey data
     const journeyData = {
@@ -76,7 +76,7 @@ Analise a jornada completa do cliente e forneça:
 
 Seja específico e baseie as recomendações nos dados reais da interação.`;
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const response = await primeos.integrations.Core.InvokeLLM({
       prompt,
       response_json_schema: {
         type: "object",

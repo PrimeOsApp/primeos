@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,21 +30,21 @@ export default function Campanhas() {
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ["campaigns"],
-    queryFn: () => base44.entities.Campaign.list("-created_date")
+    queryFn: () => primeos.entities.Campaign.list("-created_date")
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list()
+    queryFn: () => primeos.entities.Lead.list()
   });
 
   const { data: channels = [] } = useQuery({
     queryKey: ["marketingChannels"],
-    queryFn: () => base44.entities.MarketingChannel.list()
+    queryFn: () => primeos.entities.MarketingChannel.list()
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Campaign.create(data),
+    mutationFn: (data) => primeos.entities.Campaign.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
       setShowForm(false);
@@ -53,7 +53,7 @@ export default function Campanhas() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Campaign.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Campaign.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["campaigns"] })
   });
 

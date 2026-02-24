@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,11 +23,11 @@ export default function ConciliacaoBancaria() {
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-date"),
+    queryFn: () => primeos.entities.FinancialTransaction.list("-date"),
   });
 
   const reconcileMutation = useMutation({
-    mutationFn: ({ id, ref }) => base44.entities.FinancialTransaction.update(id, { bank_statement_ref: ref }),
+    mutationFn: ({ id, ref }) => primeos.entities.FinancialTransaction.update(id, { bank_statement_ref: ref }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["financialTransactions"] })
   });
 

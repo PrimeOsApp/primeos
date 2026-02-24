@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Upload } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 
 export default function ProductForm({ open, onClose, onSave, product, isLoading }) {
   const [form, setForm] = useState({
@@ -54,7 +54,7 @@ export default function ProductForm({ open, onClose, onSave, product, isLoading 
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await primeos.integrations.Core.UploadFile({ file });
       setForm({ ...form, image_url: file_url });
     } catch (err) {
       console.error("Upload failed:", err);

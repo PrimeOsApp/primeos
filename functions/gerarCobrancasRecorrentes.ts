@@ -1,14 +1,14 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 // Cria próxima parcela de despesas recorrentes que venceram
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const all = await base44.asServiceRole.entities.FinancialTransaction.list('-date', 1000);
+    const all = await primeos.asServiceRole.entities.FinancialTransaction.list('-date', 1000);
 
     const recurrentes = all.filter(t => t.is_recurring && t.recurrence_period && t.status === 'pago');
 
@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
       if (daysUntilNext > 3) continue;
 
       // Cria a próxima parcela
-      await base44.asServiceRole.entities.FinancialTransaction.create({
+      await primeos.asServiceRole.entities.FinancialTransaction.create({
         type: t.type,
         category: t.category,
         description: t.description,

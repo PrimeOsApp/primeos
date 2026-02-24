@@ -1,10 +1,10 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 import Stripe from 'npm:stripe@14.21.0';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { description, amount, patient_name, patient_email, notes, transaction_id } = await req.json();
@@ -30,10 +30,10 @@ Deno.serve(async (req) => {
       }],
       mode: 'payment',
       customer_email: patient_email || undefined,
-      success_url: `${req.headers.get('origin') || 'https://app.base44.com'}/payment-success`,
-      cancel_url: `${req.headers.get('origin') || 'https://app.base44.com'}/payment-cancel`,
+      success_url: `${req.headers.get('origin') || 'https://app.primeos.com'}/payment-success`,
+      cancel_url: `${req.headers.get('origin') || 'https://app.primeos.com'}/payment-cancel`,
       metadata: {
-        base44_app_id: Deno.env.get('BASE44_APP_ID'),
+        primeos_app_id: Deno.env.get('PRIMEOS_APP_ID'),
         patient_name: patient_name || '',
         transaction_id: transaction_id || '',
       },
@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
 
     // Update transaction with stripe link if transaction_id provided
     if (transaction_id) {
-      await base44.asServiceRole.entities.FinancialTransaction.update(transaction_id, {
+      await primeos.asServiceRole.entities.FinancialTransaction.update(transaction_id, {
         stripe_payment_link: session.url,
         stripe_session_id: session.id,
       });

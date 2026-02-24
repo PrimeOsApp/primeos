@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -54,7 +54,7 @@ function ClinicalNoteForm({ appointment, patientId, onSaved }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await base44.entities.ClinicalNote.create({
+      await primeos.entities.ClinicalNote.create({
         ...form,
         patient_id: patientId,
         patient_name: appointment?.patient_name || "",
@@ -131,7 +131,7 @@ export default function EHRModal({ open, onClose, appointment, patientId, patien
   const { data: medicalRecord } = useQuery({
     queryKey: ["medicalRecord", pid],
     queryFn: async () => {
-      const records = await base44.entities.MedicalRecord.filter({ patient_id: pid });
+      const records = await primeos.entities.MedicalRecord.filter({ patient_id: pid });
       return records[0] || null;
     },
     enabled: !!pid && open
@@ -139,20 +139,20 @@ export default function EHRModal({ open, onClose, appointment, patientId, patien
 
   const { data: allAppointments = [] } = useQuery({
     queryKey: ["patientAppointments", pid],
-    queryFn: () => base44.entities.Appointment.filter({ patient_id: pid }, "-date"),
+    queryFn: () => primeos.entities.Appointment.filter({ patient_id: pid }, "-date"),
     enabled: !!pid && open
   });
 
   const { data: clinicalNotes = [] } = useQuery({
     queryKey: ["clinicalNotes", pid],
-    queryFn: () => base44.entities.ClinicalNote.filter({ patient_id: pid }, "-created_date"),
+    queryFn: () => primeos.entities.ClinicalNote.filter({ patient_id: pid }, "-created_date"),
     enabled: !!pid && open
   });
 
   const { data: patient } = useQuery({
     queryKey: ["patient", pid],
     queryFn: async () => {
-      const records = await base44.entities.Customer.filter({ id: pid });
+      const records = await primeos.entities.Customer.filter({ id: pid });
       return records[0] || null;
     },
     enabled: !!pid && open

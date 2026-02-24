@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ export default function PatientMedicalSummary({ patientId, appointmentId }) {
   const loadMedicalRecord = async () => {
     try {
       setLoading(true);
-      const records = await base44.entities.MedicalRecord.filter({
+      const records = await primeos.entities.MedicalRecord.filter({
         patient_id: patientId
       });
       
@@ -50,7 +50,7 @@ export default function PatientMedicalSummary({ patientId, appointmentId }) {
   const syncWithEHR = async () => {
     try {
       setSyncing(true);
-      const response = await base44.functions.invoke('syncPatientEHR', {
+      const response = await primeos.functions.invoke('syncPatientEHR', {
         patient_id: patientId
       });
       
@@ -69,7 +69,7 @@ export default function PatientMedicalSummary({ patientId, appointmentId }) {
   const saveNotesToEHR = async () => {
     try {
       setSaving(true);
-      const response = await base44.functions.invoke('saveNotesToEHR', {
+      const response = await primeos.functions.invoke('saveNotesToEHR', {
         appointment_id: appointmentId,
         notes: notes
       });

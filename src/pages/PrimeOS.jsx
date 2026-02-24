@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -58,18 +58,18 @@ export default function PrimeOS() {
   const [showForm, setShowForm] = useState(null); // "projeto" | "tarefa" | "keyword" | "conteudo" | "backlink" | "lead" | "delegation"
   const [formData, setFormData] = useState({});
 
-  const { data: projetos = [] } = useQuery({ queryKey: ["ProjetoSEO"], queryFn: () => base44.entities.ProjetoSEO.list() });
-  const { data: tarefas = [] } = useQuery({ queryKey: ["TarefaSEO"], queryFn: () => base44.entities.TarefaSEO.list() });
-  const { data: keywords = [] } = useQuery({ queryKey: ["PalavraChave"], queryFn: () => base44.entities.PalavraChave.list() });
-  const { data: conteudos = [] } = useQuery({ queryKey: ["ConteudoSEO"], queryFn: () => base44.entities.ConteudoSEO.list() });
-  const { data: backlinks = [] } = useQuery({ queryKey: ["Backlink"], queryFn: () => base44.entities.Backlink.list() });
-  const { data: relatorios = [] } = useQuery({ queryKey: ["RelatorioSEO"], queryFn: () => base44.entities.RelatorioSEO.list() });
-  const { data: growthStages = [] } = useQuery({ queryKey: ["PrimeGrowthStage"], queryFn: () => base44.entities.PrimeGrowthStage.list() });
-  const { data: funnelLeads = [] } = useQuery({ queryKey: ["PrimeFunnelLead"], queryFn: () => base44.entities.PrimeFunnelLead.list() });
-  const { data: delegationTasks = [] } = useQuery({ queryKey: ["PrimeDelegationTask"], queryFn: () => base44.entities.PrimeDelegationTask.list() });
+  const { data: projetos = [] } = useQuery({ queryKey: ["ProjetoSEO"], queryFn: () => primeos.entities.ProjetoSEO.list() });
+  const { data: tarefas = [] } = useQuery({ queryKey: ["TarefaSEO"], queryFn: () => primeos.entities.TarefaSEO.list() });
+  const { data: keywords = [] } = useQuery({ queryKey: ["PalavraChave"], queryFn: () => primeos.entities.PalavraChave.list() });
+  const { data: conteudos = [] } = useQuery({ queryKey: ["ConteudoSEO"], queryFn: () => primeos.entities.ConteudoSEO.list() });
+  const { data: backlinks = [] } = useQuery({ queryKey: ["Backlink"], queryFn: () => primeos.entities.Backlink.list() });
+  const { data: relatorios = [] } = useQuery({ queryKey: ["RelatorioSEO"], queryFn: () => primeos.entities.RelatorioSEO.list() });
+  const { data: growthStages = [] } = useQuery({ queryKey: ["PrimeGrowthStage"], queryFn: () => primeos.entities.PrimeGrowthStage.list() });
+  const { data: funnelLeads = [] } = useQuery({ queryKey: ["PrimeFunnelLead"], queryFn: () => primeos.entities.PrimeFunnelLead.list() });
+  const { data: delegationTasks = [] } = useQuery({ queryKey: ["PrimeDelegationTask"], queryFn: () => primeos.entities.PrimeDelegationTask.list() });
 
   const useCreateMutation = (entityName) => useMutation({
-    mutationFn: (data) => base44.entities[entityName].create(data),
+    mutationFn: (data) => primeos.entities[entityName].create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: [entityName] }); setShowForm(null); setFormData({}); toast.success("Criado com sucesso!"); },
   });
 
@@ -90,7 +90,7 @@ export default function PrimeOS() {
         { stage_name: "Stage 3 — Estruturação", revenue_range: "R$20K → R$50K/mês", primary_focus: "Funil previsível + lista de pacientes", core_objective: "Sistema comercial estável", status: "not_started", receita_meta: 50000 },
         { stage_name: "Stage 4 — Escala Estruturada", revenue_range: "R$50K → R$100K+/mês", primary_focus: "Trabalhar ON the clinic", core_objective: "Clínica estruturada como empresa", status: "not_started", receita_meta: 100000 },
       ];
-      for (const s of stages) { await base44.entities.PrimeGrowthStage.create(s); }
+      for (const s of stages) { await primeos.entities.PrimeGrowthStage.create(s); }
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["PrimeGrowthStage"] }); toast.success("Growth Stages criados!"); },
   });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/shared/PageHeader";
@@ -22,11 +22,11 @@ export default function Activities() {
 
   const { data: activities = [], isLoading } = useQuery({
     queryKey: ["activities"],
-    queryFn: () => base44.entities.Activity.list("-created_date")
+    queryFn: () => primeos.entities.Activity.list("-created_date")
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Activity.create(data),
+    mutationFn: (data) => primeos.entities.Activity.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["activities"] });
       setShowForm(false);
@@ -35,7 +35,7 @@ export default function Activities() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Activity.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Activity.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["activities"] });
       setShowForm(false);
@@ -44,7 +44,7 @@ export default function Activities() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Activity.delete(id),
+    mutationFn: (id) => primeos.entities.Activity.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["activities"] })
   });
 

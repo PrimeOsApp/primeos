@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -560,7 +560,7 @@ export default function InventoryReports() {
 
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["inventory"],
-    queryFn: () => base44.entities.InventoryItem.list("-updated_date", 500),
+    queryFn: () => primeos.entities.InventoryItem.list("-updated_date", 500),
   });
 
   const activeItems = useMemo(() => items.filter(i => i.is_active !== false), [items]);

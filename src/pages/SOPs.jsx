@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,11 +43,11 @@ export default function SOPs() {
 
   const { data: sops = [] } = useQuery({
     queryKey: ["sops"],
-    queryFn: () => base44.entities.SOP.list("-last_update")
+    queryFn: () => primeos.entities.SOP.list("-last_update")
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.SOP.create(data),
+    mutationFn: (data) => primeos.entities.SOP.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sops"] });
       setShowForm(false);
@@ -56,7 +56,7 @@ export default function SOPs() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.SOP.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.SOP.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sops"] });
       setShowForm(false);
@@ -66,7 +66,7 @@ export default function SOPs() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.SOP.delete(id),
+    mutationFn: (id) => primeos.entities.SOP.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sops"] });
       toast.success("SOP excluído!");

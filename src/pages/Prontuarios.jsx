@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,23 +55,23 @@ export default function Prontuarios() {
 
   const { data: patients = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list("-created_date")
+    queryFn: () => primeos.entities.Customer.list("-created_date")
   });
 
   const { data: records = [] } = useQuery({
     queryKey: ["medicalRecords", selectedPatient?.id],
-    queryFn: () => selectedPatient ? base44.entities.MedicalRecord.filter({ patient_id: selectedPatient.id }, "-created_date") : [],
+    queryFn: () => selectedPatient ? primeos.entities.MedicalRecord.filter({ patient_id: selectedPatient.id }, "-created_date") : [],
     enabled: !!selectedPatient
   });
 
   const { data: documents = [] } = useQuery({
     queryKey: ["documents", selectedPatient?.id],
-    queryFn: () => selectedPatient ? base44.entities.Document.filter({ patient_id: selectedPatient.id }, "-created_date") : [],
+    queryFn: () => selectedPatient ? primeos.entities.Document.filter({ patient_id: selectedPatient.id }, "-created_date") : [],
     enabled: !!selectedPatient
   });
 
   const createRecordMutation = useMutation({
-    mutationFn: (data) => base44.entities.MedicalRecord.create(data),
+    mutationFn: (data) => primeos.entities.MedicalRecord.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["medicalRecords"] });
       setShowRecordForm(false);
@@ -80,7 +80,7 @@ export default function Prontuarios() {
   });
 
   const createDocumentMutation = useMutation({
-    mutationFn: (data) => base44.entities.Document.create(data),
+    mutationFn: (data) => primeos.entities.Document.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documents"] });
       setShowDocumentForm(false);
@@ -89,7 +89,7 @@ export default function Prontuarios() {
   });
 
   const updateDocumentMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Document.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Document.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["documents"] })
   });
 
@@ -106,7 +106,7 @@ export default function Prontuarios() {
     if (!file) return;
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await primeos.integrations.Core.UploadFile({ file });
       if (type === "record") {
         setRecordForm(prev => ({
           ...prev,

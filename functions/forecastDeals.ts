@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -12,9 +12,9 @@ Deno.serve(async (req) => {
     const { period = 30 } = await req.json();
 
     // Fetch historical data
-    const leads = await base44.asServiceRole.entities.Lead.list();
-    const sales = await base44.asServiceRole.entities.Sale.list();
-    const interactions = await base44.asServiceRole.entities.LeadInteraction.list();
+    const leads = await primeos.asServiceRole.entities.Lead.list();
+    const sales = await primeos.asServiceRole.entities.Sale.list();
+    const interactions = await primeos.asServiceRole.entities.LeadInteraction.list();
 
     // Calculate historical metrics
     const activeLeads = leads.filter(l => ['novo', 'contatado', 'qualificado', 'negociacao'].includes(l.status));
@@ -56,7 +56,7 @@ Baseado nestes dados, forneça:
 5. Oportunidades identificadas
 6. Recomendações estratégicas`;
 
-    const forecast = await base44.integrations.Core.InvokeLLM({
+    const forecast = await primeos.integrations.Core.InvokeLLM({
       prompt: forecastPrompt,
       response_json_schema: {
         type: "object",

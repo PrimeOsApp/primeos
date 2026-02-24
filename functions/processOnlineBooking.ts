@@ -1,15 +1,15 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const data = await req.json();
 
     if (!data.patient_name || !data.patient_phone || !data.date || !data.time) {
       return Response.json({ success: false, error: 'Dados incompletos' }, { status: 400 });
     }
 
-    const db = base44.asServiceRole;
+    const db = primeos.asServiceRole;
 
     // Check for conflicts – if dentist_id provided, check only that dentist's slots; else check all
     const filter = { date: data.date };
@@ -140,7 +140,7 @@ Deno.serve(async (req) => {
     const phone = (data.patient_phone || '').replace(/\D/g, '');
     const last4 = phone.slice(-4) || '0000';
     const selfServiceToken = `${appointment.id}_${last4}`;
-    const appBaseUrl = `https://${Deno.env.get('BASE44_APP_ID')}.base44.app`;
+    const appBaseUrl = `https://${Deno.env.get('PRIMEOS_APP_ID')}.primeos.app`;
     const manageLink = `${appBaseUrl}/MeuAgendamento?token=${selfServiceToken}`;
 
     // Send confirmation email

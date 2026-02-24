@@ -8,7 +8,7 @@ import {
   FileText, Copy, ExternalLink, CheckCircle, Loader2,
   Bell, CreditCard, AlertTriangle
 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -41,7 +41,7 @@ export default function CobrancaModal({ transaction, open, onClose, onUpdated })
   const handleGerarCobranca = async () => {
     setLoading(true);
     try {
-      const res = await base44.functions.invoke("gerarCobranca", { transaction_id: transaction.id });
+      const res = await primeos.functions.invoke("gerarCobranca", { transaction_id: transaction.id });
       if (res.data?.error) throw new Error(res.data.error);
       toast.success("Cobrança gerada com sucesso!");
       onUpdated?.();
@@ -55,7 +55,7 @@ export default function CobrancaModal({ transaction, open, onClose, onUpdated })
   const handleEnviarLembrete = async () => {
     setReminderLoading(true);
     try {
-      const res = await base44.functions.invoke("enviarLembreteCobranca", { transaction_id: transaction.id });
+      const res = await primeos.functions.invoke("enviarLembreteCobranca", { transaction_id: transaction.id });
       if (res.data?.error) throw new Error(res.data.error);
       toast.success("Lembrete enviado!");
       onUpdated?.();
@@ -69,7 +69,7 @@ export default function CobrancaModal({ transaction, open, onClose, onUpdated })
   const handleBaixar = async () => {
     setLoading(true);
     try {
-      const res = await base44.functions.invoke("baixarPagamento", {
+      const res = await primeos.functions.invoke("baixarPagamento", {
         transaction_id: transaction.id,
         ...baixaData
       });

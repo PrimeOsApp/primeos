@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import PageHeader from "@/components/shared/PageHeader";
 import SupportChatbot from "@/components/support/SupportChatbot";
 import TicketTriageForm from "@/components/support/TicketTriageForm";
@@ -15,7 +15,7 @@ export default function CustomerSupport() {
 
   const { data: tickets = [], refetch } = useQuery({
     queryKey: ["support_tickets"],
-    queryFn: () => base44.entities.SupportTicket.list(),
+    queryFn: () => primeos.entities.SupportTicket.list(),
   });
 
   const criticalTickets = tickets.filter(t => t.priority === "critica");

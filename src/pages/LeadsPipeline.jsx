@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -39,21 +39,21 @@ export default function LeadsPipeline() {
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list("-created_date")
+    queryFn: () => primeos.entities.Lead.list("-created_date")
   });
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ["campaigns"],
-    queryFn: () => base44.entities.Campaign.list()
+    queryFn: () => primeos.entities.Campaign.list()
   });
 
   const { data: channels = [] } = useQuery({
     queryKey: ["marketingChannels"],
-    queryFn: () => base44.entities.MarketingChannel.list()
+    queryFn: () => primeos.entities.MarketingChannel.list()
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Lead.create(data),
+    mutationFn: (data) => primeos.entities.Lead.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["leads"] });
       setShowForm(false);
@@ -62,7 +62,7 @@ export default function LeadsPipeline() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Lead.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Lead.update(id, data),
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: ["leads"] });
       if (selectedLead?.id === updated.id) setSelectedLead(updated);
@@ -122,7 +122,7 @@ export default function LeadsPipeline() {
               onClick={async () => {
                 setScoringAll(true);
                 try {
-                  await base44.functions.invoke("scoreLeadAI", { score_all: true });
+                  await primeos.functions.invoke("scoreLeadAI", { score_all: true });
                   queryClient.invalidateQueries({ queryKey: ["leads"] });
                   toast.success("Todos os leads pontuados com IA!");
                 } catch (e) {

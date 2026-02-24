@@ -1,16 +1,16 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const base44 = createClientFromRequest(req);
-  const user = await base44.auth.me();
+  const primeos = createClientFromRequest(req);
+  const user = await primeos.auth.me();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { appointmentId } = await req.json();
   if (!appointmentId) return Response.json({ error: 'appointmentId required' }, { status: 400 });
 
   const [appointment, allAppointments] = await Promise.all([
-    base44.entities.Appointment.filter({ id: appointmentId }).then(r => r[0]),
-    base44.entities.Appointment.list('-date', 50)
+    primeos.entities.Appointment.filter({ id: appointmentId }).then(r => r[0]),
+    primeos.entities.Appointment.list('-date', 50)
   ]);
 
   if (!appointment) return Response.json({ error: 'Appointment not found' }, { status: 404 });
@@ -59,7 +59,7 @@ Retorne APENAS este JSON:
   "tip": "string (dica sobre o envio)"
 }`;
 
-  const result = await base44.integrations.Core.InvokeLLM({
+  const result = await primeos.integrations.Core.InvokeLLM({
     prompt,
     response_json_schema: {
       type: "object",
@@ -72,7 +72,7 @@ Retorne APENAS este JSON:
   });
 
   // Mark reminder as sent
-  await base44.entities.Appointment.update(appointmentId, { reminder_sent: true });
+  await primeos.entities.Appointment.update(appointmentId, { reminder_sent: true });
 
   return Response.json({
     message: result.message,

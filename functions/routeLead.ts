@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -15,18 +15,18 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Lead ID required' }, { status: 400 });
     }
 
-    const lead = await base44.asServiceRole.entities.Lead.get(leadId);
+    const lead = await primeos.asServiceRole.entities.Lead.get(leadId);
     
     if (!lead) {
       return Response.json({ error: 'Lead not found' }, { status: 404 });
     }
 
     // Fetch all users (potential agents)
-    const users = await base44.asServiceRole.entities.User.list();
+    const users = await primeos.asServiceRole.entities.User.list();
     
     // Fetch all leads to analyze agent performance
-    const allLeads = await base44.asServiceRole.entities.Lead.list();
-    const allInteractions = await base44.asServiceRole.entities.LeadInteraction.list();
+    const allLeads = await primeos.asServiceRole.entities.Lead.list();
+    const allInteractions = await primeos.asServiceRole.entities.LeadInteraction.list();
 
     // Calculate agent performance
     const agentPerformance = users.map(agent => {
@@ -94,7 +94,7 @@ Forneça:
 - Ação imediata sugerida para o agente
 - Estimativa de probabilidade de conversão com cada agente`;
 
-    const routing = await base44.integrations.Core.InvokeLLM({
+    const routing = await primeos.integrations.Core.InvokeLLM({
       prompt: routingPrompt,
       response_json_schema: {
         type: "object",

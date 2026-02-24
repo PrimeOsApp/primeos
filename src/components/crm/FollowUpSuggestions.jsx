@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ export default function FollowUpSuggestions({ lead }) {
   const generateStrategy = async () => {
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('generateFollowUpReminders', {
+      const response = await primeos.functions.invoke('generateFollowUpReminders', {
         leadId: lead.id
       });
 

@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Loader2, Search, UserPlus, X, Tag } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { getServicePrices } from "./ServicePriceConfig";
 import PatientQuickCreate from "./PatientQuickCreate";
 import PatientHistoryPanel from "./PatientHistoryPanel";
@@ -132,7 +132,7 @@ export default function AppointmentForm({
   const handleSavePatientInfo = async () => {
     if (!selectedPatient) return;
     setSavingPatientInfo(true);
-    await base44.entities.Customer.update(selectedPatient.id, { tags: patientTags, notes: patientNotes });
+    await primeos.entities.Customer.update(selectedPatient.id, { tags: patientTags, notes: patientNotes });
     setSavingPatientInfo(false);
     queryClient.invalidateQueries({ queryKey: ["customers"] });
   };

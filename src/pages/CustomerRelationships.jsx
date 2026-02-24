@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,12 +9,12 @@ import { Heart, MessageCircle, Users, Zap, CheckCircle, TrendingUp } from "lucid
 export default function CustomerRelationships() {
   const { data: workflows = [] } = useQuery({
     queryKey: ['workflows'],
-    queryFn: () => base44.entities.CRMWorkflow.list(),
+    queryFn: () => primeos.entities.CRMWorkflow.list(),
   });
 
   const { data: segments = [] } = useQuery({
     queryKey: ['segments'],
-    queryFn: () => base44.entities.CustomerSegment.list(),
+    queryFn: () => primeos.entities.CustomerSegment.list(),
   });
 
   const relationshipStrategies = [

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Edit2, Save, X } from "lucide-react";
@@ -22,7 +22,7 @@ export default function PortalProfile({ customer }) {
   const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
-    mutationFn: (data) => base44.entities.Customer.update(customer.id, data),
+    mutationFn: (data) => primeos.entities.Customer.update(customer.id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["portal-customer"] });
       setIsEditing(false);

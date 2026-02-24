@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +16,7 @@ export default function ClientPortal() {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const currentUser = await base44.auth.me();
+        const currentUser = await primeos.auth.me();
         setUser(currentUser);
       } catch (error) {
         console.error("Error loading user:", error);
@@ -30,7 +30,7 @@ export default function ClientPortal() {
   const { data: customer } = useQuery({
     queryKey: ["portal-customer", user?.email],
     queryFn: async () => {
-      const customers = await base44.entities.Customer.filter({ email: user.email });
+      const customers = await primeos.entities.Customer.filter({ email: user.email });
       return customers[0] || null;
     },
     enabled: !!user?.email
@@ -38,7 +38,7 @@ export default function ClientPortal() {
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["portal-appointments", customer?.id],
-    queryFn: () => base44.entities.Appointment.filter({ 
+    queryFn: () => primeos.entities.Appointment.filter({ 
       patient_id: customer.id 
     }),
     enabled: !!customer?.id
@@ -46,7 +46,7 @@ export default function ClientPortal() {
 
   const { data: interactions = [] } = useQuery({
     queryKey: ["portal-interactions", customer?.id],
-    queryFn: () => base44.entities.Interaction.filter({ 
+    queryFn: () => primeos.entities.Interaction.filter({ 
       customer_id: customer.id 
     }),
     enabled: !!customer?.id

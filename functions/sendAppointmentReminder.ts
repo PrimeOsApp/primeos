@@ -1,13 +1,13 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const db = base44.asServiceRole;
+    const primeos = createClientFromRequest(req);
+    const db = primeos.asServiceRole;
 
     // Allow admin users or scheduled automation (no user token)
     try {
-      const user = await base44.auth.me();
+      const user = await primeos.auth.me();
       if (user && user.role !== 'admin') {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }

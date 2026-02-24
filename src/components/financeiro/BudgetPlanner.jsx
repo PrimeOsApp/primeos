@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -88,39 +88,39 @@ export default function BudgetPlanner({ transactions }) {
 
   const { data: budgets = [] } = useQuery({
     queryKey: ["budgets"],
-    queryFn: () => base44.entities.Budget.list("-created_date"),
+    queryFn: () => primeos.entities.Budget.list("-created_date"),
   });
 
   const { data: goals = [] } = useQuery({
     queryKey: ["financialGoals"],
-    queryFn: () => base44.entities.FinancialGoal.list("-created_date"),
+    queryFn: () => primeos.entities.FinancialGoal.list("-created_date"),
   });
 
   // --- Budget mutations ---
   const createBudget = useMutation({
-    mutationFn: (d) => base44.entities.Budget.create(d),
+    mutationFn: (d) => primeos.entities.Budget.create(d),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["budgets"] }); setShowBudgetForm(false); toast.success("Orçamento criado!"); }
   });
   const updateBudget = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Budget.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Budget.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["budgets"] }); setShowBudgetForm(false); toast.success("Orçamento atualizado!"); }
   });
   const deleteBudget = useMutation({
-    mutationFn: (id) => base44.entities.Budget.delete(id),
+    mutationFn: (id) => primeos.entities.Budget.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["budgets"] }); toast.success("Removido!"); }
   });
 
   // --- Goal mutations ---
   const createGoal = useMutation({
-    mutationFn: (d) => base44.entities.FinancialGoal.create(d),
+    mutationFn: (d) => primeos.entities.FinancialGoal.create(d),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialGoals"] }); setShowGoalForm(false); toast.success("Meta criada!"); }
   });
   const updateGoal = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.FinancialGoal.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.FinancialGoal.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialGoals"] }); setShowGoalForm(false); toast.success("Meta atualizada!"); }
   });
   const deleteGoal = useMutation({
-    mutationFn: (id) => base44.entities.FinancialGoal.delete(id),
+    mutationFn: (id) => primeos.entities.FinancialGoal.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialGoals"] }); toast.success("Removida!"); }
   });
 
@@ -189,7 +189,7 @@ export default function BudgetPlanner({ transactions }) {
 
   const updateGoalProgress = async (goal, newAmount) => {
     const isPaidOff = newAmount >= goal.target_amount;
-    await base44.entities.FinancialGoal.update(goal.id, {
+    await primeos.entities.FinancialGoal.update(goal.id, {
       current_amount: newAmount,
       status: isPaidOff ? "concluida" : "em_andamento"
     });

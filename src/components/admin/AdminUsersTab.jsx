@@ -1,40 +1,28 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, UserPlus, Mail, Shield, User, Search, RefreshCw } from "lucide-react";
+import { Users, Shield, User, Search, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminUsersTab({ currentUser }) {
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteRole, setInviteRole] = useState("user");
   const [search, setSearch] = useState("");
-  const [inviting, setInviting] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ["admin-users"],
-    queryFn: () => base44.entities.User.list()
+    queryFn: () => primeos.entities.User.list()
   });
 
   const updateRoleMutation = useMutation({
-    mutationFn: ({ id, role }) => base44.entities.User.update(id, { role }),
+    mutationFn: ({ id, role }) => primeos.entities.User.update(id, { role }),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-users"] }); toast.success("Role atualizado!"); },
     onError: () => toast.error("Erro ao atualizar role")
   });
-
-  const handleInvite = async () => {
-    if (!inviteEmail || !inviteEmail.includes("@")) { toast.error("Email inválido"); return; }
-    setInviting(true);
-    await base44.users.inviteUser(inviteEmail, inviteRole);
-    toast.success(`Convite enviado para ${inviteEmail}`);
-    setInviteEmail("");
-    setInviting(false);
-  };
 
   const filtered = users.filter(u =>
     u.full_name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -48,34 +36,6 @@ export default function AdminUsersTab({ currentUser }) {
 
   return (
     <div className="space-y-6">
-      {/* Invite */}
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardHeader><CardTitle className="text-white text-sm flex items-center gap-2"><UserPlus className="w-4 h-4" /> Convidar Usuário</CardTitle></CardHeader>
-        <CardContent>
-          <div className="flex gap-3 flex-wrap">
-            <Input
-              placeholder="email@exemplo.com"
-              value={inviteEmail}
-              onChange={e => setInviteEmail(e.target.value)}
-              className="flex-1 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
-            />
-            <Select value={inviteRole} onValueChange={setInviteRole}>
-              <SelectTrigger className="w-36 bg-slate-700 border-slate-600 text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="user">Usuário</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button onClick={handleInvite} disabled={inviting} className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-              {inviting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
-              Convidar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* User List */}
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>

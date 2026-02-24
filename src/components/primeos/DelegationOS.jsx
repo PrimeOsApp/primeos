@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -164,7 +164,7 @@ export default function DelegationOS({ tasks, onAddTask }) {
   const [activeView, setActiveView] = useState("todos");
 
   const updateTask = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.PrimeDelegationTask.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.PrimeDelegationTask.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["PrimeDelegationTask"] }),
   });
 

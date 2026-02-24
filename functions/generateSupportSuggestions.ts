@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,8 +16,8 @@ Deno.serve(async (req) => {
     }
 
     // Fetch ticket and KB
-    const ticket = await base44.asServiceRole.entities.SupportTicket.get(ticketId);
-    const kbArticles = await base44.asServiceRole.entities.KnowledgeBase.filter({
+    const ticket = await primeos.asServiceRole.entities.SupportTicket.get(ticketId);
+    const kbArticles = await primeos.asServiceRole.entities.KnowledgeBase.filter({
       category: ticket.category
     });
 
@@ -49,7 +49,7 @@ Cada resposta deve ser:
 - Pronta para enviar ao cliente
 - Baseada na base de conhecimento quando aplicável`;
 
-    const suggestions = await base44.integrations.Core.InvokeLLM({
+    const suggestions = await primeos.integrations.Core.InvokeLLM({
       prompt: suggestionPrompt,
       response_json_schema: {
         type: "object",

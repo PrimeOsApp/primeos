@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch appointment
-    const appts = await base44.entities.Appointment.filter({ id: appointment_id });
+    const appts = await primeos.entities.Appointment.filter({ id: appointment_id });
     if (!appts || appts.length === 0) {
       return Response.json({ error: 'Consulta não encontrada' }, { status: 404 });
     }
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
 
     // Also save notes to local MedicalRecord if notes provided
     if (notes && appt.patient_id) {
-      await base44.entities.MedicalRecord.create({
+      await primeos.entities.MedicalRecord.create({
         patient_id: appt.patient_id,
         patient_name: appt.patient_name,
         record_type: "evolucao",
@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
     }
 
     // Mark appointment as synced
-    await base44.entities.Appointment.update(appointment_id, {
+    await primeos.entities.Appointment.update(appointment_id, {
       ehr_synced: true,
       ehr_sync_date: new Date().toISOString(),
       notes: notes || appt.notes

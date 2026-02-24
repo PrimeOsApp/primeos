@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,7 +53,7 @@ export default function PaymentLink({ open, onClose, onCreated }) {
     setLoading(true);
     try {
       const amount = parseFloat(form.amount.replace(",", "."));
-      const res = await base44.functions.invoke("stripeCheckout", {
+      const res = await primeos.functions.invoke("stripeCheckout", {
         patient_name: form.patient_name,
         amount,
         service: form.service,
@@ -66,7 +66,7 @@ export default function PaymentLink({ open, onClose, onCreated }) {
         // Register in system
         const dueDate = new Date();
         dueDate.setDate(dueDate.getDate() + parseInt(form.due_days));
-        await base44.entities.FinancialTransaction.create({
+        await primeos.entities.FinancialTransaction.create({
           type: "receita",
           category: "consulta",
           description: `${form.service} - ${form.patient_name} [Stripe]`,
@@ -129,7 +129,7 @@ export default function PaymentLink({ open, onClose, onCreated }) {
 
       const txDate = new Date().toISOString().split("T")[0];
       const txDue = dueDate.toISOString().split("T")[0];
-      await base44.entities.FinancialTransaction.create({
+      await primeos.entities.FinancialTransaction.create({
         type: "receita",
         category: "consulta",
         description: `${form.service} - ${form.patient_name} [${paymentCode}]`,

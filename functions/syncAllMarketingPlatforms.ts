@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     const results = {
       googleAds: { success: false, message: '', metrics: 0 },
@@ -11,7 +11,7 @@ Deno.serve(async (req) => {
 
     // Sync Google Ads
     try {
-      const googleResponse = await base44.asServiceRole.functions.invoke('syncGoogleAds', {});
+      const googleResponse = await primeos.asServiceRole.functions.invoke('syncGoogleAds', {});
       results.googleAds = {
         success: googleResponse.data?.success || false,
         message: googleResponse.data?.message || googleResponse.data?.error || 'Unknown error',
@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
 
     // Sync Facebook Ads
     try {
-      const facebookResponse = await base44.asServiceRole.functions.invoke('syncFacebookAds', {});
+      const facebookResponse = await primeos.asServiceRole.functions.invoke('syncFacebookAds', {});
       results.facebookAds = {
         success: facebookResponse.data?.success || false,
         message: facebookResponse.data?.message || facebookResponse.data?.error || 'Unknown error',

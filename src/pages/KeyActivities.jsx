@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Stethoscope, Megaphone, Users, Settings, TrendingUp } from "lucide-react";
@@ -7,12 +7,12 @@ import { Stethoscope, Megaphone, Users, Settings, TrendingUp } from "lucide-reac
 export default function KeyActivities() {
   const { data: activities = [] } = useQuery({
     queryKey: ['activities'],
-    queryFn: () => base44.entities.Activity.list(),
+    queryFn: () => primeos.entities.Activity.list(),
   });
 
   const { data: sops = [] } = useQuery({
     queryKey: ['sops'],
-    queryFn: () => base44.entities.SOP.list(),
+    queryFn: () => primeos.entities.SOP.list(),
   });
 
   const activityBlocks = [

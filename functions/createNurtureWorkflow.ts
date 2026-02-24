@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     }
 
     // Create workflow
-    const workflow = await base44.entities.AutomationWorkflow.create({
+    const workflow = await primeos.entities.AutomationWorkflow.create({
       name: workflowData.name,
       description: workflowData.description || '',
       type: workflowData.type,
@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     });
 
     // Award points for creating workflow
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'workflow_created',
       metadata: { bonus_multiplier: 2.0 }
     });

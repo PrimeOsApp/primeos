@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -154,7 +154,7 @@ export default function AIPatientAnalysis({ customers, appointments, transaction
     setLoading(true);
     setError(null);
     try {
-      const res = await base44.functions.invoke("analyzePatientSegments", {});
+      const res = await primeos.functions.invoke("analyzePatientSegments", {});
       if (res.data?.success) {
         setAnalysis(res.data.analysis);
         toast.success("Análise de IA concluída!");

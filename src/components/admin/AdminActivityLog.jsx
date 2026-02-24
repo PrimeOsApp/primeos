@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Activity, Calendar, Users, Heart, RefreshCw, ClipboardList } from "lucide-react";
@@ -43,16 +43,16 @@ function ActivitySection({ title, items, entityKey, labelFn, subFn }) {
 
 export default function AdminActivityLog() {
   const { data: appointments = [], refetch: refetchA, isLoading: la } = useQuery({
-    queryKey: ["activity-appts"], queryFn: () => base44.entities.Appointment.list("-created_date", 8)
+    queryKey: ["activity-appts"], queryFn: () => primeos.entities.Appointment.list("-created_date", 8)
   });
   const { data: leads = [], refetch: refetchL, isLoading: ll } = useQuery({
-    queryKey: ["activity-leads"], queryFn: () => base44.entities.Lead.list("-created_date", 8)
+    queryKey: ["activity-leads"], queryFn: () => primeos.entities.Lead.list("-created_date", 8)
   });
   const { data: patients = [], refetch: refetchP, isLoading: lp } = useQuery({
-    queryKey: ["activity-patients"], queryFn: () => base44.entities.PatientRecord.list("-created_date", 8)
+    queryKey: ["activity-patients"], queryFn: () => primeos.entities.PatientRecord.list("-created_date", 8)
   });
   const { data: tasks = [], refetch: refetchT, isLoading: lt } = useQuery({
-    queryKey: ["activity-tasks"], queryFn: () => base44.entities.Task.list("-created_date", 8)
+    queryKey: ["activity-tasks"], queryFn: () => primeos.entities.Task.list("-created_date", 8)
   });
 
   const loading = la || ll || lp || lt;

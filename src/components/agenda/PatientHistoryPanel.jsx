@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, Phone, Mail, MapPin, Tag } from "lucide-react";
 
@@ -17,7 +17,7 @@ const statusColors = {
 export default function PatientHistoryPanel({ patient }) {
   const { data: appointments = [] } = useQuery({
     queryKey: ["patientAppointments", patient?.id],
-    queryFn: () => base44.entities.Appointment.filter({ patient_id: patient.id }, "-date"),
+    queryFn: () => primeos.entities.Appointment.filter({ patient_id: patient.id }, "-date"),
     enabled: !!patient?.id
   });
 

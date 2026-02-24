@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Database, ChevronDown, ChevronUp, Download, Loader2 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { cn } from "@/lib/utils";
 
 const ALL_ENTITIES = [
@@ -761,7 +761,7 @@ export default function DatabaseMap() {
 
   const handleExport = async () => {
     setExporting(true);
-    const response = await base44.functions.invoke('exportAllData');
+    const response = await primeos.functions.invoke('exportAllData');
     const blob = new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

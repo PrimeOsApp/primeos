@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -14,18 +14,18 @@ Deno.serve(async (req) => {
     // Fetch contact data
     let contact;
     if (contactType === 'lead') {
-      contact = await base44.entities.Lead.get(contactId);
+      contact = await primeos.entities.Lead.get(contactId);
     } else {
-      contact = await base44.entities.Customer.get(contactId);
+      contact = await primeos.entities.Customer.get(contactId);
     }
 
     // Fetch interactions
-    const interactions = await base44.entities.Interaction.filter({ 
+    const interactions = await primeos.entities.Interaction.filter({ 
       customer_id: contactId 
     });
 
     // Fetch appointments
-    const appointments = await base44.entities.CRMAppointment.filter({
+    const appointments = await primeos.entities.CRMAppointment.filter({
       customer_id: contactId
     });
 
@@ -165,7 +165,7 @@ Suggest 3-5 tailored product/service recommendations.`;
         return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
 
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await primeos.integrations.Core.InvokeLLM({
       prompt,
       response_json_schema: responseSchema
     });

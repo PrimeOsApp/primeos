@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -209,22 +209,22 @@ export default function CustomerPipeline() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list("-created_date")
+    queryFn: () => primeos.entities.Customer.list("-created_date")
   });
 
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
-    queryFn: () => base44.entities.Product.list("-created_date")
+    queryFn: () => primeos.entities.Product.list("-created_date")
   });
 
   const { data: interactions = [] } = useQuery({
     queryKey: ["interactions", selectedCustomer?.id],
-    queryFn: () => selectedCustomer ? base44.entities.Interaction.filter({ customer_id: selectedCustomer.id }) : [],
+    queryFn: () => selectedCustomer ? primeos.entities.Interaction.filter({ customer_id: selectedCustomer.id }) : [],
     enabled: !!selectedCustomer
   });
 
   const createCustomerMutation = useMutation({
-    mutationFn: (data) => base44.entities.Customer.create(data),
+    mutationFn: (data) => primeos.entities.Customer.create(data),
     onSuccess: (newCustomer) => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       setSelectedCustomer(newCustomer);
@@ -235,7 +235,7 @@ export default function CustomerPipeline() {
   });
 
   const updateCustomerMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Customer.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Customer.update(id, data),
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       setSelectedCustomer(updated);
@@ -245,7 +245,7 @@ export default function CustomerPipeline() {
   });
 
   const deleteCustomerMutation = useMutation({
-    mutationFn: (id) => base44.entities.Customer.delete(id),
+    mutationFn: (id) => primeos.entities.Customer.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       setSelectedCustomer(null);
@@ -255,7 +255,7 @@ export default function CustomerPipeline() {
   });
 
   const createProductMutation = useMutation({
-    mutationFn: (data) => base44.entities.Product.create(data),
+    mutationFn: (data) => primeos.entities.Product.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setProductDialog({ open: false, product: null });
@@ -264,7 +264,7 @@ export default function CustomerPipeline() {
   });
 
   const updateProductMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Product.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Product.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setProductDialog({ open: false, product: null });
@@ -273,12 +273,12 @@ export default function CustomerPipeline() {
   });
 
   const deleteProductMutation = useMutation({
-    mutationFn: (id) => base44.entities.Product.delete(id),
+    mutationFn: (id) => primeos.entities.Product.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] })
   });
 
   const createSaleMutation = useMutation({
-    mutationFn: (data) => base44.entities.Sale.create(data),
+    mutationFn: (data) => primeos.entities.Sale.create(data),
     onSuccess: (sale) => {
       queryClient.invalidateQueries({ queryKey: ["sales"] });
       setCreatedSale(sale);
@@ -289,7 +289,7 @@ export default function CustomerPipeline() {
   });
 
   const createInteractionMutation = useMutation({
-    mutationFn: (data) => base44.entities.Interaction.create(data),
+    mutationFn: (data) => primeos.entities.Interaction.create(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["interactions", selectedCustomer?.id] })
   });
 
@@ -298,7 +298,7 @@ export default function CustomerPipeline() {
     setGeneratingScript(true);
     try {
       const productList = products.slice(0, 5).map(p => `- ${p.name}: R$${p.price} - ${p.description || ""}`).join("\n");
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await primeos.integrations.Core.InvokeLLM({
         prompt: `Gere um script de vendas amigável para WhatsApp para o cliente:
 
 Cliente: ${selectedCustomer.name}

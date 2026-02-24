@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 const ENTITIES = [
   "PatientRecord", "Appointment", "ClinicalNote", "Dentist", "Resource", "DentistBlockout",
@@ -19,8 +19,8 @@ const ENTITIES = [
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user || user.role !== 'admin') {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
 
     for (const entity of ENTITIES) {
       try {
-        const records = await base44.asServiceRole.entities[entity].list();
+        const records = await primeos.asServiceRole.entities[entity].list();
         result[entity] = records;
       } catch (e) {
         errors[entity] = e.message;

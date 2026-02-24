@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import {
   Dialog,
   DialogContent,
@@ -71,7 +71,7 @@ export default function SegmentCampaign({ segment, customers, leads, onClose }) 
       let sent = 0;
       for (const contact of matchingContacts) {
         try {
-          await base44.integrations.Core.SendEmail({
+          await primeos.integrations.Core.SendEmail({
             to: contact.email,
             subject: subject,
             body: message.replace("{nome}", contact.name || "Cliente"),

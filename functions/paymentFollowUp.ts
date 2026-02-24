@@ -1,13 +1,13 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     // Allow both authenticated calls and scheduled automation calls
     let isScheduled = false;
     try {
-      const user = await base44.auth.me();
+      const user = await primeos.auth.me();
       if (user?.role !== 'admin') {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
       isScheduled = true;
     }
 
-    const client = isScheduled ? base44.asServiceRole : base44;
+    const client = isScheduled ? primeos.asServiceRole : primeos;
 
     // Get all completed appointments with pending payment
     const allAppointments = await client.entities.Appointment.list();

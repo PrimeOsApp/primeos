@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -74,31 +74,31 @@ export default function CRMAvancado() {
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list("-lead_score")
+    queryFn: () => primeos.entities.Lead.list("-lead_score")
   });
 
   const { data: interactions = [] } = useQuery({
     queryKey: ["leadInteractions"],
-    queryFn: () => base44.entities.LeadInteraction.list("-created_date")
+    queryFn: () => primeos.entities.LeadInteraction.list("-created_date")
   });
 
   const { data: workflows = [] } = useQuery({
     queryKey: ["crmWorkflows"],
-    queryFn: () => base44.entities.CRMWorkflow.list()
+    queryFn: () => primeos.entities.CRMWorkflow.list()
   });
 
   const { data: segments = [] } = useQuery({
     queryKey: ["customerSegments"],
-    queryFn: () => base44.entities.CustomerSegment.list()
+    queryFn: () => primeos.entities.CustomerSegment.list()
   });
 
   const updateLeadMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Lead.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Lead.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["leads"] })
   });
 
   const createInteractionMutation = useMutation({
-    mutationFn: (data) => base44.entities.LeadInteraction.create(data),
+    mutationFn: (data) => primeos.entities.LeadInteraction.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["leadInteractions"] });
       queryClient.invalidateQueries({ queryKey: ["leads"] });
@@ -106,7 +106,7 @@ export default function CRMAvancado() {
   });
 
   const createWorkflowMutation = useMutation({
-    mutationFn: (data) => base44.entities.CRMWorkflow.create(data),
+    mutationFn: (data) => primeos.entities.CRMWorkflow.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["crmWorkflows"] });
       setShowWorkflowForm(false);
@@ -115,7 +115,7 @@ export default function CRMAvancado() {
   });
 
   const createSegmentMutation = useMutation({
-    mutationFn: (data) => base44.entities.CustomerSegment.create(data),
+    mutationFn: (data) => primeos.entities.CustomerSegment.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customerSegments"] });
       setShowSegmentForm(false);

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Clock, Calendar, TrendingDown, TrendingUp, Bell } from "lucide-react";
@@ -70,7 +70,7 @@ function BucketSection({ label, items, color, bg, icon: Icon }) {
 export default function ContasAVencer() {
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-due_date"),
+    queryFn: () => primeos.entities.FinancialTransaction.list("-due_date"),
   });
 
   const pending = useMemo(() =>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,7 +48,7 @@ export default function PatientRecordDocuments({ patient, onUpdate }) {
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const updateMutation = useMutation({
-    mutationFn: (docs) => base44.entities.PatientRecord.update(patient.id, { documents: docs }),
+    mutationFn: (docs) => primeos.entities.PatientRecord.update(patient.id, { documents: docs }),
     onSuccess: (_, docs) => {
       qc.invalidateQueries(["patients"]);
       onUpdate?.({ ...patient, documents: docs });
@@ -60,7 +60,7 @@ export default function PatientRecordDocuments({ patient, onUpdate }) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await primeos.integrations.Core.UploadFile({ file });
     set("file_url", file_url);
     if (!form.name) set("name", file.name.replace(/\.[^/.]+$/, ""));
     setUploading(false);

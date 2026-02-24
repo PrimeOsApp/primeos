@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -202,31 +202,31 @@ export default function FollowUpAutomation() {
 
   const { data: rules = [], isLoading: loadingRules } = useQuery({
     queryKey: ["followUpRules"],
-    queryFn: () => base44.entities.FollowUpRule.list("-created_date"),
+    queryFn: () => primeos.entities.FollowUpRule.list("-created_date"),
   });
 
   const { data: logs = [], isLoading: loadingLogs } = useQuery({
     queryKey: ["followUpLogs"],
-    queryFn: () => base44.entities.FollowUpLog.list("-created_date", 100),
+    queryFn: () => primeos.entities.FollowUpLog.list("-created_date", 100),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.FollowUpRule.create(data),
+    mutationFn: (data) => primeos.entities.FollowUpRule.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["followUpRules"] }); setShowForm(false); setEditing(null); toast.success("Regra criada!"); },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.FollowUpRule.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.FollowUpRule.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["followUpRules"] }); setShowForm(false); setEditing(null); toast.success("Regra atualizada!"); },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.FollowUpRule.delete(id),
+    mutationFn: (id) => primeos.entities.FollowUpRule.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["followUpRules"] }); toast.success("Regra removida."); },
   });
 
   const toggleMutation = useMutation({
-    mutationFn: ({ id, is_active }) => base44.entities.FollowUpRule.update(id, { is_active }),
+    mutationFn: ({ id, is_active }) => primeos.entities.FollowUpRule.update(id, { is_active }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["followUpRules"] }),
   });
 
@@ -238,7 +238,7 @@ export default function FollowUpAutomation() {
   const runNow = async () => {
     setRunning(true);
     try {
-      const res = await base44.functions.invoke("processFollowUps", {});
+      const res = await primeos.functions.invoke("processFollowUps", {});
       const d = res.data;
       toast.success(`Concluído: ${d.sent} enviados, ${d.skipped} ignorados, ${d.failed} falhas.`);
       queryClient.invalidateQueries({ queryKey: ["followUpLogs"] });

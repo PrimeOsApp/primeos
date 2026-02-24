@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -30,7 +30,7 @@ Análise necessária:
 4. Score de urgência (0-10)
 5. Se precisa de escalação imediata`;
 
-    const triageResult = await base44.integrations.Core.InvokeLLM({
+    const triageResult = await primeos.integrations.Core.InvokeLLM({
       prompt: triagePrompt,
       response_json_schema: {
         type: "object",
@@ -49,7 +49,7 @@ Análise necessária:
     });
 
     // Create ticket with triaged info
-    const ticket = await base44.entities.SupportTicket.create({
+    const ticket = await primeos.entities.SupportTicket.create({
       ticket_id: `TKT-${Date.now()}`,
       customer_name: ticketData.customer_name,
       customer_email: ticketData.customer_email,
@@ -66,7 +66,7 @@ Análise necessária:
     });
 
     // Award points for handling support
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'support_ticket_handled',
       metadata: { bonus_multiplier: 1.25 }
     });

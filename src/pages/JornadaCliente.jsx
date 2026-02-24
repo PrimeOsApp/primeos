@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,16 +40,16 @@ export default function JornadaCliente() {
 
   const { data: journeys = [] } = useQuery({
     queryKey: ["clientJourneys"],
-    queryFn: () => base44.entities.ClientJourney.list("-created_date")
+    queryFn: () => primeos.entities.ClientJourney.list("-created_date")
   });
 
   const { data: patients = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+    queryFn: () => primeos.entities.Customer.list()
   });
 
   const updateJourneyMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.ClientJourney.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.ClientJourney.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clientJourneys"] });
       toast.success("Jornada atualizada!");
@@ -57,7 +57,7 @@ export default function JornadaCliente() {
   });
 
   const createJourneyMutation = useMutation({
-    mutationFn: (data) => base44.entities.ClientJourney.create(data),
+    mutationFn: (data) => primeos.entities.ClientJourney.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clientJourneys"] });
       toast.success("Jornada iniciada!");

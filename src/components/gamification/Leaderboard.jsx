@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -8,7 +8,7 @@ export default function Leaderboard() {
   const { data: leaderboard = [], isLoading } = useQuery({
     queryKey: ["leaderboard"],
     queryFn: async () => {
-      const allPoints = await base44.entities.UserPoints.list();
+      const allPoints = await primeos.entities.UserPoints.list();
       return allPoints
         .sort((a, b) => b.total_points - a.total_points)
         .slice(0, 10);

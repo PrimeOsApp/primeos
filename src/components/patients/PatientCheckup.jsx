@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,7 +36,7 @@ export default function PatientCheckup({ patient, onUpdate }) {
   const saveMutation = useMutation({
     mutationFn: async (newCheckup) => {
       const updated = [...checkups, newCheckup];
-      return base44.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
     },
     onSuccess: (data) => {
       onUpdate(data);
@@ -48,7 +48,7 @@ export default function PatientCheckup({ patient, onUpdate }) {
   const deleteMutation = useMutation({
     mutationFn: async (index) => {
       const updated = checkups.filter((_, i) => i !== index);
-      return base44.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
     },
     onSuccess: (data) => onUpdate(data),
   });
@@ -56,7 +56,7 @@ export default function PatientCheckup({ patient, onUpdate }) {
   const scheduleAppointmentMutation = useMutation({
     mutationFn: async ({ checkup, index }) => {
       const dueDate = checkup.due_date;
-      const appt = await base44.entities.Appointment.create({
+      const appt = await primeos.entities.Appointment.create({
         patient_name: patient.patient_name,
         patient_phone: patient.patient_phone || "",
         service_type: checkup.service_type || "checkup",
@@ -70,7 +70,7 @@ export default function PatientCheckup({ patient, onUpdate }) {
       const updated = checkups.map((c, i) =>
         i === index ? { ...c, appointment_id: appt.id, scheduled: true } : c
       );
-      return base44.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { checkup_schedule: updated });
     },
     onSuccess: (data) => { onUpdate(data); setScheduling(null); queryClient.invalidateQueries({ queryKey: ["appointments"] }); },
   });

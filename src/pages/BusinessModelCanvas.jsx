@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,7 +37,7 @@ export default function BusinessModelCanvas() {
 
   const { data: partners = [] } = useQuery({
     queryKey: ["keyPartners"],
-    queryFn: () => base44.entities.KeyPartner.list()
+    queryFn: () => primeos.entities.KeyPartner.list()
   });
 
   const canvasBlocks = [

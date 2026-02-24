@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -59,21 +59,21 @@ export default function Financeiro() {
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-date"),
+    queryFn: () => primeos.entities.FinancialTransaction.list("-date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.FinancialTransaction.create(data),
+    mutationFn: (data) => primeos.entities.FinancialTransaction.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialTransactions"] }); setShowForm(false); setEditing(null); toast.success("Transação salva!"); },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.FinancialTransaction.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.FinancialTransaction.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialTransactions"] }); setShowForm(false); setEditing(null); toast.success("Transação atualizada!"); },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.FinancialTransaction.delete(id),
+    mutationFn: (id) => primeos.entities.FinancialTransaction.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["financialTransactions"] }); toast.success("Removida!"); },
   });
 

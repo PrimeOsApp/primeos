@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { MessageCircle, Brain, Copy, Loader2, Zap } from "lucide-react";
@@ -12,7 +12,7 @@ export default function SmartReminderButton({ appointment }) {
 
   const generate = async () => {
     setLoading(true);
-    const res = await base44.functions.invoke('sendSmartReminder', { appointmentId: appointment.id });
+    const res = await primeos.functions.invoke('sendSmartReminder', { appointmentId: appointment.id });
     setResult(res.data);
     setLoading(false);
   };

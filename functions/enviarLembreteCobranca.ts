@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     // Pode ser chamado manualmente (com auth) ou via automação (sem body)
     let isManual = false;
@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
       if (body.transaction_id) {
         isManual = true;
         manualTransactionId = body.transaction_id;
-        const user = await base44.auth.me();
+        const user = await primeos.auth.me();
         if (!user) return Response.json({ error: 'Não autorizado' }, { status: 401 });
       }
     }
@@ -28,11 +28,11 @@ Deno.serve(async (req) => {
     let toRemind = [];
 
     if (isManual && manualTransactionId) {
-      const txs = await base44.asServiceRole.entities.FinancialTransaction.filter({ id: manualTransactionId });
+      const txs = await primeos.asServiceRole.entities.FinancialTransaction.filter({ id: manualTransactionId });
       toRemind = txs;
     } else {
       // Modo automático: busca pendentes/vencidas com email
-      const all = await base44.asServiceRole.entities.FinancialTransaction.list('-due_date', 500);
+      const all = await primeos.asServiceRole.entities.FinancialTransaction.list('-due_date', 500);
       toRemind = all.filter(t => {
         if (t.type !== 'receita') return false;
         if (t.status === 'pago' || t.status === 'cancelado') return false;
@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
 
         const payLink = t.boleto_url || '';
 
-        await base44.asServiceRole.integrations.Core.SendEmail({
+        await primeos.asServiceRole.integrations.Core.SendEmail({
           to: t.patient_email,
           subject,
           body: `
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
         });
 
         // Atualiza contadores na transação
-        await base44.asServiceRole.entities.FinancialTransaction.update(t.id, {
+        await primeos.asServiceRole.entities.FinancialTransaction.update(t.id, {
           reminder_sent_at: new Date().toISOString(),
           reminder_count: (t.reminder_count || 0) + 1
         });

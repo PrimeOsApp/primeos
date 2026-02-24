@@ -1,18 +1,18 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const base44 = createClientFromRequest(req);
-  const user = await base44.auth.me();
+  const primeos = createClientFromRequest(req);
+  const user = await primeos.auth.me();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { patientId } = await req.json();
   if (!patientId) return Response.json({ error: 'patientId required' }, { status: 400 });
 
   const [patient, appointments, medicalRecords, clinicalNotes] = await Promise.all([
-    base44.entities.PatientRecord.filter({ id: patientId }).then(r => r[0]),
-    base44.entities.Appointment.filter({ patient_id: patientId }),
-    base44.entities.MedicalRecord.filter({ patient_id: patientId }),
-    base44.entities.ClinicalNote.filter({ patient_id: patientId })
+    primeos.entities.PatientRecord.filter({ id: patientId }).then(r => r[0]),
+    primeos.entities.Appointment.filter({ patient_id: patientId }),
+    primeos.entities.MedicalRecord.filter({ patient_id: patientId }),
+    primeos.entities.ClinicalNote.filter({ patient_id: patientId })
   ]);
 
   if (!patient) return Response.json({ error: 'Patient not found' }, { status: 404 });
@@ -142,7 +142,7 @@ Retorne APENAS este JSON (sem markdown, sem blocos de código):
   "summary": "string (resumo geral em 2-3 linhas para o atendente)"
 }`;
 
-  const result = await base44.integrations.Core.InvokeLLM({
+  const result = await primeos.integrations.Core.InvokeLLM({
     prompt,
     response_json_schema: {
       type: "object",

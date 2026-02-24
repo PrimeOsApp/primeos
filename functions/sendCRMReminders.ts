@@ -1,11 +1,11 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     
     // Verify admin access
-    const user = await base44.auth.me();
+    const user = await primeos.auth.me();
     if (user?.role !== 'admin') {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     const currentTime = now.toTimeString().slice(0, 5); // HH:MM
 
     // Get all scheduled/confirmed appointments for today
-    const appointments = await base44.asServiceRole.entities.CRMAppointment.filter({
+    const appointments = await primeos.asServiceRole.entities.CRMAppointment.filter({
       date: currentDate,
       status: { $in: ['scheduled', 'confirmed'] },
       reminder_sent: false
@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
       try {
         // Send email reminder
         if (apt.customer_email) {
-          await base44.asServiceRole.integrations.Core.SendEmail({
+          await primeos.asServiceRole.integrations.Core.SendEmail({
             to: apt.customer_email,
             subject: `Lembrete: ${apt.title}`,
             body: `
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
         }
 
         // Mark reminder as sent
-        await base44.asServiceRole.entities.CRMAppointment.update(apt.id, {
+        await primeos.asServiceRole.entities.CRMAppointment.update(apt.id, {
           ...apt,
           reminder_sent: true
         });

@@ -121,7 +121,7 @@ export default function SetupWizard({ platform, onComplete, existingSecrets = []
   };
 
   const handleOpenSettings = () => {
-    window.open('https://app.base44.com/settings/secrets', '_blank');
+    window.open('https://app.primeos.com/settings/secrets', '_blank');
   };
 
   return (

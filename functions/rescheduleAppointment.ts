@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { appointment_id, new_date, new_time, reason } = await req.json();
 
     if (!appointment_id || !new_date || !new_time) {
@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     }
 
     // Get the existing appointment
-    const existingAppointment = await base44.asServiceRole.entities.Appointment.get('Appointment', appointment_id);
+    const existingAppointment = await primeos.asServiceRole.entities.Appointment.get('Appointment', appointment_id);
 
     if (!existingAppointment) {
       return Response.json({
@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
     }
 
     // Check if new time slot is available
-    const conflictingAppointments = await base44.asServiceRole.entities.Appointment.filter({
+    const conflictingAppointments = await primeos.asServiceRole.entities.Appointment.filter({
       date: new_date,
       time: new_time,
       status: { $ne: 'cancelled' }
@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
     }
 
     // Update the appointment
-    const updatedAppointment = await base44.asServiceRole.entities.Appointment.update(appointment_id, {
+    const updatedAppointment = await primeos.asServiceRole.entities.Appointment.update(appointment_id, {
       date: new_date,
       time: new_time,
       status: 'scheduled',

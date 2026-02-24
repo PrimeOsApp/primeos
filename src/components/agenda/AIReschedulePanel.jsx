@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Brain, Calendar, Clock, Loader2, CheckCircle, Info } from "lucide-react";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ export default function AIReschedulePanel({ appointment, onSelectSlot }) {
 
   const analyze = async () => {
     setLoading(true);
-    const res = await base44.functions.invoke('suggestRescheduling', {
+    const res = await primeos.functions.invoke('suggestRescheduling', {
       patientId: appointment.patient_id,
       appointmentId: appointment.id
     });

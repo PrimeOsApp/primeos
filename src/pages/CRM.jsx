@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -171,22 +171,22 @@ export default function CRM() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list("-created_date")
+    queryFn: () => primeos.entities.Customer.list("-created_date")
   });
 
   const { data: patientRecords = [] } = useQuery({
     queryKey: ["patientRecords"],
-    queryFn: () => base44.entities.PatientRecord.list("-created_date")
+    queryFn: () => primeos.entities.PatientRecord.list("-created_date")
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointments"],
-    queryFn: () => base44.entities.Appointment.list("-date")
+    queryFn: () => primeos.entities.Appointment.list("-date")
   });
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["financialTransactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-date")
+    queryFn: () => primeos.entities.FinancialTransaction.list("-date")
   });
 
   const allPatients = [
@@ -209,19 +209,19 @@ export default function CRM() {
   ];
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Customer.create(data),
+    mutationFn: (data) => primeos.entities.Customer.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["customers"] }); setShowForm(false); setEditingCustomer(null); }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Customer.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Customer.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["customers"] }); setShowForm(false); setEditingCustomer(null); }
   });
 
   const deleteMutation = useMutation({
     mutationFn: (p) => p._source === "customer"
-      ? base44.entities.Customer.delete(p.id)
-      : base44.entities.PatientRecord.delete(p.id),
+      ? primeos.entities.Customer.delete(p.id)
+      : primeos.entities.PatientRecord.delete(p.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       queryClient.invalidateQueries({ queryKey: ["patientRecords"] });
@@ -229,7 +229,7 @@ export default function CRM() {
   });
 
   const interactionMutation = useMutation({
-    mutationFn: (data) => base44.entities.Interaction.create(data),
+    mutationFn: (data) => primeos.entities.Interaction.create(data),
     onSuccess: () => { setShowInteraction(false); setSelectedCustomer(null); }
   });
 

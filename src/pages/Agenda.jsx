@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,17 +41,17 @@ export default function Agenda() {
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["allAppointments"],
-    queryFn: () => base44.entities.Appointment.list("-date")
+    queryFn: () => primeos.entities.Appointment.list("-date")
   });
 
   const { data: patients = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list()
+    queryFn: () => primeos.entities.Customer.list()
   });
 
   const createAppointmentMutation = useMutation({
     mutationFn: async (data) => {
-      const appointment = await base44.entities.Appointment.create(data);
+      const appointment = await primeos.entities.Appointment.create(data);
       
       // Send WhatsApp notification
       if (data.patient_phone) {
@@ -74,7 +74,7 @@ export default function Agenda() {
   });
 
   const updateAppointmentMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Appointment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Appointment.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allAppointments"] });
       setShowForm(false);
@@ -84,7 +84,7 @@ export default function Agenda() {
   });
 
   const sendRemindersMutation = useMutation({
-    mutationFn: () => base44.functions.invoke('sendAppointmentReminder', {}),
+    mutationFn: () => primeos.functions.invoke('sendAppointmentReminder', {}),
     onSuccess: (response) => {
       const data = response.data;
       toast.success(`Lembretes enviados: ${data.summary.sent} enviados, ${data.summary.skipped} ignorados`);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +42,7 @@ export default function MeuAgendamento() {
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appts_reschedule", newDate],
-    queryFn: () => newDate ? base44.entities.Appointment.filter({ date: newDate }) : [],
+    queryFn: () => newDate ? primeos.entities.Appointment.filter({ date: newDate }) : [],
     enabled: !!newDate,
   });
 
@@ -53,7 +53,7 @@ export default function MeuAgendamento() {
 
   const loadAppointment = async () => {
     setView("loading");
-    const res = await base44.functions.invoke("manageAppointment", { action: "get", token });
+    const res = await primeos.functions.invoke("manageAppointment", { action: "get", token });
     if (res.data?.success) {
       setAppointment(res.data.appointment);
       setPolicy(res.data.policy);
@@ -66,7 +66,7 @@ export default function MeuAgendamento() {
 
   const handleCancel = async () => {
     setProcessing(true);
-    const res = await base44.functions.invoke("manageAppointment", { action: "cancel", token });
+    const res = await primeos.functions.invoke("manageAppointment", { action: "cancel", token });
     setProcessing(false);
     if (res.data?.success) {
       setView("done_cancel");
@@ -78,7 +78,7 @@ export default function MeuAgendamento() {
 
   const handleReschedule = async () => {
     setProcessing(true);
-    const res = await base44.functions.invoke("manageAppointment", {
+    const res = await primeos.functions.invoke("manageAppointment", {
       action: "reschedule", token, new_date: newDate, new_time: newTime
     });
     setProcessing(false);

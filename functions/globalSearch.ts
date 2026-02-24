@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
 
     // Search Leads
     try {
-      const leads = await base44.entities.Lead.list();
+      const leads = await primeos.entities.Lead.list();
       const matchedLeads = leads.filter(l => 
         l.name?.toLowerCase().includes(searchTerm) ||
         l.email?.toLowerCase().includes(searchTerm) ||
@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
 
     // Search Customers
     try {
-      const customers = await base44.entities.Customer.list();
+      const customers = await primeos.entities.Customer.list();
       const matchedCustomers = customers.filter(c => 
         c.name?.toLowerCase().includes(searchTerm) ||
         c.email?.toLowerCase().includes(searchTerm) ||
@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
 
     // Search Appointments
     try {
-      const appointments = await base44.entities.Appointment.list();
+      const appointments = await primeos.entities.Appointment.list();
       const matchedAppointments = appointments.filter(a => 
         a.patient_name?.toLowerCase().includes(searchTerm) ||
         a.patient_phone?.includes(searchTerm) ||
@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
 
     // Search Tasks
     try {
-      const tasks = await base44.entities.Task.list();
+      const tasks = await primeos.entities.Task.list();
       const matchedTasks = tasks.filter(t => 
         t.titulo?.toLowerCase().includes(searchTerm) ||
         t.descricao?.toLowerCase().includes(searchTerm) ||
@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
 
     // Search POPs
     try {
-      const pops = await base44.entities.POP.list();
+      const pops = await primeos.entities.POP.list();
       const matchedPops = pops.filter(p => 
         p.nome?.toLowerCase().includes(searchTerm) ||
         p.codigo?.toLowerCase().includes(searchTerm) ||

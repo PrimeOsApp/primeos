@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,31 +36,31 @@ export default function Metricas() {
 
   const { data: metrics = [] } = useQuery({
     queryKey: ["metrics"],
-    queryFn: () => base44.entities.MarketingMetric.list("-data")
+    queryFn: () => primeos.entities.MarketingMetric.list("-data")
   });
 
   const { data: campaigns = [] } = useQuery({
     queryKey: ["campaigns"],
-    queryFn: () => base44.entities.Campaign.list()
+    queryFn: () => primeos.entities.Campaign.list()
   });
 
   const { data: channels = [] } = useQuery({
     queryKey: ["marketingChannels"],
-    queryFn: () => base44.entities.MarketingChannel.list()
+    queryFn: () => primeos.entities.MarketingChannel.list()
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list()
+    queryFn: () => primeos.entities.Lead.list()
   });
 
   const { data: engagementData = [] } = useQuery({
     queryKey: ["engagement"],
-    queryFn: () => base44.entities.UserEngagement.list("-created_date")
+    queryFn: () => primeos.entities.UserEngagement.list("-created_date")
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.MarketingMetric.create(data),
+    mutationFn: (data) => primeos.entities.MarketingMetric.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["metrics"] });
       setShowForm(false);

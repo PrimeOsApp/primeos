@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 const POINT_RULES = {
   task_completed: 10,
@@ -12,8 +12,8 @@ const POINT_RULES = {
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,12 +26,12 @@ Deno.serve(async (req) => {
     }
 
     // Get or create user points record
-    let userPoints = await base44.entities.UserPoints.filter({ 
+    let userPoints = await primeos.entities.UserPoints.filter({ 
       user_email: user.email 
     });
     
     if (userPoints.length === 0) {
-      userPoints = await base44.entities.UserPoints.create({
+      userPoints = await primeos.entities.UserPoints.create({
         user_email: user.email,
         total_points: 0,
         lifetime_points: 0,
@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
     }
 
     // Update user points
-    await base44.entities.UserPoints.update(userPoints.id, {
+    await primeos.entities.UserPoints.update(userPoints.id, {
       total_points: newTotalPoints,
       lifetime_points: newLifetimePoints,
       current_level: newLevel,

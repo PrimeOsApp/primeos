@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
     };
 
     // Buscar ou criar registro médico do paciente
-    const existingRecords = await base44.entities.MedicalRecord.filter({
+    const existingRecords = await primeos.entities.MedicalRecord.filter({
       patient_id: patient_id,
       record_type: 'anamnese'
     });
@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
     
     if (existingRecords.length > 0) {
       // Atualizar registro existente
-      medicalRecord = await base44.entities.MedicalRecord.update(
+      medicalRecord = await primeos.entities.MedicalRecord.update(
         existingRecords[0].id,
         {
           ehr_id: ehrData.ehr_id,
@@ -81,9 +81,9 @@ Deno.serve(async (req) => {
       );
     } else {
       // Criar novo registro
-      const patient = await base44.entities.Customer.filter({ id: patient_id });
+      const patient = await primeos.entities.Customer.filter({ id: patient_id });
       
-      medicalRecord = await base44.entities.MedicalRecord.create({
+      medicalRecord = await primeos.entities.MedicalRecord.create({
         patient_id: patient_id,
         patient_name: patient[0]?.name || 'Paciente',
         ehr_id: ehrData.ehr_id,

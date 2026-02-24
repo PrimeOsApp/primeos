@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,16 +35,16 @@ export default function TasksPage() {
 
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ['tasks'],
-    queryFn: () => base44.entities.Task.list('-data_vencimento'),
+    queryFn: () => primeos.entities.Task.list('-data_vencimento'),
   });
 
   const { data: pops = [] } = useQuery({
     queryKey: ['pops'],
-    queryFn: () => base44.entities.POP.list(),
+    queryFn: () => primeos.entities.POP.list(),
   });
 
   const createTaskMutation = useMutation({
-    mutationFn: (data) => base44.entities.Task.create(data),
+    mutationFn: (data) => primeos.entities.Task.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       setDialogOpen(false);
@@ -54,7 +54,7 @@ export default function TasksPage() {
   });
 
   const updateTaskMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Task.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Task.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       setDialogOpen(false);
@@ -64,7 +64,7 @@ export default function TasksPage() {
   });
 
   const deleteTaskMutation = useMutation({
-    mutationFn: (id) => base44.entities.Task.delete(id),
+    mutationFn: (id) => primeos.entities.Task.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success("Tarefa excluída!");
@@ -73,7 +73,7 @@ export default function TasksPage() {
 
   // Real-time updates
   useEffect(() => {
-    const unsubscribe = base44.entities.Task.subscribe((event) => {
+    const unsubscribe = primeos.entities.Task.subscribe((event) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     });
     return unsubscribe;

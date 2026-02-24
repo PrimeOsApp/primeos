@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { primeos } from '@/api/primeosClient';
 import { appParams } from '@/lib/app-params';
-import { createAxiosClient } from '@base44/sdk/dist/utils/axios-client';
+import { createHttpClient } from '@/lib/httpClient';
 
 const AuthContext = createContext();
 
@@ -23,14 +23,13 @@ export const AuthProvider = ({ children }) => {
       setAuthError(null);
       
       // First, check app public settings (with token if available)
-      // This will tell us if auth is required, user not registered, etc.
-      const appClient = createAxiosClient({
+      const appClient = createHttpClient({
         baseURL: `/api/apps/public`,
         headers: {
           'X-App-Id': appParams.appId
         },
         token: appParams.token, // Include token if available
-        interceptResponses: true
+        
       });
       
       try {
@@ -56,15 +55,10 @@ export const AuthProvider = ({ children }) => {
               type: 'auth_required',
               message: 'Authentication required'
             });
-          } else if (reason === 'user_not_registered') {
-            setAuthError({
-              type: 'user_not_registered',
-              message: 'User not registered for this app'
-            });
           } else {
             setAuthError({
-              type: reason,
-              message: appError.message
+              type: 'access_denied',
+              message: 'Access denied for this application'
             });
           }
         } else {
@@ -91,7 +85,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Now check if the user is authenticated
       setIsLoadingAuth(true);
-      const currentUser = await base44.auth.me();
+      const currentUser = await primeos.auth.me();
       setUser(currentUser);
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
@@ -116,16 +110,16 @@ export const AuthProvider = ({ children }) => {
     
     if (shouldRedirect) {
       // Use the SDK's logout method which handles token cleanup and redirect
-      base44.auth.logout(window.location.href);
+      primeos.auth.logout(window.location.href);
     } else {
       // Just remove the token without redirect
-      base44.auth.logout();
+      primeos.auth.logout();
     }
   };
 
   const navigateToLogin = () => {
     // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    primeos.auth.redirectToLogin(window.location.href);
   };
 
   return (

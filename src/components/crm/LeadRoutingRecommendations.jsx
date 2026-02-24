@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, UserCheck, TrendingUp, Award } from "lucide-react";
@@ -13,7 +13,7 @@ export default function LeadRoutingRecommendations({ lead, onAssign }) {
   const generateRouting = async () => {
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('routeLead', {
+      const response = await primeos.functions.invoke('routeLead', {
         leadId: lead.id
       });
 
@@ -30,7 +30,7 @@ export default function LeadRoutingRecommendations({ lead, onAssign }) {
 
   const assignToAgent = async (agentEmail) => {
     try {
-      await base44.entities.Lead.update(lead.id, {
+      await primeos.entities.Lead.update(lead.id, {
         ...lead,
         assigned_to: agentEmail
       });

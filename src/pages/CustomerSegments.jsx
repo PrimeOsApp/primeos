@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,23 +21,23 @@ export default function CustomerSegments() {
 
   const { data: segments = [] } = useQuery({
     queryKey: ["segments"],
-    queryFn: () => base44.entities.CustomerSegment.list("-created_date"),
+    queryFn: () => primeos.entities.CustomerSegment.list("-created_date"),
   });
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
   const { data: appointments = [] } = useQuery({
     queryKey: ["allAppointments"],
-    queryFn: () => base44.entities.Appointment.list("-date"),
+    queryFn: () => primeos.entities.Appointment.list("-date"),
   });
   const { data: transactions = [] } = useQuery({
     queryKey: ["transactions"],
-    queryFn: () => base44.entities.FinancialTransaction.list("-date"),
+    queryFn: () => primeos.entities.FinancialTransaction.list("-date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.CustomerSegment.create(data),
+    mutationFn: (data) => primeos.entities.CustomerSegment.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["segments"] });
       setShowForm(false);
@@ -47,7 +47,7 @@ export default function CustomerSegments() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.CustomerSegment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.CustomerSegment.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["segments"] });
       setShowForm(false);
@@ -57,7 +57,7 @@ export default function CustomerSegments() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.CustomerSegment.delete(id),
+    mutationFn: (id) => primeos.entities.CustomerSegment.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["segments"] });
       toast.success("Segmento excluído.");

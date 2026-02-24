@@ -1,12 +1,12 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 import Stripe from 'npm:stripe@14.21.0';
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { patient_name, amount, service, description, success_url, cancel_url } = await req.json();
@@ -31,11 +31,11 @@ Deno.serve(async (req) => {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: success_url || 'https://app.base44.com/success',
-      cancel_url: cancel_url || 'https://app.base44.com/cancel',
+      success_url: success_url || 'https://app.primeos.com/success',
+      cancel_url: cancel_url || 'https://app.primeos.com/cancel',
       customer_email: user.email,
       metadata: {
-        base44_app_id: Deno.env.get("BASE44_APP_ID"),
+        primeos_app_id: Deno.env.get("PRIMEOS_APP_ID"),
         patient_name: patient_name || '',
         service: service || '',
         created_by: user.email,

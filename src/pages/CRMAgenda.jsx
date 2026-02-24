@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -22,21 +22,21 @@ export default function CRMAgenda() {
 
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: ["crm-appointments"],
-    queryFn: () => base44.entities.CRMAppointment.list("-date"),
+    queryFn: () => primeos.entities.CRMAppointment.list("-date"),
   });
 
   const { data: customers = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
 
   const { data: leads = [] } = useQuery({
     queryKey: ["leads"],
-    queryFn: () => base44.entities.Lead.list(),
+    queryFn: () => primeos.entities.Lead.list(),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.CRMAppointment.create(data),
+    mutationFn: (data) => primeos.entities.CRMAppointment.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["crm-appointments"] });
       setShowForm(false);
@@ -45,7 +45,7 @@ export default function CRMAgenda() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.CRMAppointment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.CRMAppointment.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["crm-appointments"] });
       setShowForm(false);
@@ -54,7 +54,7 @@ export default function CRMAgenda() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.CRMAppointment.delete(id),
+    mutationFn: (id) => primeos.entities.CRMAppointment.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["crm-appointments"] });
     },
@@ -66,7 +66,7 @@ export default function CRMAgenda() {
         await updateMutation.mutateAsync({ id: editingAppointment.id, data });
         
         // Sync to Google Calendar
-        const syncResult = await base44.functions.invoke('syncCRMToGoogleCalendar', {
+        const syncResult = await primeos.functions.invoke('syncCRMToGoogleCalendar', {
           appointment: { ...editingAppointment, ...data },
           action: 'update'
         });
@@ -78,7 +78,7 @@ export default function CRMAgenda() {
         const newAppointment = await createMutation.mutateAsync(data);
         
         // Sync to Google Calendar
-        const syncResult = await base44.functions.invoke('syncCRMToGoogleCalendar', {
+        const syncResult = await primeos.functions.invoke('syncCRMToGoogleCalendar', {
           appointment: { ...data, id: newAppointment.id },
           action: 'create'
         });
@@ -104,7 +104,7 @@ export default function CRMAgenda() {
       // Delete from Google Calendar first if synced
       if (appointment?.google_calendar_event_id) {
         try {
-          await base44.functions.invoke('syncCRMToGoogleCalendar', {
+          await primeos.functions.invoke('syncCRMToGoogleCalendar', {
             appointment,
             action: 'delete'
           });

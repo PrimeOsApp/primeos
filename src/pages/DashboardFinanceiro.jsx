@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -60,10 +60,10 @@ const fmtK = (v) => v >= 1000 ? `R$${(v / 1000).toFixed(0)}k` : `R$${v}`;
 export default function DashboardFinanceiro() {
   const [periodo, setPeriodo] = useState("6");
 
-  const { data: projetos = [] } = useQuery({ queryKey: ["ProjetoSEO"], queryFn: () => base44.entities.ProjetoSEO.list() });
-  const { data: funnelLeads = [] } = useQuery({ queryKey: ["PrimeFunnelLead"], queryFn: () => base44.entities.PrimeFunnelLead.list() });
-  const { data: growthStages = [] } = useQuery({ queryKey: ["PrimeGrowthStage"], queryFn: () => base44.entities.PrimeGrowthStage.list() });
-  const { data: transactions = [] } = useQuery({ queryKey: ["FinancialTransaction"], queryFn: () => base44.entities.FinancialTransaction.list() });
+  const { data: projetos = [] } = useQuery({ queryKey: ["ProjetoSEO"], queryFn: () => primeos.entities.ProjetoSEO.list() });
+  const { data: funnelLeads = [] } = useQuery({ queryKey: ["PrimeFunnelLead"], queryFn: () => primeos.entities.PrimeFunnelLead.list() });
+  const { data: growthStages = [] } = useQuery({ queryKey: ["PrimeGrowthStage"], queryFn: () => primeos.entities.PrimeGrowthStage.list() });
+  const { data: transactions = [] } = useQuery({ queryKey: ["FinancialTransaction"], queryFn: () => primeos.entities.FinancialTransaction.list() });
 
   const meses = Number(periodo);
 

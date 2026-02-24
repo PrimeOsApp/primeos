@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,11 @@ export default function Patients() {
 
   const { data: patients = [], isLoading } = useQuery({
     queryKey: ["patients"],
-    queryFn: () => base44.entities.PatientRecord.list("-created_date"),
+    queryFn: () => primeos.entities.PatientRecord.list("-created_date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.PatientRecord.create(data),
+    mutationFn: (data) => primeos.entities.PatientRecord.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       setShowForm(false);
@@ -35,7 +35,7 @@ export default function Patients() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.PatientRecord.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.PatientRecord.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       setShowForm(false);
@@ -44,7 +44,7 @@ export default function Patients() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.PatientRecord.delete(id),
+    mutationFn: (id) => primeos.entities.PatientRecord.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
     },

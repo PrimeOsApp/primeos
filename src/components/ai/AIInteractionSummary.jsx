@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Sparkles, Loader2, Smile, Meh, Frown, TrendingUp, AlertTriangle } from "lucide-react";
@@ -12,7 +12,7 @@ export default function AIInteractionSummary({ contact, contactType }) {
   const generateSummary = async () => {
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('generateAIInsights', {
+      const response = await primeos.functions.invoke('generateAIInsights', {
         contactId: contact.id,
         contactType,
         action: 'interaction_summary'

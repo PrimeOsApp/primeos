@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
     }
 
     // Get sync settings
-    const settings = await base44.entities.CRMSyncSettings.filter({ user_email: user.email });
+    const settings = await primeos.entities.CRMSyncSettings.filter({ user_email: user.email });
     const userSettings = settings[0] || {
       google_calendar_enabled: true,
       calendar_id: 'primary'
@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
     }
 
     // Get Google Calendar access token
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('googlecalendar');
+    const accessToken = await primeos.asServiceRole.connectors.getAccessToken('googlecalendar');
 
     const timeMin = new Date(startDate).toISOString();
     const timeMax = new Date(endDate).toISOString();

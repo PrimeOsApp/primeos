@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Loader2, Receipt, ExternalLink, Copy, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,7 +26,7 @@ export default function DigitalInvoiceModal({ open, onClose }) {
     }
 
     setLoading(true);
-    const res = await base44.functions.invoke("createDigitalInvoice", {
+    const res = await primeos.functions.invoke("createDigitalInvoice", {
       description: form.description,
       amount: parseFloat(form.amount),
       patient_name: form.patient_name,

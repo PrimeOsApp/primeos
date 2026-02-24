@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Zap, TrendingUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
@@ -8,8 +8,8 @@ export default function PointsDisplay() {
   const { data: userPoints, isLoading } = useQuery({
     queryKey: ["userPoints"],
     queryFn: async () => {
-      const user = await base44.auth.me();
-      const points = await base44.entities.UserPoints.filter({ 
+      const user = await primeos.auth.me();
+      const points = await primeos.entities.UserPoints.filter({ 
         user_email: user.email 
       });
       return points[0];

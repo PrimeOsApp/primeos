@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import SubtaskManager from "./SubtaskManager";
 import RecurringTaskTemplate from "./RecurringTaskTemplate";
@@ -32,7 +32,7 @@ export default function TaskForm({ task, open, onClose, onSubmit }) {
 
   const { data: pops = [] } = useQuery({
     queryKey: ['pops'],
-    queryFn: () => base44.entities.POP.list(),
+    queryFn: () => primeos.entities.POP.list(),
   });
 
   useEffect(() => {

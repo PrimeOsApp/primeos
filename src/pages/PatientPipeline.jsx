@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,35 +48,35 @@ export default function PatientPipeline() {
 
   const { data: patients = [] } = useQuery({
     queryKey: ["customers"],
-    queryFn: () => base44.entities.Customer.list("-created_date")
+    queryFn: () => primeos.entities.Customer.list("-created_date")
   });
 
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
-    queryFn: () => base44.entities.Product.filter({ status: "active" })
+    queryFn: () => primeos.entities.Product.filter({ status: "active" })
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointments", selectedPatient?.id],
-    queryFn: () => selectedPatient ? base44.entities.Appointment.filter({ patient_id: selectedPatient.id }) : [],
+    queryFn: () => selectedPatient ? primeos.entities.Appointment.filter({ patient_id: selectedPatient.id }) : [],
     enabled: !!selectedPatient
   });
 
   const { data: clinicalNotes = [] } = useQuery({
     queryKey: ["clinicalNotes", selectedPatient?.id],
-    queryFn: () => selectedPatient ? base44.entities.ClinicalNote.filter({ patient_id: selectedPatient.id }) : [],
+    queryFn: () => selectedPatient ? primeos.entities.ClinicalNote.filter({ patient_id: selectedPatient.id }) : [],
     enabled: !!selectedPatient
   });
 
   const { data: followUps = [] } = useQuery({
     queryKey: ["followUps", selectedPatient?.id],
-    queryFn: () => selectedPatient ? base44.entities.FollowUp.filter({ patient_id: selectedPatient.id }) : [],
+    queryFn: () => selectedPatient ? primeos.entities.FollowUp.filter({ patient_id: selectedPatient.id }) : [],
     enabled: !!selectedPatient
   });
 
   // Mutations
   const createPatientMutation = useMutation({
-    mutationFn: (data) => base44.entities.Customer.create({ ...data, source: "whatsapp" }),
+    mutationFn: (data) => primeos.entities.Customer.create({ ...data, source: "whatsapp" }),
     onSuccess: (newPatient) => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       setSelectedPatient(newPatient);
@@ -87,12 +87,12 @@ export default function PatientPipeline() {
   });
 
   const updatePatientMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Customer.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Customer.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["customers"] })
   });
 
   const createAppointmentMutation = useMutation({
-    mutationFn: (data) => base44.entities.Appointment.create(data),
+    mutationFn: (data) => primeos.entities.Appointment.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
       toast.success("Appointment scheduled!");
@@ -100,12 +100,12 @@ export default function PatientPipeline() {
   });
 
   const updateAppointmentMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Appointment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Appointment.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["appointments"] })
   });
 
   const createClinicalNoteMutation = useMutation({
-    mutationFn: (data) => base44.entities.ClinicalNote.create(data),
+    mutationFn: (data) => primeos.entities.ClinicalNote.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clinicalNotes"] });
       toast.success("Clinical note saved!");
@@ -113,7 +113,7 @@ export default function PatientPipeline() {
   });
 
   const createFollowUpMutation = useMutation({
-    mutationFn: (data) => base44.entities.FollowUp.create(data),
+    mutationFn: (data) => primeos.entities.FollowUp.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["followUps"] });
       toast.success("Follow-up scheduled!");
@@ -121,7 +121,7 @@ export default function PatientPipeline() {
   });
 
   const updateFollowUpMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.FollowUp.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.FollowUp.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["followUps"] })
   });
 
@@ -132,7 +132,7 @@ export default function PatientPipeline() {
     try {
       const serviceList = products.slice(0, 4).map(p => `- ${p.name}: $${p.price}`).join("\n");
       
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await primeos.integrations.Core.InvokeLLM({
         prompt: `Generate a friendly WhatsApp healthcare appointment script for a patient:
           
 Patient: ${selectedPatient.name}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -65,18 +65,18 @@ export default function EHR() {
   // ── Data ────────────────────────────────────────────────────────────────────
   const { data: patients = [], isLoading: loadingPatients } = useQuery({
     queryKey: ["ehr_patients"],
-    queryFn: () => base44.entities.PatientRecord.list("-created_date", 200),
+    queryFn: () => primeos.entities.PatientRecord.list("-created_date", 200),
   });
 
   const { data: records = [], isLoading: loadingRecords } = useQuery({
     queryKey: ["ehr_records", selectedPatient?.id],
-    queryFn: () => base44.entities.MedicalRecord.filter({ patient_id: selectedPatient.id }, "-date", 100),
+    queryFn: () => primeos.entities.MedicalRecord.filter({ patient_id: selectedPatient.id }, "-date", 100),
     enabled: !!selectedPatient,
   });
 
   // ── Mutations ──────────────────────────────────────────────────────────────
   const createPatient = useMutation({
-    mutationFn: (d) => base44.entities.PatientRecord.create(d),
+    mutationFn: (d) => primeos.entities.PatientRecord.create(d),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ["ehr_patients"] });
       setSelectedPatient(data);
@@ -86,7 +86,7 @@ export default function EHR() {
   });
 
   const updatePatient = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.PatientRecord.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.PatientRecord.update(id, data),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ["ehr_patients"] });
       setSelectedPatient(data);
@@ -97,7 +97,7 @@ export default function EHR() {
   });
 
   const createRecord = useMutation({
-    mutationFn: (d) => base44.entities.MedicalRecord.create(d),
+    mutationFn: (d) => primeos.entities.MedicalRecord.create(d),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["ehr_records"] });
       setShowRecordForm(false);
@@ -107,7 +107,7 @@ export default function EHR() {
   });
 
   const deleteRecord = useMutation({
-    mutationFn: (id) => base44.entities.MedicalRecord.delete(id),
+    mutationFn: (id) => primeos.entities.MedicalRecord.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["ehr_records"] }),
   });
 
@@ -135,7 +135,7 @@ export default function EHR() {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await primeos.integrations.Core.UploadFile({ file });
     setRecordForm(prev => ({ ...prev, attachments: [...prev.attachments, { name: file.name, url: file_url, type: file.type }] }));
     setUploading(false);
     toast.success("Arquivo anexado!");

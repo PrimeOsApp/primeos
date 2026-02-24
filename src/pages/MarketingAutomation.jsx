@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import PageHeader from "@/components/shared/PageHeader";
 import NurtureWorkflowBuilder from "@/components/marketing/NurtureWorkflowBuilder";
 import ABTestBuilder from "@/components/marketing/ABTestBuilder";
@@ -16,12 +16,12 @@ export default function MarketingAutomation() {
 
   const { data: workflows = [] } = useQuery({
     queryKey: ["workflows", refreshWorkflows],
-    queryFn: () => base44.entities.AutomationWorkflow.list(),
+    queryFn: () => primeos.entities.AutomationWorkflow.list(),
   });
 
   const { data: abTests = [] } = useQuery({
     queryKey: ["ab_tests", refreshTests],
-    queryFn: () => base44.entities.ABTest.list(),
+    queryFn: () => primeos.entities.ABTest.list(),
   });
 
   const activeWorkflows = workflows.filter(w => w.is_active);

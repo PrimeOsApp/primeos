@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, TrendingUp, CheckCircle, XCircle } from "lucide-react";
@@ -16,7 +16,7 @@ export default function AppointmentReports() {
 
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: ['appointments'],
-    queryFn: () => base44.entities.Appointment.list(),
+    queryFn: () => primeos.entities.Appointment.list(),
     initialData: []
   });
 

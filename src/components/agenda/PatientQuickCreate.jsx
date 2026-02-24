@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, UserPlus, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 
 export default function PatientQuickCreate({ onCreated, onCancel }) {
   const [form, setForm] = useState({
@@ -14,7 +14,7 @@ export default function PatientQuickCreate({ onCreated, onCancel }) {
   const handleSubmit = async () => {
     if (!form.name) return;
     setLoading(true);
-    const patient = await base44.entities.Customer.create({
+    const patient = await primeos.entities.Customer.create({
       ...form,
       status: "lead",
       source: "whatsapp"

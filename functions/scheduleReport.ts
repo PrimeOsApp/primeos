@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     }
 
     // Create report schedule
-    const schedule = await base44.entities.ReportSchedule.create({
+    const schedule = await primeos.entities.ReportSchedule.create({
       user_email: user.email,
       report_name: reportName,
       report_type: reportType,
@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
     });
 
     // Award points for scheduling a report
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'report_generated',
       metadata: { bonus_multiplier: 1.5 }
     });

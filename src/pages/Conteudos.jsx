@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -52,21 +52,21 @@ export default function Conteudos() {
 
   const { data: contents = [] } = useQuery({
     queryKey: ["contents"],
-    queryFn: () => base44.entities.Content.list("-created_date")
+    queryFn: () => primeos.entities.Content.list("-created_date")
   });
 
   const { data: strategies = [] } = useQuery({
     queryKey: ["marketingStrategies"],
-    queryFn: () => base44.entities.MarketingStrategy.list()
+    queryFn: () => primeos.entities.MarketingStrategy.list()
   });
 
   const { data: channels = [] } = useQuery({
     queryKey: ["marketingChannels"],
-    queryFn: () => base44.entities.MarketingChannel.list()
+    queryFn: () => primeos.entities.MarketingChannel.list()
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Content.create(data),
+    mutationFn: (data) => primeos.entities.Content.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contents"] });
       setShowForm(false);
@@ -75,7 +75,7 @@ export default function Conteudos() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Content.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Content.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["contents"] })
   });
 

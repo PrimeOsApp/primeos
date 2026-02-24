@@ -1,4 +1,4 @@
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import AIContentGenerator from "@/components/marketing/AIContentGenerator";
 export default function ContentCreator() {
   const { data: marketingMetrics = [] } = useQuery({
     queryKey: ["marketingMetrics"],
-    queryFn: () => base44.entities.MarketingMetric.list("-date")
+    queryFn: () => primeos.entities.MarketingMetric.list("-date")
   });
 
   // Get top performing campaigns

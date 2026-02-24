@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { lead_id, score_all } = await req.json();
@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
 
     const scoreLead = async (lead) => {
       // Fetch interactions for this lead
-      const interactions = await base44.entities.LeadInteraction.filter({ lead_id: lead.id });
+      const interactions = await primeos.entities.LeadInteraction.filter({ lead_id: lead.id });
 
       // Interaction scoring
       const interactionPoints = {
@@ -120,18 +120,18 @@ Deno.serve(async (req) => {
         }
       };
 
-      await base44.entities.Lead.update(lead.id, updateData);
+      await primeos.entities.Lead.update(lead.id, updateData);
       return { id: lead.id, name: lead.name, ...updateData };
     };
 
     if (score_all) {
-      const leads = await base44.entities.Lead.list();
+      const leads = await primeos.entities.Lead.list();
       const results = await Promise.all(leads.map(scoreLead));
       return Response.json({ success: true, scored: results.length, results });
     }
 
     if (!lead_id) return Response.json({ error: 'lead_id required' }, { status: 400 });
-    const lead = await base44.entities.Lead.get(lead_id);
+    const lead = await primeos.entities.Lead.get(lead_id);
     const result = await scoreLead(lead);
     return Response.json({ success: true, result });
 

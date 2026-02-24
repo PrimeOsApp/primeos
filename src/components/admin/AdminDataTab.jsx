@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,9 +26,9 @@ function EntityRow({ entity }) {
 
   const load = async () => {
     setLoading(true);
-    const data = await base44.entities[entity.key].list('-created_date', 1);
+    const data = await primeos.entities[entity.key].list('-created_date', 1);
     // Just count a broader fetch for display
-    const all = await base44.entities[entity.key].list('-created_date', 500);
+    const all = await primeos.entities[entity.key].list('-created_date', 500);
     setCount(all.length);
     setLoading(false);
   };
@@ -87,7 +87,7 @@ export default function AdminDataTab() {
             <Trash2 className="w-5 h-5 text-red-500 flex-shrink-0" />
             <div>
               <p className="text-white text-sm font-medium">Exclusão de Dados</p>
-              <p className="text-slate-500 text-xs">Para excluir dados em massa, acesse o dashboard do Base44 → Entities → gerenciar registros diretamente no banco.</p>
+              <p className="text-slate-500 text-xs">Para excluir dados em massa, acesse o dashboard do PrimeOS → Entities → gerenciar registros diretamente no banco.</p>
             </div>
           </div>
         </CardContent>

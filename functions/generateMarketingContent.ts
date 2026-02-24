@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
 
     // Get segment details if provided
     if (segmentId) {
-      segment = await base44.entities.CustomerSegment.get(segmentId);
+      segment = await primeos.entities.CustomerSegment.get(segmentId);
       segmentContext = `
 SEGMENTO ALVO: ${segment.name}
 Descrição: ${segment.descricao || 'N/A'}
@@ -64,7 +64,7 @@ ${platform === 'whatsapp' ? '- Mensagem direta e objetiva\n- Tom conversacional\
 
 Crie conteúdo envolvente, alinhado ao segmento e que gere conversão.`;
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const response = await primeos.integrations.Core.InvokeLLM({
       prompt,
       response_json_schema: {
         type: "object",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,11 +39,11 @@ export default function PatientDocumentVault({ patient }) {
 
   const { data: documents = [] } = useQuery({
     queryKey: ["patient-docs", patient.id],
-    queryFn: () => base44.entities.Document.filter({ patient_id: patient.id }, "-created_date"),
+    queryFn: () => primeos.entities.Document.filter({ patient_id: patient.id }, "-created_date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Document.create(data),
+    mutationFn: (data) => primeos.entities.Document.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patient-docs", patient.id] });
       setShowForm(false);
@@ -53,7 +53,7 @@ export default function PatientDocumentVault({ patient }) {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Document.delete(id),
+    mutationFn: (id) => primeos.entities.Document.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patient-docs", patient.id] })
   });
 
@@ -61,7 +61,7 @@ export default function PatientDocumentVault({ patient }) {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await primeos.integrations.Core.UploadFile({ file });
     setForm(prev => ({ ...prev, file_url, title: prev.title || file.name }));
     setUploading(false);
     toast.success("Arquivo carregado!");

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -123,7 +123,7 @@ export default function AISegmentSuggestions({ customers, onImport }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await base44.functions.invoke("analyzePatientSegments", {});
+      const res = await primeos.functions.invoke("analyzePatientSegments", {});
       if (res.data?.success && res.data?.analysis?.segments) {
         // Transform AI analysis segments into importable segment definitions
         const aiSegments = res.data.analysis.segments.map(seg => ({

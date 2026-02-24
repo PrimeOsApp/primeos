@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { DollarSign, CheckCircle, FileText, Loader2 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -27,7 +27,7 @@ export default function AppointmentPaymentPanel({ appointment, onUpdated }) {
     setSaving(true);
     const today = new Date().toISOString().split("T")[0];
     const invoiceNumber = appointment.invoice_number || `INV-${appointment.id?.slice(-6).toUpperCase()}`;
-    await base44.entities.Appointment.update(appointment.id, {
+    await primeos.entities.Appointment.update(appointment.id, {
       price: parseFloat(price) || 0,
       payment_status: paymentStatus,
       payment_method: paymentMethod || undefined,

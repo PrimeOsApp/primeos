@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -22,7 +22,7 @@ export default function AdminSystemTab() {
 
   const testReminders = async () => {
     setTestingReminder(true);
-    const res = await base44.functions.invoke('sendAppointmentReminder', {});
+    const res = await primeos.functions.invoke('sendAppointmentReminder', {});
     toast.success(`Teste concluído: ${res.data?.summary?.sent || 0} lembretes enviados`);
     setTestingReminder(false);
   };
@@ -40,7 +40,7 @@ export default function AdminSystemTab() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: "API Base44", status: "online", color: "bg-emerald-500" },
+              { label: "API PrimeOS", status: "online", color: "bg-emerald-500" },
               { label: "Google Calendar", status: "conectado", color: "bg-emerald-500" },
               { label: "IA (InvokeLLM)", status: "online", color: "bg-emerald-500" },
               { label: "WhatsApp", status: "via link", color: "bg-amber-500" },
@@ -95,7 +95,7 @@ export default function AdminSystemTab() {
               <Zap className="w-5 h-5" />
               <span className="text-xs">Ver Functions</span>
             </Button>
-            <Button variant="outline" onClick={() => toast.info("Use o painel Base44 para gerenciar automações")}
+            <Button variant="outline" onClick={() => toast.info("Use o painel PrimeOS para gerenciar automações")}
               className="border-slate-600 text-slate-300 hover:text-white hover:bg-slate-700 gap-2 h-auto py-3 flex-col">
               <CheckCircle className="w-5 h-5" />
               <span className="text-xs">Automações</span>

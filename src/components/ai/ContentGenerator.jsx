@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ export default function ContentGenerator() {
 
   const { data: segments = [] } = useQuery({
     queryKey: ["segments"],
-    queryFn: () => base44.entities.CustomerSegment.list(),
+    queryFn: () => primeos.entities.CustomerSegment.list(),
   });
 
   const generateContent = async () => {
@@ -35,7 +35,7 @@ export default function ContentGenerator() {
 
     setLoading(true);
     try {
-      const response = await base44.functions.invoke('generateMarketingContent', formData);
+      const response = await primeos.functions.invoke('generateMarketingContent', formData);
 
       if (response.data.success) {
         setContent(response.data.data);

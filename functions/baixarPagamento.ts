@@ -1,21 +1,21 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     if (!user) return Response.json({ error: 'Não autorizado' }, { status: 401 });
 
     const { transaction_id, payment_method, payment_date, notes } = await req.json();
     if (!transaction_id) return Response.json({ error: 'transaction_id é obrigatório' }, { status: 400 });
 
-    const txs = await base44.entities.FinancialTransaction.filter({ id: transaction_id });
+    const txs = await primeos.entities.FinancialTransaction.filter({ id: transaction_id });
     const tx = txs[0];
     if (!tx) return Response.json({ error: 'Transação não encontrada' }, { status: 404 });
 
     const paidAt = payment_date ? new Date(payment_date + 'T12:00:00').toISOString() : new Date().toISOString();
 
-    await base44.entities.FinancialTransaction.update(tx.id, {
+    await primeos.entities.FinancialTransaction.update(tx.id, {
       status: 'pago',
       boleto_status: tx.boleto_status === 'gerado' ? 'pago' : tx.boleto_status,
       boleto_paid_at: paidAt,

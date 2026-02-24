@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,8 +167,8 @@ function ScheduleForm({ open, onClose, schedule }) {
 
   const saveMutation = useMutation({
     mutationFn: (data) => schedule
-      ? base44.entities.ReminderSchedule.update(schedule.id, data)
-      : base44.entities.ReminderSchedule.create(data),
+      ? primeos.entities.ReminderSchedule.update(schedule.id, data)
+      : primeos.entities.ReminderSchedule.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reminderSchedules"] });
       toast.success(schedule ? "Regra atualizada!" : "Regra criada!");
@@ -325,16 +325,16 @@ export default function ReminderScheduleManager() {
 
   const { data: schedules = [], isLoading } = useQuery({
     queryKey: ["reminderSchedules"],
-    queryFn: () => base44.entities.ReminderSchedule.list("-created_date"),
+    queryFn: () => primeos.entities.ReminderSchedule.list("-created_date"),
   });
 
   const toggleMutation = useMutation({
-    mutationFn: ({ id, is_active }) => base44.entities.ReminderSchedule.update(id, { is_active }),
+    mutationFn: ({ id, is_active }) => primeos.entities.ReminderSchedule.update(id, { is_active }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["reminderSchedules"] }),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.ReminderSchedule.delete(id),
+    mutationFn: (id) => primeos.entities.ReminderSchedule.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reminderSchedules"] });
       toast.success("Regra removida.");

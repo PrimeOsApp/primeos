@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,16 +32,16 @@ export default function PaymentDelinquencyReport() {
 
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: ["allAppointments"],
-    queryFn: () => base44.entities.Appointment.list("-date")
+    queryFn: () => primeos.entities.Appointment.list("-date")
   });
 
   const { data: followUpLogs = [] } = useQuery({
     queryKey: ["followUpLogs"],
-    queryFn: () => base44.entities.FollowUpLog.list("-created_date")
+    queryFn: () => primeos.entities.FollowUpLog.list("-created_date")
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Appointment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Appointment.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allAppointments"] });
       toast.success("Pagamento atualizado!");
@@ -111,7 +111,7 @@ export default function PaymentDelinquencyReport() {
   const runFollowUp = async () => {
     setRunningFollowUp(true);
     try {
-      const res = await base44.functions.invoke("paymentFollowUp", {});
+      const res = await primeos.functions.invoke("paymentFollowUp", {});
       const data = res.data;
       toast.success(`Follow-up executado: ${data.summary.sent} notificações enviadas`);
       queryClient.invalidateQueries({ queryKey: ["followUpLogs"] });

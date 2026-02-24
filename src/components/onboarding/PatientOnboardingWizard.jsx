@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,7 +56,7 @@ export default function PatientOnboardingWizard({ onComplete, onClose }) {
 
   const createPatientMutation = useMutation({
     mutationFn: async (data) => {
-      const patient = await base44.entities.PatientRecord.create(data);
+      const patient = await primeos.entities.PatientRecord.create(data);
       return patient;
     },
     onSuccess: (patient) => {
@@ -67,13 +67,13 @@ export default function PatientOnboardingWizard({ onComplete, onClose }) {
   });
 
   const createAppointmentMutation = useMutation({
-    mutationFn: (data) => base44.entities.Appointment.create(data),
+    mutationFn: (data) => primeos.entities.Appointment.create(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["appointments"] }),
   });
 
   const getAISuggestion = async () => {
     setLoadingAI(true);
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await primeos.integrations.Core.InvokeLLM({
       prompt: `Você é um assistente de triagem odontológica da Prime Odontologia.
 Com base nas informações abaixo, sugira o serviço mais adequado para a primeira consulta e um horário conveniente.
 

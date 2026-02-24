@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 /**
  * Automação financeira unificada:
@@ -11,7 +11,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
  */
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     const body = await req.json().catch(() => ({}));
     const previewMode = body?.mode === "preview";
@@ -23,8 +23,8 @@ Deno.serve(async (req) => {
     const in3 = new Date(today); in3.setDate(in3.getDate() + 3);
     const in7 = new Date(today); in7.setDate(in7.getDate() + 7);
 
-    const all = await base44.asServiceRole.entities.FinancialTransaction.list('-due_date', 1000);
-    const adminUsers = await base44.asServiceRole.entities.User.filter({ role: 'admin' });
+    const all = await primeos.asServiceRole.entities.FinancialTransaction.list('-due_date', 1000);
+    const adminUsers = await primeos.asServiceRole.entities.User.filter({ role: 'admin' });
     const adminEmail = adminUsers?.[0]?.email;
 
     const results = { reminders_pagar: 0, reminders_receber: 0, recorrentes_criadas: 0, baixo_saldo_alerta: false, errors: [] };
@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
       }).join('');
 
       try {
-        await base44.asServiceRole.integrations.Core.SendEmail({
+        await primeos.asServiceRole.integrations.Core.SendEmail({
           to: adminEmail,
           subject: `💸 ${overdue.length} vencida(s) + ${dueSoon.length} a vencer — Contas a Pagar`,
           body: `<div style="font-family:sans-serif;max-width:640px;margin:0 auto;padding:24px">
@@ -91,7 +91,7 @@ Deno.serve(async (req) => {
         results.reminders_pagar = contasPagar.length;
         // Atualiza reminder_sent_at
         for (const t of contasPagar) {
-          await base44.asServiceRole.entities.FinancialTransaction.update(t.id, {
+          await primeos.asServiceRole.entities.FinancialTransaction.update(t.id, {
             reminder_sent_at: new Date().toISOString(),
             reminder_count: (t.reminder_count || 0) + 1
           });
@@ -134,7 +134,7 @@ Deno.serve(async (req) => {
             : days === 0 ? `Sua fatura vence <strong>hoje</strong>.`
             : `Sua fatura vence em <strong>${days} dia(s)</strong>.`;
 
-          await base44.asServiceRole.integrations.Core.SendEmail({
+          await primeos.asServiceRole.integrations.Core.SendEmail({
             to: t.patient_email,
             subject,
             body: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
@@ -157,7 +157,7 @@ Deno.serve(async (req) => {
               </div>
             </div>`
           });
-          await base44.asServiceRole.entities.FinancialTransaction.update(t.id, {
+          await primeos.asServiceRole.entities.FinancialTransaction.update(t.id, {
             reminder_sent_at: new Date().toISOString(),
             reminder_count: (t.reminder_count || 0) + 1
           });
@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
       if (exists) continue;
       if (!previewMode) {
         try {
-          await base44.asServiceRole.entities.FinancialTransaction.create({
+          await primeos.asServiceRole.entities.FinancialTransaction.create({
             type: t.type, category: t.category, description: t.description,
             amount: t.amount, date: nextDueStr, due_date: nextDueStr,
             status: 'pendente', payment_method: t.payment_method,
@@ -221,7 +221,7 @@ Deno.serve(async (req) => {
       results.baixo_saldo_alerta = true;
       if (adminEmail && !previewMode) {
         try {
-          await base44.asServiceRole.integrations.Core.SendEmail({
+          await primeos.asServiceRole.integrations.Core.SendEmail({
             to: adminEmail,
             subject: `🚨 Alerta: Projeção de saldo NEGATIVO nos próximos 30 dias`,
             body: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">

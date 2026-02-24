@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,32 +14,32 @@ export default function AIInsights() {
 
   const { data: leads = [] } = useQuery({
     queryKey: ['leads'],
-    queryFn: () => base44.entities.Lead.list(),
+    queryFn: () => primeos.entities.Lead.list(),
   });
 
   const { data: customers = [] } = useQuery({
     queryKey: ['customers'],
-    queryFn: () => base44.entities.Customer.list(),
+    queryFn: () => primeos.entities.Customer.list(),
   });
 
   const { data: sales = [] } = useQuery({
     queryKey: ['sales'],
-    queryFn: () => base44.entities.Sale.list(),
+    queryFn: () => primeos.entities.Sale.list(),
   });
 
   const { data: metrics = [] } = useQuery({
     queryKey: ['marketingMetrics'],
-    queryFn: () => base44.entities.MarketingMetric.list(),
+    queryFn: () => primeos.entities.MarketingMetric.list(),
   });
 
   const { data: expenses = [] } = useQuery({
     queryKey: ['expenses'],
-    queryFn: () => base44.entities.Expense.list(),
+    queryFn: () => primeos.entities.Expense.list(),
   });
 
   const { data: interactions = [] } = useQuery({
     queryKey: ['leadInteractions'],
-    queryFn: () => base44.entities.LeadInteraction.list(),
+    queryFn: () => primeos.entities.LeadInteraction.list(),
   });
 
   // Calculate KPIs
@@ -116,7 +116,7 @@ export default function AIInsights() {
         total_interactions: interactions.length
       };
 
-      const response = await base44.integrations.Core.InvokeLLM({
+      const response = await primeos.integrations.Core.InvokeLLM({
         prompt: `Você é o Government AI da Prime Odontologia, responsável pela governança estratégica.
 
 Analise os seguintes dados de negócio e forneça insights estratégicos profundos:

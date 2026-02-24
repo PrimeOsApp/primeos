@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,24 +27,24 @@ export default function ResourceManager() {
 
   const { data: resources = [] } = useQuery({
     queryKey: ["resources"],
-    queryFn: () => base44.entities.Resource.list("name"),
+    queryFn: () => primeos.entities.Resource.list("name"),
   });
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["appointmentsForResources", viewDate],
-    queryFn: () => base44.entities.Appointment.filter({ date: viewDate }),
+    queryFn: () => primeos.entities.Appointment.filter({ date: viewDate }),
   });
 
   const createMutation = useMutation({
-    mutationFn: (d) => base44.entities.Resource.create(d),
+    mutationFn: (d) => primeos.entities.Resource.create(d),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["resources"] }); setShowForm(false); toast.success("Recurso criado!"); }
   });
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Resource.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Resource.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["resources"] }); setShowForm(false); toast.success("Atualizado!"); }
   });
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Resource.delete(id),
+    mutationFn: (id) => primeos.entities.Resource.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["resources"] }); toast.success("Removido!"); }
   });
 

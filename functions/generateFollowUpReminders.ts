@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -15,14 +15,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Lead ID required' }, { status: 400 });
     }
 
-    const lead = await base44.asServiceRole.entities.Lead.get(leadId);
+    const lead = await primeos.asServiceRole.entities.Lead.get(leadId);
     
     if (!lead) {
       return Response.json({ error: 'Lead not found' }, { status: 404 });
     }
 
     // Fetch lead interactions
-    const interactions = await base44.asServiceRole.entities.LeadInteraction.filter({
+    const interactions = await primeos.asServiceRole.entities.LeadInteraction.filter({
       lead_id: leadId
     });
 
@@ -69,7 +69,7 @@ Forneça:
 5. Táticas específicas para este lead
 6. Mensagens personalizadas (3 opções)`;
 
-    const followUpStrategy = await base44.integrations.Core.InvokeLLM({
+    const followUpStrategy = await primeos.integrations.Core.InvokeLLM({
       prompt: followUpPrompt,
       response_json_schema: {
         type: "object",

@@ -1,18 +1,18 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 import Stripe from 'npm:stripe@14.21.0';
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"), { apiVersion: "2024-06-20" });
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     if (!user) return Response.json({ error: 'Não autorizado' }, { status: 401 });
 
     const { transaction_id } = await req.json();
     if (!transaction_id) return Response.json({ error: 'transaction_id é obrigatório' }, { status: 400 });
 
-    const transactions = await base44.entities.FinancialTransaction.filter({ id: transaction_id });
+    const transactions = await primeos.entities.FinancialTransaction.filter({ id: transaction_id });
     const tx = transactions[0];
     if (!tx) return Response.json({ error: 'Transação não encontrada' }, { status: 404 });
     if (tx.type !== 'receita') return Response.json({ error: 'Apenas receitas podem gerar cobrança' }, { status: 400 });
@@ -32,17 +32,17 @@ Deno.serve(async (req) => {
 
     const paymentLink = await stripe.paymentLinks.create({
       line_items: [{ price: price.id, quantity: 1 }],
-      after_completion: { type: 'redirect', redirect: { url: 'https://app.base44.com' } },
+      after_completion: { type: 'redirect', redirect: { url: 'https://app.primeos.com' } },
       metadata: {
         transaction_id: tx.id,
-        base44_app_id: Deno.env.get("BASE44_APP_ID"),
+        primeos_app_id: Deno.env.get("PRIMEOS_APP_ID"),
         patient_name: tx.patient_name || ''
       },
       payment_method_types: ['card', 'boleto'],
       payment_intent_data: {
         metadata: {
           transaction_id: tx.id,
-          base44_app_id: Deno.env.get("BASE44_APP_ID")
+          primeos_app_id: Deno.env.get("PRIMEOS_APP_ID")
         }
       }
     });
@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
     const barcode = `23793.38128 60007.827136 91000.063305 8 ${Math.floor(Date.now() / 1000)}`;
 
     // Atualiza a transação com os dados do boleto
-    await base44.entities.FinancialTransaction.update(tx.id, {
+    await primeos.entities.FinancialTransaction.update(tx.id, {
       boleto_id: paymentLink.id,
       boleto_url: paymentLink.url,
       boleto_barcode: barcode,
@@ -66,7 +66,7 @@ Deno.serve(async (req) => {
         ? new Date(tx.due_date + 'T12:00:00').toLocaleDateString('pt-BR')
         : 'a combinar';
 
-      await base44.asServiceRole.integrations.Core.SendEmail({
+      await primeos.asServiceRole.integrations.Core.SendEmail({
         to: tx.patient_email,
         subject: `Cobrança: ${tx.description} — R$ ${(tx.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
         body: `

@@ -1,9 +1,9 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const primeos = createClientFromRequest(req);
+    const user = await primeos.auth.me();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -15,14 +15,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Lead ID required' }, { status: 400 });
     }
 
-    const lead = await base44.asServiceRole.entities.Lead.get(leadId);
+    const lead = await primeos.asServiceRole.entities.Lead.get(leadId);
     
     if (!lead) {
       return Response.json({ error: 'Lead not found' }, { status: 404 });
     }
 
     // Fetch lead interactions
-    const interactions = await base44.asServiceRole.entities.LeadInteraction.filter({
+    const interactions = await primeos.asServiceRole.entities.LeadInteraction.filter({
       lead_id: leadId
     });
 
@@ -59,7 +59,7 @@ Forneça:
 - Probabilidade de conversão (%)
 - Pontos fortes e fracos do lead`;
 
-    const scoreResult = await base44.integrations.Core.InvokeLLM({
+    const scoreResult = await primeos.integrations.Core.InvokeLLM({
       prompt: scoringPrompt,
       response_json_schema: {
         type: "object",
@@ -76,7 +76,7 @@ Forneça:
     });
 
     // Update lead with AI score
-    await base44.asServiceRole.entities.Lead.update(leadId, {
+    await primeos.asServiceRole.entities.Lead.update(leadId, {
       ai_score: scoreResult.score,
       ai_classification: scoreResult.classification,
       ai_conversion_probability: scoreResult.conversion_probability,
@@ -90,7 +90,7 @@ Forneça:
     });
 
     // Award points
-    await base44.functions.invoke('awardPoints', {
+    await primeos.functions.invoke('awardPoints', {
       action: 'lead_scored',
       metadata: { bonus_multiplier: 1.5 }
     });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,7 @@ export default function PatientImageExams({ patient, onUpdate }) {
   const saveMutation = useMutation({
     mutationFn: async (newExam) => {
       const updated = [...xRays, newExam];
-      return base44.entities.PatientRecord.update(patient.id, { x_rays: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { x_rays: updated });
     },
     onSuccess: (data) => {
       onUpdate(data);
@@ -38,7 +38,7 @@ export default function PatientImageExams({ patient, onUpdate }) {
   const deleteMutation = useMutation({
     mutationFn: async (index) => {
       const updated = xRays.filter((_, i) => i !== index);
-      return base44.entities.PatientRecord.update(patient.id, { x_rays: updated });
+      return primeos.entities.PatientRecord.update(patient.id, { x_rays: updated });
     },
     onSuccess: (data) => onUpdate(data),
   });
@@ -55,7 +55,7 @@ export default function PatientImageExams({ patient, onUpdate }) {
     setUploading(true);
     let file_url = "";
     if (formData.file) {
-      const res = await base44.integrations.Core.UploadFile({ file: formData.file });
+      const res = await primeos.integrations.Core.UploadFile({ file: formData.file });
       file_url = res.file_url;
     }
     setUploading(false);

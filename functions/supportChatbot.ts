@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { userMessage } = await req.json();
 
     if (!userMessage) {
@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch knowledge base
-    const kbArticles = await base44.asServiceRole.entities.KnowledgeBase.list();
+    const kbArticles = await primeos.asServiceRole.entities.KnowledgeBase.list();
     
     // Prepare KB context
     const kbContext = kbArticles
@@ -34,7 +34,7 @@ PERGUNTA DO CLIENTE:
 Forneça uma resposta completa e útil baseada na base de conhecimento.
 Se não encontrar informações, sugira que o cliente fale com um agente.`;
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const response = await primeos.integrations.Core.InvokeLLM({
       prompt,
       response_json_schema: {
         type: "object",

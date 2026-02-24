@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { event, data } = await req.json();
 
     // Only process completed appointments
@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
     const followUpDateStr = followUpDate.toISOString().split('T')[0];
 
     // Create follow-up record
-    const followUp = await base44.asServiceRole.entities.FollowUp.create({
+    const followUp = await primeos.asServiceRole.entities.FollowUp.create({
       patient_id: data.patient_id,
       patient_name: data.patient_name,
       patient_phone: data.patient_phone,

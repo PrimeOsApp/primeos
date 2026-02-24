@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { v4 as uuidv4 } from 'uuid';
 
 const SESSION_KEY = 'user_session_id';
@@ -19,10 +19,10 @@ const getSessionId = () => {
 // Track page view
 export const trackPageView = async (pageName) => {
   try {
-    const user = await base44.auth.me();
+    const user = await primeos.auth.me();
     const sessionId = getSessionId();
     
-    await base44.entities.UserEngagement.create({
+    await primeos.entities.UserEngagement.create({
       user_email: user.email,
       event_type: 'page_view',
       feature_name: pageName,
@@ -38,10 +38,10 @@ export const trackPageView = async (pageName) => {
 // Track feature usage
 export const trackFeatureUse = async (featureName, metadata = {}) => {
   try {
-    const user = await base44.auth.me();
+    const user = await primeos.auth.me();
     const sessionId = getSessionId();
     
-    await base44.entities.UserEngagement.create({
+    await primeos.entities.UserEngagement.create({
       user_email: user.email,
       event_type: 'feature_use',
       feature_name: featureName,
@@ -56,10 +56,10 @@ export const trackFeatureUse = async (featureName, metadata = {}) => {
 // Track conversion event
 export const trackConversion = async (conversionStep, metadata = {}) => {
   try {
-    const user = await base44.auth.me();
+    const user = await primeos.auth.me();
     const sessionId = getSessionId();
     
-    await base44.entities.UserEngagement.create({
+    await primeos.entities.UserEngagement.create({
       user_email: user.email,
       event_type: 'conversion',
       conversion_step: conversionStep,
@@ -81,11 +81,11 @@ const calculateSessionDuration = () => {
 // Track session end
 export const trackSessionEnd = async () => {
   try {
-    const user = await base44.auth.me();
+    const user = await primeos.auth.me();
     const sessionId = getSessionId();
     const duration = calculateSessionDuration();
     
-    await base44.entities.UserEngagement.create({
+    await primeos.entities.UserEngagement.create({
       user_email: user.email,
       event_type: 'session_end',
       session_id: sessionId,

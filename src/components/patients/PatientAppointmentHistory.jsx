@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User, FileText } from "lucide-react";
 import { format } from "date-fns";
@@ -27,7 +27,7 @@ const serviceLabels = {
 export default function PatientAppointmentHistory({ patient }) {
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: ["appointments-patient", patient.id, patient.patient_name],
-    queryFn: () => base44.entities.Appointment.filter({ patient_name: patient.patient_name }, "-date", 50),
+    queryFn: () => primeos.entities.Appointment.filter({ patient_name: patient.patient_name }, "-date", 50),
   });
 
   if (isLoading) {

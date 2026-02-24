@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,13 +38,13 @@ export default function ReminderPanel() {
   const { data: upcomingApts = [] } = useQuery({
     queryKey: ["upcomingApts"],
     queryFn: async () => {
-      const apts = await base44.entities.Appointment.list("-date");
+      const apts = await primeos.entities.Appointment.list("-date");
       return apts.filter(a => (a.date === today || a.date === tomorrow) && a.status !== "cancelled" && a.status !== "completed");
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Appointment.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.Appointment.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["upcomingApts"] }),
   });
 
@@ -62,7 +62,7 @@ export default function ReminderPanel() {
   const sendBulkEmailReminders = async (day = 'tomorrow') => {
     setSendingBulk(true);
     try {
-      const res = await base44.functions.invoke('sendAppointmentReminder', { day });
+      const res = await primeos.functions.invoke('sendAppointmentReminder', { day });
       const d = res.data;
       if (d.success) {
         toast.success(`✅ Lembretes enviados: ${d.summary.sent} e-mails, ${d.summary.skipped} ignorados`);

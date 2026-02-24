@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -29,21 +29,21 @@ export default function Inventory() {
 
   const { data: items = [], isLoading } = useQuery({
     queryKey: ["inventory"],
-    queryFn: () => base44.entities.InventoryItem.list("-updated_date", 200),
+    queryFn: () => primeos.entities.InventoryItem.list("-updated_date", 200),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.InventoryItem.create({ ...data, is_active: true }),
+    mutationFn: (data) => primeos.entities.InventoryItem.create({ ...data, is_active: true }),
     onSuccess: () => { qc.invalidateQueries(["inventory"]); toast.success("Item adicionado!"); setModal(null); },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.InventoryItem.update(id, data),
+    mutationFn: ({ id, data }) => primeos.entities.InventoryItem.update(id, data),
     onSuccess: () => { qc.invalidateQueries(["inventory"]); toast.success("Item atualizado!"); setModal(null); },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.InventoryItem.delete(id),
+    mutationFn: (id) => primeos.entities.InventoryItem.delete(id),
     onSuccess: () => { qc.invalidateQueries(["inventory"]); toast.success("Item removido!"); setModal(null); },
   });
 

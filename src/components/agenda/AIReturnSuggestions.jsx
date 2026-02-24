@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +20,7 @@ export default function AIReturnSuggestions({ onSchedule }) {
 
   const run = async () => {
     setLoading(true);
-    const res = await base44.functions.invoke('suggestReturnVisits', {});
+    const res = await primeos.functions.invoke('suggestReturnVisits', {});
     setData(res.data);
     setLoading(false);
     if (res.data?.suggestions?.length === 0) toast.info(res.data?.message || "Nenhum retorno pendente.");

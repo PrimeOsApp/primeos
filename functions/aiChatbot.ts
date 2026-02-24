@@ -1,8 +1,8 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
     const { message, conversationHistory = [], customerContext } = await req.json();
 
     // Build context about the customer and business
@@ -43,7 +43,7 @@ Responda de forma natural, útil e humanizada.`;
       { role: "user", content: message }
     ];
 
-    const response = await base44.integrations.Core.InvokeLLM({
+    const response = await primeos.integrations.Core.InvokeLLM({
       prompt: messages.map(m => `${m.role}: ${m.content}`).join('\n\n'),
       response_json_schema: {
         type: "object",

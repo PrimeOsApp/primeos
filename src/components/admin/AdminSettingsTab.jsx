@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -175,7 +175,7 @@ function DentistsSettings() {
 
   const { data: dentists = [], isLoading } = useQuery({
     queryKey: ["dentists-settings"],
-    queryFn: () => base44.entities.Dentist.list()
+    queryFn: () => primeos.entities.Dentist.list()
   });
 
   const [form, setForm] = useState({ name: "", specialty: "clinico_geral", email: "", phone: "", cro: "", color: "#6366f1", slot_duration_minutes: 30 });
@@ -184,8 +184,8 @@ function DentistsSettings() {
 
   const saveMutation = useMutation({
     mutationFn: async (data) => editId
-      ? base44.entities.Dentist.update(editId, data)
-      : base44.entities.Dentist.create({ ...data, is_active: true }),
+      ? primeos.entities.Dentist.update(editId, data)
+      : primeos.entities.Dentist.create({ ...data, is_active: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["dentists-settings"] });
       setForm({ name: "", specialty: "clinico_geral", email: "", phone: "", cro: "", color: "#6366f1", slot_duration_minutes: 30 });
@@ -196,7 +196,7 @@ function DentistsSettings() {
   });
 
   const toggleActiveMutation = useMutation({
-    mutationFn: ({ id, is_active }) => base44.entities.Dentist.update(id, { is_active }),
+    mutationFn: ({ id, is_active }) => primeos.entities.Dentist.update(id, { is_active }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["dentists-settings"] })
   });
 
@@ -320,7 +320,7 @@ function ResourcesSettings() {
 
   const { data: resources = [], isLoading } = useQuery({
     queryKey: ["resources-settings"],
-    queryFn: () => base44.entities.Resource.list()
+    queryFn: () => primeos.entities.Resource.list()
   });
 
   const [form, setForm] = useState({ name: "", type: "cadeira", location: "", description: "", requires_sterilization_minutes: 15 });
@@ -329,8 +329,8 @@ function ResourcesSettings() {
 
   const saveMutation = useMutation({
     mutationFn: async (data) => editId
-      ? base44.entities.Resource.update(editId, data)
-      : base44.entities.Resource.create({ ...data, is_active: true }),
+      ? primeos.entities.Resource.update(editId, data)
+      : primeos.entities.Resource.create({ ...data, is_active: true }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["resources-settings"] });
       setForm({ name: "", type: "cadeira", location: "", description: "", requires_sterilization_minutes: 15 });
@@ -341,7 +341,7 @@ function ResourcesSettings() {
   });
 
   const toggleActiveMutation = useMutation({
-    mutationFn: ({ id, is_active }) => base44.entities.Resource.update(id, { is_active }),
+    mutationFn: ({ id, is_active }) => primeos.entities.Resource.update(id, { is_active }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["resources-settings"] })
   });
 

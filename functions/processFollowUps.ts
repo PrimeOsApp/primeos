@@ -1,13 +1,13 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const primeos = createClientFromRequest(req);
 
     // Allow both scheduled (service role) and manual admin calls
     let isAdmin = false;
     try {
-      const user = await base44.auth.me();
+      const user = await primeos.auth.me();
       isAdmin = user?.role === 'admin';
     } catch (_) {
       isAdmin = true; // scheduled automation
@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const db = base44.asServiceRole;
+    const db = primeos.asServiceRole;
 
     const [rules, appointments, transactions, patients] = await Promise.all([
       db.entities.FollowUpRule.filter({ is_active: true }),
