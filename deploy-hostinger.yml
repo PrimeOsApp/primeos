@@ -22,3 +22,4 @@ jobs:
  password: ${{ secrets.FTP_PASSWORD }}
  local-dir: dist/
  server-dir: /domains/primeodontologia.com.br/public_html/primeos/
+VITE_BASE_PATH=/primeos.primeodontologia.com.br
