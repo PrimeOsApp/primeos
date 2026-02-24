@@ -52,10 +52,10 @@ jobs:
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: 89.117.7.117
+          server: ${{ secrets.HOSTINGER_FTP_SERVER || secrets.HOSTINGER_FTP_HOST || 'ftp.primeodontologia.com.br' }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          port: ${{ secrets.HOSTINGER_FTP_PORT || 21 }}
+          port: ${{ secrets.HOSTINGER_FTP_PORT || '21' }}
           protocol: ftp
           local-dir: dist/
           server-dir: ${{ secrets.HOSTINGER_REMOTE_DIR || '/public_html/' }}
