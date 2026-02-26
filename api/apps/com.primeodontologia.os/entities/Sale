@@ -1,0 +1,27 @@
+[
+  {
+    "notes": "Pagamento no cartao de 4x, no app Mercado Pago - R$150 de taxas",
+    "whatsapp_order_id": null,
+    "total_amount": 1200,
+    "payment_status": "paid",
+    "channel": "whatsapp",
+    "currency": "BRL",
+    "customer_name": "Julia Mafra",
+    "customer_id": "01",
+    "products": [
+      {
+        "total": 1200,
+        "quantity": 2,
+        "unit_price": 600,
+        "product_name": "Cirurgia dos Sisos",
+        "product_id": "Sisos"
+      }
+    ],
+    "status": "confirmed",
+    "id": "697e830a46431f50ad269b72",
+    "created_date": "2026-01-31T22:32:42.113000",
+    "updated_date": "2026-02-20T22:13:40.474000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  }
+]

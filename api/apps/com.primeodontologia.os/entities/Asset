@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Instagram and Facebook",
+    "type": "software",
+    "value": 80,
+    "purchase_date": "2026-02-07T03:00:00.000Z",
+    "depreciation_years": null,
+    "status": "active",
+    "location": null,
+    "assigned_to": null,
+    "notes": null,
+    "id": "698752c0bab62528f9a071a1",
+    "created_date": "2026-02-07T14:57:04.497000",
+    "updated_date": "2026-02-07T14:57:04.497000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  },
+  {
+    "name": "Whatsapp Verified",
+    "type": "software",
+    "value": 55,
+    "purchase_date": "2023-08-15",
+    "depreciation_years": 5,
+    "status": "active",
+    "location": "Parking Lot",
+    "assigned_to": "Sales",
+    "notes": null,
+    "id": "697e830a46431f50ad269b7a",
+    "created_date": "2026-01-31T22:32:42.123000",
+    "updated_date": "2026-02-07T14:56:20.112000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  },
+  {
+    "name": "Software License",
+    "type": "software",
+    "value": 120,
+    "purchase_date": "2024-01-01",
+    "depreciation_years": 1,
+    "status": "active",
+    "location": null,
+    "assigned_to": null,
+    "notes": null,
+    "id": "697e830a46431f50ad269b79",
+    "created_date": "2026-01-31T22:32:42.123000",
+    "updated_date": "2026-02-07T14:55:30.504000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  }
+]
