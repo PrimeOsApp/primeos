@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:primeos": "VITE_BASE_PATH=/ vite build",
-    "build:pages": "VITE_BASE_PATH=/ vite build && cp dist/index.html dist/404.html && echo primeos.primeodontologia.com.br > dist/CNAME",
+    "build:pages": "VITE_BASE_PATH=/ vite build && cp -R api dist/api && cp dist/index.html dist/404.html && echo primeos.primeodontologia.com.br > dist/CNAME",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
