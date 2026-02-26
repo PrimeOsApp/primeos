@@ -1,0 +1,15 @@
+{
+  "name": "PrimeOS APP",
+  "short_name": "PrimeOS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://primeos.com/logo_v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
