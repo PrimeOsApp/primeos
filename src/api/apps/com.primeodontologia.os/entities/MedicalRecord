@@ -1,0 +1,78 @@
+[
+  {
+    "allergies": [],
+    "date": "2026-02-20",
+    "ehr_id": null,
+    "attachments": [],
+    "last_ehr_sync": "2026-02-22T01:22:33.970Z",
+    "title": "Evolução - follow_up - 2026-02-20",
+    "record_type": "evolucao",
+    "content": "Manutencao em Ortodontia",
+    "synced_to_ehr": true,
+    "past_procedures": [],
+    "chronic_conditions": [],
+    "provider": "Andre",
+    "patient_id": "6995ff38df0a3098986121f9",
+    "medications": [],
+    "patient_name": "Gleison",
+    "id": "699a5a5a1158e21ffb63991c",
+    "created_date": "2026-02-22T01:22:34.167000",
+    "updated_date": "2026-02-22T01:22:34.167000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  },
+  {
+    "allergies": [
+      "Penicilina",
+      "Látex"
+    ],
+    "date": "2026-02-20",
+    "ehr_id": "EHR-6995ff38df0a3098986121f9",
+    "attachments": [],
+    "last_ehr_sync": "2026-02-20T22:30:29.336Z",
+    "title": "Dados Importados do EHR",
+    "record_type": "anamnese",
+    "content": "Histórico médico sincronizado automaticamente",
+    "synced_to_ehr": true,
+    "past_procedures": [
+      {
+        "date": "2024-06-15",
+        "procedure": "Extração de siso",
+        "notes": "Procedimento sem intercorrências",
+        "tooth": "38"
+      },
+      {
+        "date": "2024-03-20",
+        "procedure": "Restauração em resina",
+        "notes": "Cárie profunda",
+        "tooth": "46"
+      }
+    ],
+    "chronic_conditions": [
+      "Hipertensão",
+      "Diabetes Tipo 2"
+    ],
+    "provider": "Prime Odontologia",
+    "patient_id": "6995ff38df0a3098986121f9",
+    "medications": [
+      {
+        "name": "Losartana",
+        "dosage": "50mg",
+        "started_date": "2025-01-15",
+        "frequency": "1x ao dia"
+      },
+      {
+        "name": "Metformina",
+        "dosage": "850mg",
+        "started_date": "2024-08-10",
+        "frequency": "2x ao dia"
+      }
+    ],
+    "patient_name": "Gleison",
+    "id": "6998e085f6654e08e1410d25",
+    "created_date": "2026-02-20T22:30:29.428000",
+    "updated_date": "2026-02-20T22:30:29.428000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  }
+]

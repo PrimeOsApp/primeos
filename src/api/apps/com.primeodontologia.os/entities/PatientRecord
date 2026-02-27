@@ -1,0 +1,66 @@
+[
+  {
+    "allergies": [
+      {
+        "severity": "leve",
+        "allergen": "dipirona",
+        "reaction": ""
+      }
+    ],
+    "appointments_history": [],
+    "notes": "aparelho ortodontico",
+    "x_rays": [],
+    "date_of_birth": "1991-04-14",
+    "dental_records": null,
+    "patient_id": null,
+    "patient_email": "carloscosta1491@gmail.com",
+    "blood_type": "O+",
+    "patient_name": "Carlos Tadeu",
+    "current_medications": [
+      {
+        "name": "cbd",
+        "dosage": "",
+        "frequency": "",
+        "start_date": null,
+        "prescribing_doctor": null
+      },
+      {
+        "name": "thc",
+        "dosage": "",
+        "frequency": "",
+        "start_date": null,
+        "prescribing_doctor": null
+      }
+    ],
+    "consents": [
+      {
+        "type": "Política de Privacidade",
+        "date_signed": "2026-02-20",
+        "document_url": "#"
+      },
+      {
+        "type": "Termo de Consentimento",
+        "date_signed": "2026-02-20",
+        "document_url": "#"
+      },
+      {
+        "type": "Regulamento Interno",
+        "date_signed": "2026-02-20",
+        "document_url": "#"
+      }
+    ],
+    "patient_phone": "55 31 98685-5829",
+    "insurance_info": null,
+    "past_treatments": [],
+    "medical_conditions": [
+      "Nenhuma"
+    ],
+    "emergency_contact": null,
+    "status": "ativo",
+    "id": "6998b032e75d8e71c8ad3213",
+    "created_date": "2026-02-20T19:04:18.422000",
+    "updated_date": "2026-02-20T19:04:18.422000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  }
+]

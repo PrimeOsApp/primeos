@@ -1,0 +1,20 @@
+[
+  {
+    "follow_up_date": "2026-03-20",
+    "provider": "Andre",
+    "patient_id": "6995ff38df0a3098986121f9",
+    "chief_complaint": "Ortodontia",
+    "treatment_plan": "24 meses",
+    "medications": [],
+    "patient_name": "Gleison",
+    "follow_up_notes": null,
+    "appointment_id": null,
+    "diagnosis": "Aparelho Fixo",
+    "follow_up_required": true,
+    "id": "6995ffccf27a33f7db4b2285",
+    "created_date": "2026-02-18T18:07:08.385000",
+    "updated_date": "2026-02-18T18:07:08.385000",
+    "created_by_id": "697e811fd4fc2230311435d8",
+    "is_sample": false
+  }
+]
