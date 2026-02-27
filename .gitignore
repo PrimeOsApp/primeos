@@ -23,6 +23,9 @@ node_modules/.bin/*
 !node_modules/.vite/
 node_modules/.vite/*
 !node_modules/.vite/.gitkeep
+!node_modules/.vite-temp/
+node_modules/.vite-temp/*
+!node_modules/.vite-temp/.gitkeep
 dist
 dist-ssr
 *.local
