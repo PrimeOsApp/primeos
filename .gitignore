@@ -29,6 +29,9 @@ node_modules/.vite-temp/*
 !node_modules/@alloc/
 node_modules/@alloc/*
 !node_modules/@alloc/.gitkeep
+!node_modules/@alloc/quick-lru/
+node_modules/@alloc/quick-lru/*
+!node_modules/@alloc/quick-lru/.gitkeep
 dist
 dist-ssr
 *.local
