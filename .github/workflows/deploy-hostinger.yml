@@ -1,4 +1,4 @@
-name: Deploy PrimeOS to Hostinger
+name: Sync PrimeOS Repo to Hostinger
 
 on:
   push:
@@ -19,35 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build for primeos.primeodontologia.com.br
-        run: npm run build:primeos
-
-      - name: Create auth and SPA rules
-        run: |
-          cat > dist/.htaccess << 'EOF'
-          AuthType Basic
-          AuthName "Authorization required"
-          AuthUserFile /home/u188684587/domains/primeodontologia.com.br/public_html/primeos/.htpasswd
-          Require user admin
-
-          RewriteEngine On
-          RewriteBase /
-          RewriteRule ^index\.html$ - [L]
-          RewriteCond %{REQUEST_FILENAME} !-f
-          RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteRule . /index.html [L]
-          EOF
-
-          cp .htpasswd dist/.htpasswd
-
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -56,6 +27,14 @@ jobs:
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           port: ${{ secrets.HOSTINGER_FTP_PORT || '21' }}
           protocol: ftp
-          local-dir: dist/
+          local-dir: ./
           server-dir: ${{ secrets.HOSTINGER_REMOTE_DIR || '/' }}
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/.vscode/**
+            **/.DS_Store
+            **/Thumbs.db
+            **/*.log
           dangerous-clean-slate: true
