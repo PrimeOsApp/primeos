@@ -87,6 +87,7 @@ const getAppParams = () => {
 	}
 	const defaultAppId = getFirstValidValue(
 		'app_id',
+		import.meta.env.VITE_BASE44_APP_ID,
 		import.meta.env.VITE_PRIMEOS_APP_ID,
 		import.meta.env.VITE_APP_ID,
 		FALLBACK_APP_ID
