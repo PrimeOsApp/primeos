@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileDown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { resolveFunctionUrl } from "@/lib/functionsApi";
 
 export default function ExportOptions({ reportData, reportTitle, filters, loading }) {
   const handleExport = async (format) => {
@@ -11,7 +12,7 @@ export default function ExportOptions({ reportData, reportTitle, filters, loadin
     }
 
     try {
-      const response = await fetch(`/api/functions/exportReport`, {
+      const response = await fetch(resolveFunctionUrl('exportReport'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

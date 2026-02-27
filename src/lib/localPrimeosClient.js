@@ -1,4 +1,5 @@
 import databaseSeed from '../../data/database.json' with { type: 'json' };
+import { resolveFunctionUrl } from '@/lib/functionsApi';
 
 const clone = (value) => {
   if (typeof structuredClone === 'function') return structuredClone(value);
@@ -181,7 +182,7 @@ export const createLocalPrimeosClient = () => ({
   functions: {
     async invoke(name, payload = {}) {
       try {
-        const response = await fetch(`/api/functions/${name}`, {
+        const response = await fetch(resolveFunctionUrl(name), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
