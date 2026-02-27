@@ -21,12 +21,10 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+      const appId = import.meta.env.VITE_BASE44_APP_ID;
       const normalizedAppId =
-        typeof appParams.appId === 'string' &&
-        appParams.appId.trim() &&
-        !appParams.appId.includes('${{') &&
-        !appParams.appId.toLowerCase().includes('secrets.')
-          ? appParams.appId
+        typeof appId === 'string' && appId.trim()
+          ? appId
           : 'com.primeodontologia.os';
       appParams.appId = normalizedAppId;
       
