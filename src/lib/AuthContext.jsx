@@ -21,19 +21,27 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+      const normalizedAppId =
+        typeof appParams.appId === 'string' &&
+        appParams.appId.trim() &&
+        !appParams.appId.includes('${{') &&
+        !appParams.appId.toLowerCase().includes('secrets.')
+          ? appParams.appId
+          : 'com.primeodontologia.os';
+      appParams.appId = normalizedAppId;
       
       // First, check app public settings (with token if available)
       const appClient = createHttpClient({
         baseURL: `/api/apps/public`,
         headers: {
-          'X-App-Id': appParams.appId
+          'X-App-Id': normalizedAppId
         },
         token: appParams.token, // Include token if available
         
       });
       
       try {
-        const publicSettings = await appClient.get(`/prod/public-settings/by-id/${appParams.appId}`);
+        const publicSettings = await appClient.get(`/prod/public-settings/by-id/${normalizedAppId}`);
         setAppPublicSettings(publicSettings);
         
         // If we got the app public settings successfully, check if user is authenticated
