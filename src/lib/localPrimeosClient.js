@@ -1,4 +1,4 @@
-import databaseSeed from '../../data/database.json';
+import databaseSeed from '../../data/database.json' with { type: 'json' };
 
 const clone = (value) => {
   if (typeof structuredClone === 'function') return structuredClone(value);
