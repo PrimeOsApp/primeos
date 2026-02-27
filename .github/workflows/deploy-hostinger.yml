@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           port: ${{ secrets.HOSTINGER_FTP_PORT || '21' }}
-          protocol: ftp
+          protocol: ${{ secrets.HOSTINGER_FTP_PROTOCOL || 'ftp' }}
           local-dir: ./
           server-dir: ${{ secrets.HOSTINGER_REMOTE_DIR || '/' }}
           exclude: |
