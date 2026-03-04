@@ -48,4 +48,4 @@ dist-ssr
 *.sw?
 
 echo "node_modules/" >> /Users/primeodontologia/primeos/.gitignore
-.env
+.envprimeos/
