@@ -1,0 +1,16 @@
+{
+  "name": "PrimeOS",
+  "short_name": "PrimeOS",
+  "description": "PrimeOS - Sistema de Gestão Odontológica",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "/prime-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
