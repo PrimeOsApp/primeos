@@ -18,4 +18,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api.base44.com',
+        changeOrigin: true,
+        secure: true,
+      }
+    }
+  }
 })

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/prime-logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - PrimeOS</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .login-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+      }
+      .logo-container { text-align: center; margin-bottom: 30px; }
+      .logo-container img { height: 50px; margin-bottom: 10px; }
+      .logo-container h1 { font-size: 24px; color: #333; margin: 0; }
+      .login-form { display: flex; flex-direction: column; gap: 20px; }
+      .form-group { display: flex; flex-direction: column; gap: 8px; }
+      .form-group label { font-weight: 500; color: #333; font-size: 14px; }
+      .form-group input {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+      }
+      .login-button {
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+      }
+      .login-button:disabled { opacity: 0.7; cursor: not-allowed; }
+      .error-message {
+        color: #dc2626;
+        font-size: 14px;
+        display: none;
+        text-align: center;
+        padding: 10px;
+        background: #fee2e2;
+        border-radius: 6px;
+      }
+      .loading { display: none; text-align: center; color: #667eea; }
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #e0e0e0;
+        border-top-color: #667eea;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="logo-container">
+        <img src="/prime-logo.svg" alt="PrimeOS Logo" />
+        <h1>PrimeOS</h1>
+      </div>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="seu@email.com"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Sua senha"
+            required
+          />
+        </div>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          Autenticando...
+        </div>
+        <button type="submit" class="login-button" id="loginBtn">
+          Entrar
+        </button>
+      </form>
+    </div>
+
+    <script type="module">
+      import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+      const supabase = createClient(
+        'https://foeahubnrbclbelsqikp.supabase.co',
+        'sb_publishable_MnURfwn0NCO-70pR4pF4Vw_Sl4r3CLA'
+      )
+
+      const form = document.getElementById('loginForm')
+      const emailInput = document.getElementById('email')
+      const passwordInput = document.getElementById('password')
+      const errorMessage = document.getElementById('errorMessage')
+      const loading = document.getElementById('loading')
+      const loginBtn = document.getElementById('loginBtn')
+
+      // Check if already authenticated
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        window.location.href = './'
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const email = emailInput.value.trim()
+        const password = passwordInput.value
+
+        // Reset UI
+        errorMessage.style.display = 'none'
+        loading.style.display = 'block'
+        loginBtn.style.display = 'none'
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        })
+
+        if (error) {
+          console.error('Login error:', error)
+          errorMessage.textContent = 'Email ou senha incorretos: ' + error.message
+          errorMessage.style.display = 'block'
+          loading.style.display = 'none'
+          loginBtn.style.display = 'block'
+        } else {
+          localStorage.setItem('primeos_auth', '1')
+          localStorage.setItem('primeos_user', JSON.stringify({
+            email: data.user.email,
+            name: data.user.email.split('@')[0]
+          }))
+          window.location.href = './'
+        }
+      })
+    </script>
+  </body>
+</html>
