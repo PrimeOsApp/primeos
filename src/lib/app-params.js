@@ -81,28 +81,27 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 }
 
 const getAppParams = () => {
-	if (getAppParamValue("clear_access_token") === 'true') {
-		storage.removeItem('primeos_access_token');
-		storage.removeItem('token');
-	}
-	const appId = import.meta.env.VITE_BASE44_APP_ID;
-	const defaultAppId = getFirstValidValue(
-		'app_id',
-		appId,
-		import.meta.env.VITE_PRIMEOS_APP_ID,
-		import.meta.env.VITE_APP_ID,
-		FALLBACK_APP_ID
-	) || FALLBACK_APP_ID;
+    if (getAppParamValue("clear_access_token") === 'true') {
+        storage.removeItem('primeos_access_token');
+        storage.removeItem('token');
+    }
 
-	return {
-		appId: getAppParamValue("app_id", { defaultValue: defaultAppId }),
-		token: getAppParamValue("access_token", { removeFromUrl: true }),
-		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
-		functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env.VITE_PRIMEOS_FUNCTIONS_VERSION }),
-		appBaseUrl: getAppParamValue("app_base_url", {
-			defaultValue: getFirstValidValue('app_base_url', import.meta.env.VITE_PRIMEOS_APP_BASE_URL, window.location.origin)
-		}),
-	}
+    const defaultAppId = getFirstValidValue(
+        'app_id',
+        import.meta.env.VITE_PRIMEOS_APP_ID,
+        import.meta.env.VITE_APP_ID,
+        FALLBACK_APP_ID
+    ) || FALLBACK_APP_ID;
+
+    return {
+        appId: getAppParamValue("app_id", { defaultValue: defaultAppId }),
+        token: getAppParamValue("access_token", { removeFromUrl: true }),
+        fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
+        functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env.VITE_PRIMEOS_FUNCTIONS_VERSION }),
+        appBaseUrl: getAppParamValue("app_base_url", {
+            defaultValue: getFirstValidValue('app_base_url', import.meta.env.VITE_PRIMEOS_APP_BASE_URL, window.location.origin)
+        }),
+    }
 }
 
 

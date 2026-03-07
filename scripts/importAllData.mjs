@@ -43,33 +43,66 @@ function safeDate(val) {
   return val.trim();
 }
 
-function parseCSV(content) {
-  const lines = content.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+function parseRow(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
 
-  return lines.slice(1).map(line => {
-    const values = [];
-    let current = '';
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      if (line[i] === '"') {
-        inQuotes = !inQuotes;
-      } else if (line[i] === ',' && !inQuotes) {
-        values.push(current.trim());
-        current = '';
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
       } else {
-        current += line[i];
+        inQuotes = !inQuotes;
       }
+    } else if (char === ',' && !inQuotes) {
+      values.push(current.trim());
+      current = '';
+    } else {
+      current += char;
     }
-    values.push(current.trim());
+  }
+  values.push(current.trim());
+  return values;
+}
 
-    const record = {};
-    headers.forEach((header, index) => {
-      record[header] = values[index] || null;
+function parseCSV(content) {
+  const lines = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < content.length; i++) {
+    const char = content[i];
+    if (char === '"') {
+      inQuotes = !inQuotes;
+      current += char;
+    } else if (char === '\n' && !inQuotes) {
+      lines.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  if (current.trim()) lines.push(current);
+
+  // Guard against empty file
+  if (lines.length === 0) return [];
+  
+  const headers = parseRow(lines[0]);
+  if (!headers || headers.length === 0) return [];
+
+  return lines.slice(1)
+    .filter(line => line && line.trim())
+    .map(line => {
+      const values = parseRow(line);
+      const record = {};
+      headers.forEach((header, index) => {
+        record[header] = values[index] ?? null;
+      });
+      return record;
     });
-    return record;
-  });
 }
 
 // Transform functions per entity
@@ -116,7 +149,7 @@ const transformers = {
     payment_method: row.payment_method || null,
     payment_date: safeDate(row.payment_date),
     price: safeFloat(row.price),
-    notes: row.notes || null,
+    notes: row.notes ? String(row.notes).replace(/\n/g, ' ').trim() : null,
     follow_up_required: row.follow_up_required === 'true',
     follow_up_notes: row.follow_up_notes || null,
     reminder_sent: row.reminder_sent === 'true',
