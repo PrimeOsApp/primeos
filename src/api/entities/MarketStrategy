@@ -1,0 +1,28 @@
+// JavaScript Example: Reading Entities
+// Filterable fields: patient_id, patient_name, current_stage, entry_channel, treatments, total_value, satisfaction_score, notes
+async function fetchClientJourneyEntities() {
+    const response = await fetch(`/api/apps/697e811fd4fc2230311435d7/entities/ClientJourney`, {
+        headers: {
+            'api_key': '7d1b1b525d0b4a0b87dc91359e452b47', // or use await User.me() to get the API key
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    console.log(data);
+}
+
+// JavaScript Example: Updating an Entity
+// Filterable fields: patient_id, patient_name, current_stage, entry_channel, treatments, total_value, satisfaction_score, notes
+async function updateClientJourneyEntity(entityId, updateData) {
+    const response = await fetch(`/api/apps/697e811fd4fc2230311435d7/entities/ClientJourney/${entityId}`, {
+        method: 'PUT',
+        headers: {
+            'api_key': '7d1b1b525d0b4a0b87dc91359e452b47', // or use await User.me() to get the API key
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
+    });
+    const data = await response.json();
+    console.log(data);
+}
+
