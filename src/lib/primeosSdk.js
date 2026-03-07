@@ -1,3 +1,3 @@
-import { createClient as createSdkClient } from '@base44/sdk';
+import { supabase } from '@/lib/supabase';
 
-export const createPrimeosSdkClient = createSdkClient;
+export const createPrimeosSdkClient = () => supabase;
