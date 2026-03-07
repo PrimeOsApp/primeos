@@ -21,7 +21,7 @@ const ftpDeploy = new FtpDeploy();
 const config = {
   user: "u188684587.primeos_deploy",
   password: env.FTP_PASSWORD,
-  host: "ftp.primeodontologia.com.br",
+  host: "89.117.7.117",
   port: 21,
   localRoot: resolve(__dirname, "../dist"),
   remoteRoot: "/",
@@ -48,4 +48,3 @@ ftpDeploy
   .deploy(config)
   .then(() => console.log("\n✅ Deploy complete! https://primeos.primeodontologia.com.br"))
   .catch(err => console.error("❌ Deploy failed:", err));
-  
