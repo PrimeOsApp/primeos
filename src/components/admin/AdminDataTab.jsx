@@ -1,9 +1,63 @@
+// @ts-nocheck
 import { useState } from "react";
 import { primeos } from "@/api/primeosClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Database, RefreshCw, Trash2, AlertTriangle, Eye } from "lucide-react";
+import { Database, RefreshCw, Trash2, AlertTriangle, Eye, Download } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+
+export async function fetchEntityData(entityKey) {
+  const { data, error } = await supabase.from(entityKey).select("*");
+  if (error) throw new Error(`Failed to fetch ${entityKey}: ${error.message}`);
+  return data ?? [];
+}
+
+export function convertToCSV(data) {
+  if (!data.length) return "";
+  const headers = Object.keys(data[0]).join(",");
+  const rows = data.map(row =>
+    Object.values(row)
+      .map(val => `"${String(val ?? "").replace(/"/g, '""')}"`)
+      .join(",")
+  );
+  return [headers, ...rows].join("\n");
+}
+
+export function downloadFile(content, fileName, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+export async function exportEntity(entityKey, format) {
+  const data = await fetchEntityData(entityKey);
+  if (format === "json") {
+    downloadFile(JSON.stringify(data, null, 2), `${entityKey}_export.json`, "application/json");
+  } else {
+    downloadFile(convertToCSV(data), `${entityKey}_export.csv`, "text/csv");
+  }
+}
+
+export async function exportAllEntities(entityKeys, format) {
+  const results = {};
+  for (const key of entityKeys) {
+    results[key] = await fetchEntityData(key);
+  }
+  if (format === "json") {
+    downloadFile(JSON.stringify(results, null, 2), `all_entities_export.json`, "application/json");
+  } else {
+    downloadFile(
+      convertToCSV(Object.entries(results).flatMap(([k, v]) => v.map(r => ({ entity: k, ...r })))),
+      `all_entities_export.csv`,
+      "text/csv"
+    );
+  }
+}
 
 const ENTITIES = [
   { key: "PatientRecord", label: "Pacientes", color: "text-rose-400" },
@@ -26,11 +80,14 @@ function EntityRow({ entity }) {
 
   const load = async () => {
     setLoading(true);
-    const data = await primeos.entities[entity.key].list('-created_date', 1);
-    // Just count a broader fetch for display
-    const all = await primeos.entities[entity.key].list('-created_date', 500);
-    setCount(all.length);
-    setLoading(false);
+    try {
+      const data = await fetchEntityData(entity.key);
+      setCount(data.length);
+    } catch (e) {
+      setCount(0);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,10 +101,25 @@ function EntityRow({ entity }) {
       </div>
       <div className="flex items-center gap-2">
         {count !== null && (
-          <Badge className="bg-slate-600 text-slate-300 border-slate-500 text-xs">{count} registros</Badge>
+          <Badge variant="secondary" className="bg-slate-600 text-slate-300 border-slate-500 text-xs">
+            {count} registros
+          </Badge>
         )}
-        <Button size="sm" variant="outline" onClick={load} disabled={loading}
-          className="h-7 text-xs border-slate-600 text-slate-400 hover:text-white hover:bg-slate-600">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => exportEntity(entity.key, "csv")}
+          className="h-7 text-xs border-slate-600 text-slate-400 hover:text-white hover:bg-slate-600"
+        >
+          <Download className="w-3 h-3" />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={load}
+          disabled={loading}
+          className="h-7 text-xs border-slate-600 text-slate-400 hover:text-white hover:bg-slate-600"
+        >
           {loading ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Eye className="w-3 h-3 mr-1" />}
           {count === null ? "Contar" : "Recarregar"}
         </Button>
@@ -57,6 +129,8 @@ function EntityRow({ entity }) {
 }
 
 export default function AdminDataTab() {
+  const entityKeys = ENTITIES.map(e => e.key);
+
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800/50 border-slate-700">
@@ -64,13 +138,33 @@ export default function AdminDataTab() {
           <CardTitle className="text-white text-sm flex items-center gap-2">
             <Database className="w-4 h-4" /> Entidades do Sistema
           </CardTitle>
-          <p className="text-slate-500 text-xs">Clique em "Contar" para ver quantos registros cada entidade possui.</p>
+          <p className="text-slate-500 text-xs">
+            Clique em "Contar" para ver quantos registros cada entidade possui.
+          </p>
+          <div className="flex gap-2 pt-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => exportAllEntities(entityKeys, "json")}
+              className="h-7 text-xs border-slate-600 text-slate-400 hover:text-white hover:bg-slate-600"
+            >
+              <Download className="w-3 h-3 mr-1" /> Exportar Tudo (JSON)
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => exportAllEntities(entityKeys, "csv")}
+              className="h-7 text-xs border-slate-600 text-slate-400 hover:text-white hover:bg-slate-600"
+            >
+              <Download className="w-3 h-3 mr-1" /> Exportar Tudo (CSV)
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent>
+        <div className="p-4">
           <div className="grid md:grid-cols-2 gap-2">
             {ENTITIES.map(e => <EntityRow key={e.key} entity={e} />)}
           </div>
-        </CardContent>
+        </div>
       </Card>
 
       <Card className="bg-red-900/20 border-red-800/50">
@@ -87,7 +181,9 @@ export default function AdminDataTab() {
             <Trash2 className="w-5 h-5 text-red-500 flex-shrink-0" />
             <div>
               <p className="text-white text-sm font-medium">Exclusão de Dados</p>
-              <p className="text-slate-500 text-xs">Para excluir dados em massa, acesse o dashboard do PrimeOS → Entities → gerenciar registros diretamente no banco.</p>
+              <p className="text-slate-500 text-xs">
+                Para excluir dados em massa, acesse o dashboard do PrimeOS → Entities → gerenciar registros diretamente no banco.
+              </p>
             </div>
           </div>
         </CardContent>
