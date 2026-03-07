@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://foeahubnrbclbelsqikp.supabase.co',
-  'sb_publishable_MnURfwn0NCO-70pR4pF4Vw_Sl4r3CLA'
-);
+import { supabase } from '@/lib/supabase';
 
 export const primeos = {
   auth: {
