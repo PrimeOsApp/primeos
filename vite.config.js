@@ -21,9 +21,20 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api.base44.com',
+        target: 'https://foeahubnrbclbelsqikp.supabase.co',
         changeOrigin: true,
         secure: true,
+      }
+    }
+  },
+  build: {
+    chunkSizeWarningLimit: 3000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          supabase: ['@supabase/supabase-js'],
+        }
       }
     }
   }
