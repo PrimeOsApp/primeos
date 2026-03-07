@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/AuthContext";
+import primeLogo from "./assets/prime-logo.svg";
 import {
   LayoutDashboard,
   Users,
@@ -223,7 +224,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="flex items-center justify-between select-none">
           <div className="flex items-center gap-3">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg"
+              src={primeLogo}
               alt="Prime Odontologia"
               className="w-9 h-9 rounded-xl object-cover select-none"
             />
@@ -277,7 +278,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="p-6 flex-shrink-0 border-b border-slate-100 dark:border-slate-800 select-none">
           <div className="flex items-center gap-3 mb-3">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg"
+              src={primeLogo}
               alt="Prime Odontologia"
               className="w-10 h-10 rounded-xl object-cover shadow-lg select-none"
             />
