@@ -10,23 +10,33 @@ const envFile = readFileSync(resolve(__dirname, "../.env"), "utf-8");
 const env = Object.fromEntries(
   envFile.split("\n")
     .filter(line => line && !line.startsWith("#"))
-    .map(line => line.split("=").map(s => s.trim()))
+    .map(line => {
+      const [key, ...rest] = line.split("=");
+      return [key.trim(), rest.join("=").trim()];
+    })
 );
 
 const ftpDeploy = new FtpDeploy();
 
 const config = {
-  user: env.FTP_USERNAME,
+  user: "u188684587.primeos_deploy",
   password: env.FTP_PASSWORD,
-  host: env.FTP_SERVER,
-  port: parseInt(env.FTP_PORT || "21"),
+  host: "ftp.primeodontologia.com.br",
+  port: 21,
   localRoot: resolve(__dirname, "../dist"),
-  remoteRoot: env.FTP_REMOTE_DIR || "/public_html/",
+  remoteRoot: "/",
   include: ["*", "**/*"],
   exclude: [],
-  deleteRemote: true,
+  deleteRemote: false,
   forcePasv: true,
+  sftp: false,
 };
+
+console.log("🚀 Deploying to primeos.primeodontologia.com.br...\n");
+console.log(`   Host: ${config.host}`);
+console.log(`   User: ${config.user}`);
+console.log(`   Port: ${config.port}`);
+console.log(`   Dir:  ${config.remoteRoot}\n`);
 
 ftpDeploy.on("uploading", ({ transferredFileCount, totalFilesCount, filename }) => {
   console.log(`[${transferredFileCount}/${totalFilesCount}] ${filename}`);
@@ -34,9 +44,8 @@ ftpDeploy.on("uploading", ({ transferredFileCount, totalFilesCount, filename }) 
 
 ftpDeploy.on("log", (data) => console.log(data));
 
-console.log("Deploying to primeos.primeodontologia.com.br...\n");
-
 ftpDeploy
   .deploy(config)
-  .then(() => console.log("\nDeploy complete! https://primeos.primeodontologia.com.br"))
-  .catch(err => console.error("Deploy failed:", err));
+  .then(() => console.log("\n✅ Deploy complete! https://primeos.primeodontologia.com.br"))
+  .catch(err => console.error("❌ Deploy failed:", err));
+  

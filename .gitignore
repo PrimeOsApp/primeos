@@ -52,3 +52,5 @@ echo "node_modules/" >> /Users/primeodontologia/primeos/.gitignore
 
 .envprimeos/
 primeos/
+.env
+.env.local
