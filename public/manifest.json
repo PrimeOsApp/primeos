@@ -1,16 +1,21 @@
 {
-  "name": "PrimeOS",
+  "name": "Prime Odontologia",
   "short_name": "PrimeOS",
-  "description": "PrimeOS - Sistema de Gestão Odontológica",
+  "description": "Sistema de Gestão Prime Odontologia",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#667eea",
+  "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "/prime-logo.svg",
+      "src": "/assets/prime-logo.svg",
       "sizes": "any",
       "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/prime-logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
     }
   ]
 }

@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/AuthContext";
+// @ts-ignore
 import primeLogo from "./assets/prime-logo.svg";
 import {
   LayoutDashboard,
