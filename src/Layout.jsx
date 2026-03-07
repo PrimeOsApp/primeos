@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { primeos } from "@/api/primeosClient";
+import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard,
   Users,
@@ -48,7 +48,6 @@ import {
   Route,
   Layers
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import WhatsNewModal, { LATEST_VERSION } from "@/components/shared/WhatsNewModal";
 import GlobalSearch from "@/components/shared/GlobalSearch";
 import SettingsDialog from "@/components/shared/SettingsDialog";
@@ -141,7 +140,7 @@ export default function Layout({ children, currentPageName }) {
   const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -151,16 +150,11 @@ export default function Layout({ children, currentPageName }) {
       localStorage.setItem("last_seen_version", LATEST_VERSION);
     }
 
-    // Dark mode initialization
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode === 'dark' || (!savedMode && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     }
 
-    // Load user
-    primeos.auth.me().then(setUser).catch(() => {});
-
-    // Global keyboard shortcut for search (Cmd+K or Ctrl+K)
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
@@ -228,39 +222,33 @@ export default function Layout({ children, currentPageName }) {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 px-4 py-3" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
         <div className="flex items-center justify-between select-none">
           <div className="flex items-center gap-3">
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg" 
-              alt="Prime Odontologia" 
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg"
+              alt="Prime Odontologia"
               className="w-9 h-9 rounded-xl object-cover select-none"
             />
             <span className="font-bold text-slate-900 dark:text-slate-100 select-none">Prime Odontologia</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={() => setShowSearch(true)}
-              className="relative select-none min-w-[44px] min-h-[44px] touch-manipulation"
+              className="relative select-none min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Search className="w-5 h-5 text-slate-600 dark:text-slate-400 select-none" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
+            </button>
+            <button
               onClick={() => setShowWhatsNew(true)}
-              className="relative select-none min-w-[44px] min-h-[44px] touch-manipulation"
+              className="relative select-none min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
               data-tour="whats-new"
             >
               <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 select-none" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
+            </button>
+            <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="select-none min-w-[44px] min-h-[44px] touch-manipulation"
+              className="select-none min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               {sidebarOpen ? <X className="w-5 h-5 select-none" /> : <Menu className="w-5 h-5 select-none" />}
-            </Button>
+            </button>
           </div>
         </div>
       </header>
@@ -288,9 +276,9 @@ export default function Layout({ children, currentPageName }) {
       >
         <div className="p-6 flex-shrink-0 border-b border-slate-100 dark:border-slate-800 select-none">
           <div className="flex items-center gap-3 mb-3">
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg" 
-              alt="Prime Odontologia" 
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/primeos-prod/public/697e811fd4fc2230311435d7/183f985ca_icon.jpg"
+              alt="Prime Odontologia"
               className="w-10 h-10 rounded-xl object-cover shadow-lg select-none"
             />
             <div>
@@ -298,77 +286,75 @@ export default function Layout({ children, currentPageName }) {
               <p className="text-xs text-slate-500 dark:text-slate-400">Sistema de Gestão</p>
             </div>
           </div>
-          
-          <Button
-            variant="outline"
+
+          <button
             onClick={() => setShowSearch(true)}
-            className="w-full justify-start gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 select-none min-h-[44px] touch-manipulation"
+            className="w-full flex items-center justify-start gap-2 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 select-none min-h-[44px] touch-manipulation border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             <Search className="w-4 h-4 select-none" />
-            <span className="flex-1 text-left">Buscar...</span>
+            <span className="flex-1 text-left text-sm">Buscar...</span>
             <kbd className="px-1.5 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 select-none">
               ⌘K
             </kbd>
-          </Button>
+          </button>
         </div>
 
         <div className="relative flex-1 overflow-hidden min-h-0">
-            {showScrollTop && (
-              <div className="sticky top-0 z-10 flex justify-center py-1.5 bg-gradient-to-b from-white dark:from-slate-900 via-white dark:via-slate-900 to-transparent pointer-events-none">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => scrollNav('up')}
-                  className="h-7 w-full mx-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm pointer-events-auto select-none touch-manipulation min-h-[44px]"
-                >
-                  <ChevronUp className="h-4 w-4 select-none" />
-                </Button>
-              </div>
-            )}
-            
-            <nav 
-              id="nav-container"
-              className="space-y-2 overflow-y-auto h-full px-6 py-3"
-              onScroll={handleScroll}
-              data-tour="navigation"
-            >
-              {navigation.map((item) => (
-                <NavItem key={item.name} item={item} />
-              ))}
-            </nav>
+          {showScrollTop && (
+            <div className="sticky top-0 z-10 flex justify-center py-1.5 bg-gradient-to-b from-white dark:from-slate-900 via-white dark:via-slate-900 to-transparent pointer-events-none">
+              <button
+                onClick={() => scrollNav('up')}
+                className="h-7 w-full mx-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm pointer-events-auto select-none touch-manipulation min-h-[44px] rounded-md flex items-center justify-center"
+              >
+                <ChevronUp className="h-4 w-4 select-none" />
+              </button>
+            </div>
+          )}
 
-            {showScrollBottom && (
-              <div className="sticky bottom-0 z-10 flex justify-center py-1.5 bg-gradient-to-t from-white dark:from-slate-900 via-white dark:via-slate-900 to-transparent pointer-events-none">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => scrollNav('down')}
-                  className="h-7 w-full mx-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm pointer-events-auto select-none touch-manipulation min-h-[44px]"
-                >
-                  <ChevronDown className="h-4 w-4 select-none" />
-                </Button>
-              </div>
-            )}
-          </div>
+          <nav
+            id="nav-container"
+            className="space-y-2 overflow-y-auto h-full px-6 py-3"
+            onScroll={handleScroll}
+            data-tour="navigation"
+          >
+            {navigation.map((item, index) => (
+              <NavItem key={item.name || `section-${item.section}-${index}`} item={item} />
+            ))}
+          </nav>
 
-          <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 space-y-2">
-            <Button
-              variant="outline"
-              onClick={() => setShowWhatsNew(true)}
-              className="w-full justify-start gap-2 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 select-none min-h-[44px] touch-manipulation"
-            >
-              <Sparkles className="w-4 h-4 select-none" />
-              Novidades & Dicas
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowSettings(true)}
-              className="w-full justify-start gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 select-none min-h-[44px] touch-manipulation"
-            >
-              <Settings className="w-4 h-4 select-none" />
-              Configurações
-            </Button>
-          </div>
+          {showScrollBottom && (
+            <div className="sticky bottom-0 z-10 flex justify-center py-1.5 bg-gradient-to-t from-white dark:from-slate-900 via-white dark:via-slate-900 to-transparent pointer-events-none">
+              <button
+                onClick={() => scrollNav('down')}
+                className="h-7 w-full mx-6 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm pointer-events-auto select-none touch-manipulation min-h-[44px] rounded-md flex items-center justify-center"
+              >
+                <ChevronDown className="h-4 w-4 select-none" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 space-y-2">
+          <button
+            onClick={() => setShowWhatsNew(true)}
+            className="w-full flex items-center justify-start gap-2 px-3 py-2 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200 dark:border-slate-700 hover:border-indigo-200 dark:hover:border-indigo-800 select-none min-h-[44px] touch-manipulation rounded-md text-slate-600 dark:text-slate-300 text-sm font-medium"
+          >
+            <Sparkles className="w-4 h-4 select-none" />
+            Novidades & Dicas
+          </button>
+          <button
+            onClick={() => setShowSettings(true)}
+            className="w-full flex items-center justify-start gap-2 px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 select-none min-h-[44px] touch-manipulation rounded-md text-slate-600 dark:text-slate-300 text-sm font-medium"
+          >
+            <Settings className="w-4 h-4 select-none" />
+            Configurações
+          </button>
+          {user && (
+            <div className="px-2 py-1 text-xs text-slate-500 dark:text-slate-400 truncate">
+              {user.email}
+            </div>
+          )}
+        </div>
       </aside>
 
       {/* Main Content */}
@@ -387,7 +373,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Bottom Tab Bar - Mobile Only */}
-      <nav 
+      <nav
         className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 safe-area-bottom"
         style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
       >
@@ -400,8 +386,8 @@ export default function Layout({ children, currentPageName }) {
                 to={createPageUrl(item.href)}
                 className={cn(
                   "flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all touch-manipulation min-h-[44px] min-w-[44px] select-none",
-                  isActive 
-                    ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20" 
+                  isActive
+                    ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20"
                     : "text-slate-600 dark:text-slate-400"
                 )}
               >
