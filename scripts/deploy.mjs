@@ -1,5 +1,5 @@
 import FtpDeploy from "ftp-deploy";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -16,16 +16,28 @@ const env = Object.fromEntries(
     })
 );
 
+// Create .htaccess for SPA routing
+const htaccess = `Options -Indexes
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]`;
+
+writeFileSync(resolve(__dirname, "../dist/.htaccess"), htaccess);
+console.log("✅ .htaccess created\n");
+
 const ftpDeploy = new FtpDeploy();
 
 const config = {
-  user: "u188684587.primeos_deploy",
+  user: "u188684587",
   password: env.FTP_PASSWORD,
   host: "89.117.7.117",
   port: 21,
   localRoot: resolve(__dirname, "../dist"),
-  remoteRoot: "/",
-  include: ["*", "**/*"],
+  remoteRoot: "/public_html/primeos/",
+  include: ["*", "**/*", ".htaccess"],
   exclude: [],
   deleteRemote: false,
   forcePasv: true,
@@ -48,3 +60,4 @@ ftpDeploy
   .deploy(config)
   .then(() => console.log("\n✅ Deploy complete! https://primeos.primeodontologia.com.br"))
   .catch(err => console.error("❌ Deploy failed:", err));
+  
