@@ -2,11 +2,11 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
+    const supabase = createClientFromRequest(req);
 
     // Fetch all active schedules
-    const schedules = await primeos.asServiceRole.entities.ReportSchedule.list();
-    const activeSchedules = schedules.filter(s => s.is_active);
+    const { data: schedules } = await supabase.from('report_schedules').select('*');
+    const activeSchedules = (schedules || []).filter(s => s.is_active);
 
     const now = new Date();
     const dayOfWeek = now.getDay();

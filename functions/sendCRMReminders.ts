@@ -2,24 +2,23 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
+    const supabase = createClientFromRequest(req);
     
     // Verify admin access
-    const user = await primeos.auth.me();
+    const { data: { user } } = await supabase.auth.getUser();
     if (user?.role !== 'admin') {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     }
 
     const now = new Date();
     const currentDate = now.toISOString().split('T')[0];
-    const currentTime = now.toTimeString().slice(0, 5); // HH:MM
+    const currentTime = now.toTimeString().slice(0, 5);
 
     // Get all scheduled/confirmed appointments for today
-    const appointments = await primeos.asServiceRole.entities.CRMAppointment.filter({
-      date: currentDate,
-      status: { $in: ['scheduled', 'confirmed'] },
-      reminder_sent: false
-    });
+    const { data: appointments } = await supabase.from('appointments').select('*')
+      .eq('date', currentDate)
+      .in('status', ['scheduled', 'confirmed'])
+      .eq('reminder_sent', false);
 
     const remindersToSend = [];
     

@@ -2,8 +2,8 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
-    const user = await primeos.auth.me();
+    const supabase = createClientFromRequest(req);
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (user?.role !== 'admin') {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
@@ -13,10 +13,9 @@ Deno.serve(async (req) => {
     const today = new Date().toISOString().split('T')[0];
 
     // Find all pending follow-ups due today
-    const followUps = await primeos.asServiceRole.entities.FollowUp.filter({
-      due_date: today,
-      status: 'pending'
-    });
+    const { data: followUps } = await supabase.from('follow_ups').select('*')
+      .eq('due_date', today)
+      .eq('status', 'pending');
 
     const results = {
       sent: [],

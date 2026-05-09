@@ -2,7 +2,7 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
+    const supabase = createClientFromRequest(req);
     const { userMessage } = await req.json();
 
     if (!userMessage) {
@@ -10,10 +10,10 @@ Deno.serve(async (req) => {
     }
 
     // Fetch knowledge base
-    const kbArticles = await primeos.asServiceRole.entities.KnowledgeBase.list();
+    const { data: kbArticles } = await supabase.from('knowledge_base').select('*');
     
     // Prepare KB context
-    const kbContext = kbArticles
+    const kbContext = (kbArticles || [])
       .filter(kb => kb.is_active)
       .map(kb => `
         Título: ${kb.title}

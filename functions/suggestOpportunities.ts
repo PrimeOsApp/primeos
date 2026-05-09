@@ -2,8 +2,8 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
-    const user = await primeos.auth.me();
+    const supabase = createClientFromRequest(req);
+    const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,11 +16,11 @@ Deno.serve(async (req) => {
     }
 
     // Fetch customer data
-    const customer = await primeos.asServiceRole.entities.Customer.get(customerId);
-    const interactions = await primeos.entities.Interaction.filter({ customer_id: customerId });
-    const sales = await primeos.entities.Sale.filter({ customer_id: customerId });
-    const products = await primeos.entities.Product.list();
-    const appointments = await primeos.entities.CRMAppointment.filter({ customer_id: customerId });
+    const { data: customer } = await supabase.from('customers').select('*').eq('id', customerId).single();
+    const { data: interactions } = await supabase.from('interactions').select('*').eq('customer_id', customerId);
+    const { data: sales } = await supabase.from('sales').select('*').eq('customer_id', customerId);
+    const { data: products } = await supabase.from('products').select('*');
+    const { data: appointments } = await supabase.from('appointments').select('*').eq('customer_id', customerId);
 
     // Build customer profile
     const customerProfile = {

@@ -1,17 +1,18 @@
 import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const primeos = createClientFromRequest(req);
-  const user = await primeos.auth.me();
+  const supabase = createClientFromRequest(req);
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { appointmentId } = await req.json();
   if (!appointmentId) return Response.json({ error: 'appointmentId required' }, { status: 400 });
 
-  const [appointment, allAppointments] = await Promise.all([
-    primeos.entities.Appointment.filter({ id: appointmentId }).then(r => r[0]),
-    primeos.entities.Appointment.list('-date', 50)
+  const [{ data: appointmentData }, { data: allAppointments }] = await Promise.all([
+    supabase.from('appointments').select('*').eq('id', appointmentId),
+    supabase.from('appointments').select('*').order('date', { ascending: false }).limit(50)
   ]);
+  const appointment = appointmentData?.[0];
 
   if (!appointment) return Response.json({ error: 'Appointment not found' }, { status: 404 });
 

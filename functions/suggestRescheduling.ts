@@ -1,18 +1,18 @@
 import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const primeos = createClientFromRequest(req);
-  const user = await primeos.auth.me();
+  const supabase = createClientFromRequest(req);
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { patientId, appointmentId } = await req.json();
 
-  const [appointments, patientRecords] = await Promise.all([
-    primeos.entities.Appointment.list('-date', 200),
-    patientId ? primeos.entities.PatientRecord.filter({ id: patientId }) : Promise.resolve([])
+  const [{ data: appointments }, patientData] = await Promise.all([
+    supabase.from('appointments').select('*').order('date', { ascending: false }).limit(200),
+    patientId ? supabase.from('patients').select('*').eq('id', patientId) : Promise.resolve({ data: [] })
   ]);
 
-  const patient = patientRecords[0];
+  const patient = patientData?.data?.[0];
   const patientAppointments = appointments.filter(a =>
     a.patient_id === patientId || a.patient_name === (patient?.patient_name)
   );

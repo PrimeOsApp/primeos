@@ -2,7 +2,7 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
+    const supabase = createClientFromRequest(req);
     const { event, data, old_data } = await req.json();
 
     if (!data?.id) {

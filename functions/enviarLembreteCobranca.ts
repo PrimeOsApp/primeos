@@ -2,7 +2,7 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
+    const supabase = createClientFromRequest(req);
 
     // Pode ser chamado manualmente (com auth) ou via automação (sem body)
     let isManual = false;
@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
       if (body.transaction_id) {
         isManual = true;
         manualTransactionId = body.transaction_id;
-        const user = await primeos.auth.me();
+        const { data: { user } } = await supabase.auth.getUser();
         if (!user) return Response.json({ error: 'Não autorizado' }, { status: 401 });
       }
     }
@@ -28,11 +28,11 @@ Deno.serve(async (req) => {
     let toRemind = [];
 
     if (isManual && manualTransactionId) {
-      const txs = await primeos.asServiceRole.entities.FinancialTransaction.filter({ id: manualTransactionId });
-      toRemind = txs;
+      const { data: txs } = await supabase.from('financial_transactions').select('*').eq('id', manualTransactionId);
+      toRemind = txs || [];
     } else {
       // Modo automático: busca pendentes/vencidas com email
-      const all = await primeos.asServiceRole.entities.FinancialTransaction.list('-due_date', 500);
+      const { data: all } = await supabase.from('financial_transactions').select('*').order('due_date', { ascending: true }).limit(500);
       toRemind = all.filter(t => {
         if (t.type !== 'receita') return false;
         if (t.status === 'pago' || t.status === 'cancelado') return false;

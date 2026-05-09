@@ -19,8 +19,8 @@ const ENTITIES = [
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
-    const user = await primeos.auth.me();
+    const supabase = createClientFromRequest(req);
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user || user.role !== 'admin') {
       return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
@@ -29,10 +29,16 @@ Deno.serve(async (req) => {
     const result = {};
     const errors = {};
 
-    for (const entity of ENTITIES) {
+    // Fetch all tables from Supabase
+    const tables = [
+      'patients', 'dentists', 'appointments', 'invoices', 'clinical_notes',
+      'tasks', 'leads', 'customer_segments', 'interactions', 'financial_transactions',
+      'users', 'support_tickets', 'knowledge_base', 'ab_tests', 'automation_workflows'
+    ];
+
+    for (const table of tables) {
       try {
-        const records = await primeos.asServiceRole.entities[entity].list();
-        result[entity] = records;
+        const { data: records } = await supabase.from(table).select('*');
       } catch (e) {
         errors[entity] = e.message;
         result[entity] = [];

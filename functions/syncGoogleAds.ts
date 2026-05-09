@@ -2,8 +2,8 @@ import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
   try {
-    const primeos = createClientFromRequest(req);
-    const user = await primeos.auth.me();
+    const supabase = createClientFromRequest(req);
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });

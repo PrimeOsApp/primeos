@@ -1,13 +1,13 @@
 import { createPrimeosClientFromRequest } from './primeosClient.ts';
 
 Deno.serve(async (req) => {
-  const primeos = createClientFromRequest(req);
-  const user = await primeos.auth.me();
+  const supabase = createClientFromRequest(req);
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const [patients, appointments] = await Promise.all([
-    primeos.entities.PatientRecord.list('-updated_date', 100),
-    primeos.entities.Appointment.list('-date', 300)
+  const [{ data: patients }, { data: appointments }] = await Promise.all([
+    supabase.from('patients').select('*').order('updated_at', { ascending: false }).limit(100),
+    supabase.from('appointments').select('*').order('date', { ascending: false }).limit(300)
   ]);
 
   const today = new Date();
