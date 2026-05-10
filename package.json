@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && cp public/manifest.webmanifest dist/manifest.webmanifest && cp public/manifest.webmanifest dist/manifest.json && cp -R api dist/api 2>/dev/null || true",
     "build:primeos": "VITE_BASE_PATH=/ vite build && cp public/manifest.webmanifest dist/manifest.webmanifest && cp public/manifest.webmanifest dist/manifest.json && cp -R api dist/api 2>/dev/null || true",
-    "build:pages": "VITE_BASE_PATH=/ vite build && cp public/manifest.webmanifest dist/manifest.webmanifest && cp public/manifest.webmanifest dist/manifest.json && cp -R api dist/api && ([ -f public/404.html ] && cp public/404.html dist/404.html || cp dist/index.html dist/404.html) && echo primeos.primeodontologia.com.br > dist/CNAME",
+    "build:pages": "VITE_BASE_PATH=/ vite build && cp public/manifest.webmanifest dist/manifest.webmanifest && cp public/manifest.webmanifest dist/manifest.json && cp -R api dist/api && ([ -f public/CNAME ] && cp public/CNAME dist/CNAME || true)",
     "deploy": "npm run build:primeos && node scripts/deploy.mjs",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
@@ -101,6 +101,6 @@
     "ssh2-sftp-client": "^12.1.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.2",
-    "vite": "^6.1.0"
+    "vite": "^6.2.0"
   }
 }
