@@ -65,9 +65,9 @@ After DNS propagates, the app will open at:
 
 <img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
 
-Hey OmniOsApp!
+Hey PrimeOs!
 
-Mona here. I'm done preparing your exercise. Hope you enjoy! 💚
+Clara here. I'm done preparing your exercise. Hope you enjoy! 💚
 
 Remember, it's self-paced so feel free to take a break! ☕️
 
